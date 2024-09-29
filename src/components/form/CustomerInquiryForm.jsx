@@ -43,7 +43,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
   return (
     <div
       ref={formRef}
-      className="max-h-[500px] max-w-[350px] overflow-y-auto bg-white p-8 shadow-lg md:max-h-[600px] md:max-w-full"
+      className="max-h-[500px] max-w-[350px] overflow-y-auto bg-white p-8 shadow-lg md:max-h-[600px] md:max-w-[500px]"
     >
       <form className="relative">
         <button
@@ -161,6 +161,11 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             </div>
           )}
         </div>
+        {/* Quotation */}
+        <div className="mt-2">
+          <label className="w-full text-sm font-semibold">Quoation:</label>
+          <input type="file" className="w-full border p-2 outline-none" />
+        </div>
         {/* Admin */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Admin:</label>
@@ -181,15 +186,11 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             ))}
           </select>
         </div>
-        <div className="mt-2">
-            <label className="w-full text-sm font-semibold">Quoation:</label>
-            <input type="file" className="w-full border p-2 outline-none"/>
-        </div>
 
         {/* For not simple job */}
         <div className="mx-auto flex items-center justify-center py-4 text-center">
           <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
-          <p className="w-full text-sm px-2 font-semibold text-red-500">
+          <p className="w-full px-2 text-sm font-semibold text-red-500">
             Schedule Inspection
           </p>
           <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
