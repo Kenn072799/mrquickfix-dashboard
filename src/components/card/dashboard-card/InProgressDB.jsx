@@ -4,7 +4,7 @@ import CountUp from "react-countup";
 
 const InProgressDB = () => {
   return (
-    <div className="h-[150px] min-w-[300px] border-t-8 border-yellow-500 bg-white md:w-[300px]">
+    <div className="h-[150px] min-w-[300px] border-t-8 border-yellow-500 bg-white shadow-md md:w-[300px]">
       <header className="py-2 text-center">
         <TitleCard>In Progress</TitleCard>
       </header>

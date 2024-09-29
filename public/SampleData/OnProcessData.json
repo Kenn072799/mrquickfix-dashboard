@@ -1,0 +1,153 @@
+[
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "homeAddress": "123 Main St, Springfield, IL",
+      "emailAddress": "john.doe@example.com",
+      "phoneNumber": "555-1234",
+      "typeOfJobs": "Repair",
+      "services": [
+        "Electrical Works",
+        "Door and Window Repairs"
+      ],
+      "inspectionSchedule": "2024-10-05"
+    },
+    {
+      "id": 2,
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "homeAddress": "456 Elm St, Metropolis, IL",
+      "emailAddress": "jane.smith@example.com",
+      "phoneNumber": "555-5678",
+      "typeOfJobs": "Renovation",
+      "services": [
+        "Kitchen and Bath Renovation",
+        "Outdoor and Landscaping"
+      ],
+      "inspectionSchedule": "2024-10-10"
+    },
+    {
+      "id": 3,
+      "firstName": "Emily",
+      "lastName": "Johnson",
+      "homeAddress": "789 Maple Ave, Gotham, IL",
+      "emailAddress": "emily.johnson@example.com",
+      "phoneNumber": "555-8765",
+      "typeOfJobs": "Preventive Maintenance Services",
+      "services": [
+        "Aircon Services",
+        "Household Cleaning Services"
+      ],
+      "inspectionSchedule": "2024-10-15"
+    },
+    {
+      "id": 4,
+      "firstName": "Michael",
+      "lastName": "Brown",
+      "homeAddress": "135 Oak St, Star City, IL",
+      "emailAddress": "michael.brown@example.com",
+      "phoneNumber": "555-4321",
+      "typeOfJobs": "Repair",
+      "services": [
+        "Electrical Works"
+      ],
+      "inspectionSchedule": "2024-10-20"
+    },
+    {
+      "id": 5,
+      "firstName": "Sophia",
+      "lastName": "Davis",
+      "homeAddress": "246 Pine St, Smallville, IL",
+      "emailAddress": "sophia.davis@example.com",
+      "phoneNumber": "555-2468",
+      "typeOfJobs": "Renovation",
+      "services": [
+        "Kitchen and Bath Renovation",
+        "Household Cleaning Services"
+      ],
+      "inspectionSchedule": "2024-10-25"
+    },
+    {
+      "id": 6,
+      "firstName": "William",
+      "lastName": "Taylor",
+      "homeAddress": "357 Cedar St, Starling City, IL",
+      "emailAddress": "william.taylor@example.com",
+      "phoneNumber": "555-3698",
+      "typeOfJobs": "Preventive Maintenance Services",
+      "services": [
+        "Aircon Services"
+      ],
+      "inspectionSchedule": "2024-11-01"
+    },
+    {
+      "id": 7,
+      "firstName": "Olivia",
+      "lastName": "Wilson",
+      "homeAddress": "468 Birch St, Coast City, IL",
+      "emailAddress": "olivia.wilson@example.com",
+      "phoneNumber": "555-8521",
+      "typeOfJobs": "Repair",
+      "services": [
+        "Household Cleaning Services",
+        "Door and Window Repairs"
+      ],
+      "inspectionSchedule": "2024-11-05"
+    },
+    {
+      "id": 8,
+      "firstName": "James",
+      "lastName": "Garcia",
+      "homeAddress": "579 Walnut St, Hill Valley, IL",
+      "emailAddress": "james.garcia@example.com",
+      "phoneNumber": "555-7532",
+      "typeOfJobs": "Renovation",
+      "services": [
+        "Outdoor and Landscaping"
+      ],
+      "inspectionSchedule": "2024-11-10"
+    },
+    {
+      "id": 9,
+      "firstName": "Ava",
+      "lastName": "Martinez",
+      "homeAddress": "680 Spruce St, Sunnydale, IL",
+      "emailAddress": "ava.martinez@example.com",
+      "phoneNumber": "555-1472",
+      "typeOfJobs": "Preventive Maintenance Services",
+      "services": [
+        "Electrical Works",
+        "Aircon Services"
+      ],
+      "inspectionSchedule": "2024-11-15"
+    },
+    {
+      "id": 10,
+      "firstName": "Liam",
+      "lastName": "Robinson",
+      "homeAddress": "791 Poplar St, Central City, IL",
+      "emailAddress": "liam.robinson@example.com",
+      "phoneNumber": "555-9630",
+      "typeOfJobs": "Repair",
+      "services": [
+        "Kitchen and Bath Renovation",
+        "Household Cleaning Services"
+      ],
+      "inspectionSchedule": "2024-09-30"
+    },
+    {
+        "id": 11,
+        "firstName": "Kenneth",
+        "lastName": "Altes",
+        "homeAddress": "791 Poplar St, Central City, IL",
+        "emailAddress": "liam.robinson@example.com",
+        "phoneNumber": "555-9630",
+        "typeOfJobs": "Repair",
+        "services": [
+          "Kitchen and Bath Renovation",
+          "Household Cleaning Services"
+        ],
+        "inspectionSchedule": "2024-09-29"
+      }
+  ]

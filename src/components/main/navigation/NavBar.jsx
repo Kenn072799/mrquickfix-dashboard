@@ -4,9 +4,11 @@ import { IoNotificationsOutline, IoNotificationsSharp } from "react-icons/io5";
 import useNotifications from "../../hooks/useNotifications";
 import useToggle from "../../hooks/function/useToggle";
 import useCurrentTime from "../../hooks/function/useCurrentTime";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const { notifications, markAsRead, visibleCount, loadMore } = useNotifications();
+  const { notifications, markAsRead, visibleCount, loadMore } =
+    useNotifications();
   const notificationToggle = useToggle();
   const dropdownToggle = useToggle();
   const { timeAgo } = useCurrentTime();
@@ -35,7 +37,10 @@ const NavBar = () => {
         >
           {notifications.some((notification) => notification.isNew) && (
             <span className="absolute -top-2 left-3 flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs text-white">
-              {notifications.filter((notification) => notification.isNew).length}
+              {
+                notifications.filter((notification) => notification.isNew)
+                  .length
+              }
             </span>
           )}
           {notificationToggle.isActive ? (
@@ -51,23 +56,27 @@ const NavBar = () => {
             <ul className="max-h-64 overflow-y-auto p-2">
               {notifications.length > 0 ? (
                 notifications.slice(0, visibleCount).map((notification) => (
-                  <li
-                    key={notification.id}
-                    className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
-                      notification.isNew ? "bg-gray-200" : ""
-                    }`}
-                    onClick={() => markAsRead(notification.id)}
-                  >
-                    <div className="text-sm font-medium">
-                      {notification.firstName} {notification.lastName}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      {timeAgo(notification.date)}
-                    </div>
-                  </li>
+                  <Link to="/projects">
+                    <li
+                      key={notification.id}
+                      className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
+                        notification.isNew ? "bg-gray-200" : ""
+                      }`}
+                      onClick={() => markAsRead(notification.id)}
+                    >
+                      <div className="text-sm font-medium">
+                        {notification.firstName} {notification.lastName}
+                      </div>
+                      <div className="text-xs text-gray-400">
+                        {timeAgo(notification.date)}
+                      </div>
+                    </li>
+                  </Link>
                 ))
               ) : (
-                <li className="px-4 py-2 text-center text-gray-500">No Notifications</li>
+                <li className="px-4 py-2 text-center text-gray-500">
+                  No Notifications
+                </li>
               )}
             </ul>
 
@@ -87,7 +96,11 @@ const NavBar = () => {
 
         {/* Admin Image and Name */}
         <div className="relative flex" onClick={toggleDropdown}>
-          <img src={Profile} alt="Admin" className="h-12 w-12 cursor-pointer rounded-full" />
+          <img
+            src={Profile}
+            alt="Admin"
+            className="h-12 w-12 cursor-pointer rounded-full"
+          />
           <div className="hidden flex-col items-center pl-4 hover:text-primary-500 hover:underline sm:flex">
             <p className="cursor-pointer">Kenneth Altes</p>
             <p className="cursor-pointer">Admin</p>
@@ -97,8 +110,12 @@ const NavBar = () => {
           {dropdownToggle.isActive && (
             <div className="absolute right-0 top-16 z-10 w-48 rounded-lg border bg-white shadow-lg">
               <ul className="p-2">
-                <li className="cursor-pointer px-4 py-2 hover:bg-gray-100">My Profile</li>
-                <li className="cursor-pointer px-4 py-2 hover:bg-gray-100">Logout</li>
+                <li className="cursor-pointer px-4 py-2 hover:bg-gray-100">
+                  My Profile
+                </li>
+                <li className="cursor-pointer px-4 py-2 hover:bg-gray-100">
+                  Logout
+                </li>
               </ul>
             </div>
           )}

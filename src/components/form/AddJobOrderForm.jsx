@@ -1,23 +1,28 @@
-import React, { useRef, useEffect, useState } from "react";
-import Button from "../common/Button";
+import React, { useState, useRef, useEffect } from "react";
 import { MdOutlineClose } from "react-icons/md";
-import useFormState from "../hooks/function/useFormState";
+import Button from "../common/Button";
 import FormTitle from "../common/FormTitle";
 import useCategories from "../hooks/function/useCategories";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const CustomerInquiryForm = ({ existingData, onClose }) => {
+const AddJobOrderForm = ({ onClose }) => {
   const formRef = useRef(null);
-  const { formData, handleInputChange } = useFormState(existingData);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    address: "",
+    email: "",
+    phoneNumber: "",
+    jobType: "",
+    admin: "",
+    inspectionDate: "",
+    startDate: "",
+    endDate: "",
+  });
   const [quotationUploaded, setQuotationUploaded] = useState(false);
-  const handleFileChange = (e) => {
-    if (e.target.files.length > 0) {
-      setQuotationUploaded(true);
-    } else {
-      setQuotationUploaded(false);
-    }
-  };
+  const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
+  const { selectedCategories, handleCategorySelect } = useCategories();
 
   const allCategories = [
     "Fits-outs",
@@ -29,36 +34,42 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
     "Household Cleaning Services",
   ];
 
-  const {
-    selectedCategories,
-    showCategoryDropdown,
-    toggleCategoryDropdown,
-    handleCategorySelect,
-  } = useCategories(existingData?.categories);
-
-  const allAdmins = ["Kenneth Altes", "Admin 2", "Admin 3"];
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (formRef.current && !formRef.current.contains(event.target)) {
         onClose();
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [onClose]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    toast.success("Inquiry submitted successfully!");
-    onClose();
+  const handleFileChange = (e) => {
+    if (e.target.files.length > 0) {
+      setQuotationUploaded(true);
+    } else {
+      setQuotationUploaded(false);
+    }
   };
 
-  const handleDelete = () => {
-    toast.warn("Inquiry deleted successfully!");
-    onClose();
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const toggleCategoryDropdown = () => {
+    setShowCategoryDropdown((prevState) => !prevState);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted Form Data:", formData);
+
+    toast.success("Job order submitted successfully!");
   };
 
   return (
@@ -66,20 +77,18 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
       ref={formRef}
       className="max-h-[500px] max-w-[350px] overflow-y-auto bg-white p-8 shadow-lg md:max-h-[600px] md:max-w-[500px]"
     >
-      <ToastContainer />
       <form className="relative" onSubmit={handleSubmit}>
         <button
+          type="button"
           onClick={onClose}
           className="absolute -right-4 -top-5 flex justify-end"
         >
           <MdOutlineClose className="h-8 w-8 rounded-full p-1 hover:bg-secondary-200 active:bg-secondary-200 active:text-secondary-500" />
         </button>
-        <FormTitle className="text-xl font-bold">
-          Client's Inquiry Form
-        </FormTitle>
+        <FormTitle className="text-xl font-bold">Job Order Form</FormTitle>
         <div className="my-4 h-[1px] w-full bg-secondary-500"></div>
+
         <div className="flex w-full gap-2">
-          {/* First Name */}
           <div className="flex w-full flex-col">
             <label className="w-full text-sm font-semibold">
               First Name:<span className="text-red-500">*</span>
@@ -93,7 +102,6 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
               className="w-full border p-2 outline-none"
             />
           </div>
-          {/* Last Name */}
           <div className="flex w-full flex-col">
             <label className="w-full text-sm font-semibold">
               Last Name:<span className="text-red-500">*</span>
@@ -109,7 +117,6 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
           </div>
         </div>
 
-        {/* Home Address */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">
             Home Address:<span className="text-red-500">*</span>
@@ -123,7 +130,6 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             className="w-full border p-2 outline-none"
           />
         </div>
-        {/* Email Address */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Email Address:</label>
           <input
@@ -134,8 +140,6 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             className="w-full border p-2 outline-none"
           />
         </div>
-
-        {/* Phone Number */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Phone Number:</label>
           <input
@@ -147,8 +151,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             className="w-full border p-2 outline-none"
           />
         </div>
-
-        {/* Category Type of Job */}
+        {/* Type of Job */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Type of Job:</label>
           <select
@@ -168,7 +171,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             <option value="Renovation">Renovation</option>
           </select>
         </div>
-        {/* Category Dropdown */}
+        {/* Category Type of Job */}
         <div className="relative mt-2">
           <label className="w-full text-sm font-semibold">Services:</label>
           <div
@@ -197,6 +200,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             </div>
           )}
         </div>
+
         {/* Quotation */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Quotation:</label>
@@ -245,14 +249,13 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             <option value="" disabled>
               Admin
             </option>
-            {allAdmins.map((admin) => (
-              <option key={admin} value={admin}>
-                {admin}
-              </option>
-            ))}
+            <option value="Kenneth Altes">Kenneth Altes</option>
+            <option value="Another Admin">Another Admin</option>
+            <option value="Admin 3">Admin 3</option>
           </select>
         </div>
-        {/* For not simple job */}
+
+        {/* Schedule Inspection */}
         <div className="mx-auto flex items-center justify-center py-4 text-center">
           <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
           <p className="w-full px-2 text-sm font-semibold text-red-500">
@@ -260,10 +263,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
           </p>
           <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
         </div>
-        {/* Date Input */}
-        <label className="relative w-full text-sm font-semibold">
-          Inspection Date:
-        </label>
+        <label className="w-full text-sm font-semibold">Inspection Date:</label>
         <input
           type="date"
           name="inspectionDate"
@@ -271,18 +271,19 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
           onChange={handleInputChange}
           className="w-full border p-2 outline-none"
         />
+
+        <div className="flex gap-4 py-4">
+          <Button variant="submit" size="sm" type="submit">
+            Proceed
+          </Button>
+          <Button variant="cancel" size="sm" onClick={onClose}>
+            Cancel
+          </Button>
+        </div>
       </form>
-      {/* Button */}
-      <div className="flex gap-4 py-4">
-        <Button variant="submit" size="sm" type="submit">
-          Proceed
-        </Button>
-        <Button variant="cancel" size="sm" onClick={handleDelete}>
-          Delete
-        </Button>
-      </div>
+      <ToastContainer />
     </div>
   );
 };
 
-export default CustomerInquiryForm;
+export default AddJobOrderForm;

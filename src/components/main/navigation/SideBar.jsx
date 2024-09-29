@@ -60,18 +60,32 @@ const SideBar = () => {
         </div>
         <nav>
           <ul className="font-roboto">
-            <NavLink to="/" className="block" onClick={toggleSidebar}>
-              <li className="mt-12 flex items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100">
-                <MdOutlineSpaceDashboard size={24} className="mr-2" />
-                Dashboard
-              </li>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `mt-12 flex items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100 ${
+                  isActive ? "bg-slate-200" : ""
+                }`
+              }
+              onClick={toggleSidebar}
+            >
+              <MdOutlineSpaceDashboard size={24} className="mr-2" />
+              Dashboard
             </NavLink>
-            <NavLink to="/projects" className="block" onClick={toggleSidebar}>
-              <li className="flex items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100">
-                <LiaProjectDiagramSolid size={24} className="mr-2" />
-                Job Order List
-              </li>
+
+            <NavLink
+              to="/projects"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100 ${
+                  isActive ? "bg-slate-200" : ""
+                }`
+              }
+              onClick={toggleSidebar}
+            >
+              <LiaProjectDiagramSolid size={24} className="mr-2" />
+              Job Order List
             </NavLink>
+
             <li
               className="flex cursor-pointer items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100"
               onClick={toggleMiscellaneous}
@@ -96,12 +110,19 @@ const SideBar = () => {
                 </li>
               </ul>
             )}
-            <li
-              className="px-4 py-4 text-lg font-semibold hover:bg-slate-100"
+
+            <NavLink
+              to="/profile"
+              className={({ isActive }) =>
+                `block px-4 py-4 text-lg font-semibold hover:bg-slate-100 ${
+                  isActive ? "bg-slate-200" : ""
+                }`
+              }
               onClick={toggleSidebar}
             >
               My Profile
-            </li>
+            </NavLink>
+
             <li
               className="px-4 py-4 text-lg font-semibold hover:bg-slate-100"
               onClick={toggleSidebar}

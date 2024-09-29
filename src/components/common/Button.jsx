@@ -9,7 +9,7 @@ const Button = ({ variant = "primary", size = "md", children, ...props }) => {
       "bg-primary-500 text-sm md:text-base text-white hover:bg-primary-600 border border-white flex items-center",
     flex: "bg-primary-500 text-sm md:text-base text-white hover:bg-primary-600 flex items-center justify-center",
     submit:
-      "bg-primary-500 w-full text-sm md:text-base text-white hover:bg-primary-600 flex items-center justify-center",
+      "bg-blue-500 w-full text-sm md:text-base text-white hover:bg-blue-600 flex items-center justify-center",
     cancel:
       "bg-red-500 text-sm w-full md:text-base text-white hover:bg-red-600 flex items-center justify-center",
   };
