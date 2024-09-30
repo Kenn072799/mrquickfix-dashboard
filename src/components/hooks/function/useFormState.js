@@ -1,43 +1,30 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-const useFormState = (existingData) => {
+const useFormState = () => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    address: "",
     email: "",
     phoneNumber: "",
     jobType: "",
-    inspectionDate: "",
+    services: [],
+    quotation: "",
+    startDate: "",
+    endDate: "",
     admin: "",
+    inspectionDate: "",
   });
-
-  useEffect(() => {
-    if (existingData) {
-      setFormData({
-        firstName: existingData.firstName,
-        lastName: existingData.lastName,
-        email: existingData.email,
-        phoneNumber: existingData.phoneNumber,
-        jobType: existingData.jobType,
-        inspectionDate: existingData.inspectionDate || "",
-        admin: existingData.admin || "",
-      });
-    }
-  }, [existingData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
     }));
   };
 
-  return {
-    formData,
-    setFormData,
-    handleInputChange,
-  };
+  return { formData, handleInputChange };
 };
 
 export default useFormState;

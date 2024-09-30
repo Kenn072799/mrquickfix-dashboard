@@ -5,18 +5,21 @@ import { MdOutlineCancel } from "react-icons/md";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import useOnProcessData from "../hooks/useOnProcessData";
+import OnProcessForm from "../form/OnProcessForm";
 
 const OnProcessTable = () => {
   const { data, loading, error } = useOnProcessData();
   const [currentPage, setCurrentPage] = useState(0);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
   const rowsPerPage = 10;
 
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center">Error: {error}</div>;
 
   const sortedData = [...data].sort((a, b) => {
-    const dateA = new Date(a.inspectionSchedule);
-    const dateB = new Date(b.inspectionSchedule);
+    const dateA = new Date(a.inspectionDate);
+    const dateB = new Date(b.inspectionDate);
     return dateA - dateB;
   });
 
@@ -28,8 +31,18 @@ const OnProcessTable = () => {
 
   const today = new Date().toLocaleDateString();
   const scheduledToday = sortedData.filter(
-    (item) => new Date(item.inspectionSchedule).toLocaleDateString() === today,
+    (item) => new Date(item.inspectionDate).toLocaleDateString() === today,
   );
+
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
+    setIsFormVisible(true);
+  };
+
+  const closeForm = () => {
+    setIsFormVisible(false);
+    setSelectedItem(null);
+  };
 
   return (
     <div className="rounded-lg bg-white p-4 shadow">
@@ -86,43 +99,46 @@ const OnProcessTable = () => {
                   {item.lastName}
                 </td>
                 <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.homeAddress}
+                  {item.address}
                 </td>
                 <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.emailAddress}
+                  {item.email}
                 </td>
                 <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
                   {item.phoneNumber}
                 </td>
                 <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.typeOfJobs}
+                  {item.jobType}
                 </td>
                 <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
                   {item.services.join(", ")}
                 </td>
                 <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
                   <div className="flex items-center justify-between">
-                    {item.inspectionSchedule}
-                    {/* Show alert icon if inspection is today */}
-                    {new Date(item.inspectionSchedule).toLocaleDateString() === today && (
+                    {item.inspectionDate}
+                    {new Date(item.inspectionDate).toLocaleDateString() ===
+                    today ? (
                       <FaRegCalendarCheck
                         className="ml-2 text-red-500 md:text-2xl"
                         title="Inspection scheduled for today!"
                       />
-                    )}
-                    {/* Show clock icon if inspection date is in the past */}
-                    {new Date(item.inspectionSchedule) < new Date() && (
-                      <FaClockRotateLeft
-                        className="ml-2 text-yellow-500 md:text-2xl"
-                        title="Waiting for approval"
-                      />
+                    ) : (
+                      new Date(item.inspectionDate) < new Date() && (
+                        <FaClockRotateLeft
+                          className="ml-2 text-yellow-500 md:text-2xl"
+                          title="Waiting for approval"
+                        />
+                      )
                     )}
                   </div>
                 </td>
                 <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
                   <div className="relative flex justify-evenly">
                     <div className="group relative">
-                      <button className="rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600">
+                      <button
+                        onClick={() => handleEditClick(item)}
+                        className="rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
+                      >
                         <LiaEdit className="text-lg md:text-xl" />
                       </button>
                       <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
@@ -154,7 +170,7 @@ const OnProcessTable = () => {
         >
           <FaAngleLeft />
         </button>
-        <span>
+        <span className="text-sm md:text-base">
           Page {currentPage + 1} of {totalPages}
         </span>
         <button
@@ -168,6 +184,12 @@ const OnProcessTable = () => {
           <FaAngleRight />
         </button>
       </div>
+      {/* Popup Form */}
+      {isFormVisible && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <OnProcessForm item={selectedItem} onClose={closeForm} />
+        </div>
+      )}
     </div>
   );
 };

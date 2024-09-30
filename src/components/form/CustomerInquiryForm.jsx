@@ -1,23 +1,33 @@
 import React, { useRef, useEffect, useState } from "react";
 import Button from "../common/Button";
 import { MdOutlineClose } from "react-icons/md";
-import useFormState from "../hooks/function/useFormState";
 import FormTitle from "../common/FormTitle";
 import useCategories from "../hooks/function/useCategories";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useFormState from "../hooks/function/useFormState";
 
-const CustomerInquiryForm = ({ existingData, onClose }) => {
+const CustomerInquiryForm = ({ onClose }) => {
   const formRef = useRef(null);
-  const { formData, handleInputChange } = useFormState(existingData);
+
+  const { formData, handleInputChange } = useFormState();
   const [quotationUploaded, setQuotationUploaded] = useState(false);
+
   const handleFileChange = (e) => {
-    if (e.target.files.length > 0) {
-      setQuotationUploaded(true);
-    } else {
-      setQuotationUploaded(false);
-    }
+    setQuotationUploaded(e.target.files.length > 0);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
 
   const allCategories = [
     "Fits-outs",
@@ -34,31 +44,35 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
     showCategoryDropdown,
     toggleCategoryDropdown,
     handleCategorySelect,
-  } = useCategories(existingData?.categories);
+  } = useCategories();
 
   const allAdmins = ["Kenneth Altes", "Admin 2", "Admin 3"];
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (formRef.current && !formRef.current.contains(event.target)) {
-        onClose();
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [onClose]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.success("Inquiry submitted successfully!");
-    onClose();
+
+    const fileInput = document.querySelector('input[type="file"]');
+    const file = fileInput?.files[0];
+
+    console.log("Submitted Form Data:");
+    console.log("First Name:", formData.firstName);
+    console.log("Last Name:", formData.lastName);
+    console.log("Address:", formData.address);
+    console.log("Email:", formData.email);
+    console.log("Phone Number:", formData.phoneNumber);
+    console.log("Job Type:", formData.jobType);
+    console.log("Services (selected categories):", selectedCategories);
+    console.log("Quotation File:", file ? file.name : "No file uploaded");
+    console.log("Start Date:", formData.startDate);
+    console.log("End Date:", formData.endDate);
+    console.log("Admin:", formData.admin);
+    console.log("Inspection Date:", formData.inspectionDate);
+
+    toast.success("Submitted successfully!");
   };
 
   const handleDelete = () => {
     toast.warn("Inquiry deleted successfully!");
-    onClose();
   };
 
   return (
@@ -78,6 +92,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
           Client's Inquiry Form
         </FormTitle>
         <div className="my-4 h-[1px] w-full bg-secondary-500"></div>
+
         <div className="flex w-full gap-2">
           {/* First Name */}
           <div className="flex w-full flex-col">
@@ -87,8 +102,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             <input
               type="text"
               name="firstName"
-              required={true}
-              value={formData.firstName}
+              required
               onChange={handleInputChange}
               className="w-full border p-2 outline-none"
             />
@@ -101,8 +115,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             <input
               type="text"
               name="lastName"
-              required={true}
-              value={formData.lastName}
+              required
               onChange={handleInputChange}
               className="w-full border p-2 outline-none"
             />
@@ -117,19 +130,18 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
           <input
             type="text"
             name="address"
-            required={true}
-            value={formData.address}
+            required
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
           />
         </div>
+
         {/* Email Address */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Email Address:</label>
           <input
             type="email"
             name="email"
-            value={formData.email}
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
           />
@@ -142,24 +154,22 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             type="tel"
             name="phoneNumber"
             maxLength={11}
-            value={formData.phoneNumber}
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
           />
         </div>
 
-        {/* Category Type of Job */}
+        {/* Type of Job */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Type of Job:</label>
           <select
-            id="jobtype"
             name="jobType"
-            value={formData.jobType}
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
+            defaultValue=""
           >
             <option value="" disabled>
-              Type of job
+              Select Type of Job
             </option>
             <option value="Repair">Repair</option>
             <option value="Preventive Maintenance Services">
@@ -168,6 +178,7 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             <option value="Renovation">Renovation</option>
           </select>
         </div>
+
         {/* Category Dropdown */}
         <div className="relative mt-2">
           <label className="w-full text-sm font-semibold">Services:</label>
@@ -197,11 +208,14 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             </div>
           )}
         </div>
+
         {/* Quotation */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Quotation:</label>
           <input
             type="file"
+            name="quotation"
+            accept=".pdf"
             className="w-full border p-2 outline-none"
             onChange={handleFileChange}
           />
@@ -214,7 +228,6 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             <input
               type="date"
               name="startDate"
-              value={formData.startDate}
               onChange={handleInputChange}
               className="w-full border p-2 outline-none"
               disabled={!quotationUploaded}
@@ -225,20 +238,19 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             <input
               type="date"
               name="endDate"
-              value={formData.endDate}
               onChange={handleInputChange}
               className="w-full border p-2 outline-none"
               disabled={!quotationUploaded}
             />
           </div>
         </div>
+
         {/* Admin */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Admin:</label>
           <select
             id="admin"
             name="admin"
-            value={formData.admin}
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
           >
@@ -252,7 +264,8 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
             ))}
           </select>
         </div>
-        {/* For not simple job */}
+
+        {/* Schedule Inspection */}
         <div className="mx-auto flex items-center justify-center py-4 text-center">
           <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
           <p className="w-full px-2 text-sm font-semibold text-red-500">
@@ -260,27 +273,25 @@ const CustomerInquiryForm = ({ existingData, onClose }) => {
           </p>
           <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
         </div>
-        {/* Date Input */}
-        <label className="relative w-full text-sm font-semibold">
-          Inspection Date:
-        </label>
+
+        <label className="w-full text-sm font-semibold">Inspection Date:</label>
         <input
           type="date"
           name="inspectionDate"
-          value={formData.inspectionDate}
           onChange={handleInputChange}
           className="w-full border p-2 outline-none"
         />
+
+        {/* Buttons */}
+        <div className="flex gap-4 py-4">
+          <Button variant="submit" size="sm" type="submit">
+            Proceed
+          </Button>
+          <Button variant="cancel" size="sm" onClick={handleDelete}>
+            Delete
+          </Button>
+        </div>
       </form>
-      {/* Button */}
-      <div className="flex gap-4 py-4">
-        <Button variant="submit" size="sm" type="submit">
-          Proceed
-        </Button>
-        <Button variant="cancel" size="sm" onClick={handleDelete}>
-          Delete
-        </Button>
-      </div>
     </div>
   );
 };

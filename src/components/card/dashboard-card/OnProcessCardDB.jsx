@@ -19,7 +19,7 @@ const OnProcessCardDB = () => {
   const dataLength = data.length;
   const today = new Date().toLocaleDateString();
   const scheduledToday = data.filter(
-    (item) => new Date(item.inspectionSchedule).toLocaleDateString() === today,
+    (item) => new Date(item.inspectionDate).toLocaleDateString() === today,
   );
 
   const scheduledCount = scheduledToday.length;

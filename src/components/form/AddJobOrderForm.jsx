@@ -15,10 +15,12 @@ const AddJobOrderForm = ({ onClose }) => {
     email: "",
     phoneNumber: "",
     jobType: "",
-    admin: "",
-    inspectionDate: "",
+    services: [],
+    quotation: "",
     startDate: "",
     endDate: "",
+    admin: "",
+    inspectionDate: "",
   });
   const [quotationUploaded, setQuotationUploaded] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
@@ -49,11 +51,7 @@ const AddJobOrderForm = ({ onClose }) => {
   }, [onClose]);
 
   const handleFileChange = (e) => {
-    if (e.target.files.length > 0) {
-      setQuotationUploaded(true);
-    } else {
-      setQuotationUploaded(false);
-    }
+    setQuotationUploaded(e.target.files.length > 0);
   };
 
   const handleInputChange = (e) => {
@@ -67,9 +65,25 @@ const AddJobOrderForm = ({ onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Submitted Form Data:", formData);
 
-    toast.success("Job order submitted successfully!");
+    const fileInput = document.querySelector('input[type="file"]');
+    const file = fileInput?.files[0];
+
+    console.log("Submitted Form Data:");
+    console.log("First Name:", formData.firstName);
+    console.log("Last Name:", formData.lastName);
+    console.log("Address:", formData.address);
+    console.log("Email:", formData.email);
+    console.log("Phone Number:", formData.phoneNumber);
+    console.log("Job Type:", formData.jobType);
+    console.log("Services (selected categories):", selectedCategories);
+    console.log("Quotation File:", file ? file.name : "No file uploaded");
+    console.log("Start Date:", formData.startDate);
+    console.log("End Date:", formData.endDate);
+    console.log("Admin:", formData.admin);
+    console.log("Inspection Date:", formData.inspectionDate);
+
+    toast.success("Submitted successfully!");
   };
 
   return (
@@ -96,8 +110,7 @@ const AddJobOrderForm = ({ onClose }) => {
             <input
               type="text"
               name="firstName"
-              required={true}
-              value={formData.firstName}
+              required
               onChange={handleInputChange}
               className="w-full border p-2 outline-none"
             />
@@ -109,8 +122,7 @@ const AddJobOrderForm = ({ onClose }) => {
             <input
               type="text"
               name="lastName"
-              required={true}
-              value={formData.lastName}
+              required
               onChange={handleInputChange}
               className="w-full border p-2 outline-none"
             />
@@ -124,8 +136,7 @@ const AddJobOrderForm = ({ onClose }) => {
           <input
             type="text"
             name="address"
-            required={true}
-            value={formData.address}
+            required
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
           />
@@ -135,7 +146,6 @@ const AddJobOrderForm = ({ onClose }) => {
           <input
             type="email"
             name="email"
-            value={formData.email}
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
           />
@@ -146,7 +156,6 @@ const AddJobOrderForm = ({ onClose }) => {
             type="tel"
             name="phoneNumber"
             maxLength={11}
-            value={formData.phoneNumber}
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
           />
@@ -155,14 +164,13 @@ const AddJobOrderForm = ({ onClose }) => {
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Type of Job:</label>
           <select
-            id="jobtype"
             name="jobType"
-            value={formData.jobType}
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
+            defaultValue=""
           >
             <option value="" disabled>
-              Type of job
+              Select Type of Job
             </option>
             <option value="Repair">Repair</option>
             <option value="Preventive Maintenance Services">
@@ -171,6 +179,7 @@ const AddJobOrderForm = ({ onClose }) => {
             <option value="Renovation">Renovation</option>
           </select>
         </div>
+
         {/* Category Type of Job */}
         <div className="relative mt-2">
           <label className="w-full text-sm font-semibold">Services:</label>
@@ -190,6 +199,7 @@ const AddJobOrderForm = ({ onClose }) => {
                 <label key={category} className="flex items-center p-1">
                   <input
                     type="checkbox"
+                    name="services"
                     checked={selectedCategories.includes(category)}
                     onChange={() => handleCategorySelect(category)}
                     className="mr-2"
@@ -206,6 +216,9 @@ const AddJobOrderForm = ({ onClose }) => {
           <label className="w-full text-sm font-semibold">Quotation:</label>
           <input
             type="file"
+            name="quotation"
+            accept=".pdf"
+            defaultValue=""
             className="w-full border p-2 outline-none"
             onChange={handleFileChange}
           />
@@ -218,7 +231,6 @@ const AddJobOrderForm = ({ onClose }) => {
             <input
               type="date"
               name="startDate"
-              value={formData.startDate}
               onChange={handleInputChange}
               className="w-full border p-2 outline-none"
               disabled={!quotationUploaded}
@@ -229,7 +241,6 @@ const AddJobOrderForm = ({ onClose }) => {
             <input
               type="date"
               name="endDate"
-              value={formData.endDate}
               onChange={handleInputChange}
               className="w-full border p-2 outline-none"
               disabled={!quotationUploaded}
@@ -242,7 +253,6 @@ const AddJobOrderForm = ({ onClose }) => {
           <select
             id="admin"
             name="admin"
-            value={formData.admin}
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
           >
@@ -267,21 +277,21 @@ const AddJobOrderForm = ({ onClose }) => {
         <input
           type="date"
           name="inspectionDate"
-          value={formData.inspectionDate}
           onChange={handleInputChange}
           className="w-full border p-2 outline-none"
         />
 
-        <div className="flex gap-4 py-4">
-          <Button variant="submit" size="sm" type="submit">
-            Proceed
+        {/* Buttons */}
+        <div className="mt-4 flex justify-center gap-2">
+          <Button variant="submit" size="sm">
+            Submit
           </Button>
-          <Button variant="cancel" size="sm" onClick={onClose}>
+          <Button variant="cancel" size="sm">
             Cancel
           </Button>
         </div>
+        <ToastContainer />
       </form>
-      <ToastContainer />
     </div>
   );
 };
