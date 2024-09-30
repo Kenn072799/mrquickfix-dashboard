@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { FaRegCheckCircle } from "react-icons/fa";
+import { FaRegCheckCircle, FaRegCalendarCheck } from "react-icons/fa";
 import { LiaEdit } from "react-icons/lia";
 import { MdOutlineCancel } from "react-icons/md";
+import { IoWarningOutline } from "react-icons/io5";
+import { GrStatusWarning } from "react-icons/gr";
 import useFetchInProgressData from "../hooks/useFetchInProgressData";
 import InProgressForm from "../form/InProgressForm";
 import CancelPopUp from "../common/CancelPopUp";
@@ -20,6 +22,7 @@ const InProgressTable = () => {
   const [isCompletePopUpVisible, setIsCompletePopUpVisible] = useState(false);
   const [customerToComplete, setCustomerToComplete] = useState(null);
   const rowsPerPage = 10;
+  const today = new Date();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -85,8 +88,34 @@ const InProgressTable = () => {
     setCustomerToCancel(null);
   };
 
+  const isDatePast = (endDate) => {
+    return new Date(endDate) < today;
+  };
+
   return (
     <div className="rounded-lg bg-white p-4 shadow">
+      {/* Expected completion alert section */}
+      {data.filter(
+        (entry) =>
+          new Date(entry.endDate).toLocaleDateString() ===
+          today.toLocaleDateString(),
+      ).length > 0 && (
+        <div className="mb-4 flex items-center rounded border border-green-700 bg-green-100 p-3 text-green-700">
+          <FaRegCalendarCheck className="mr-2 text-xl" />
+          <span className="text-xs md:text-base">
+            {`You have ${data.filter((entry) => new Date(entry.endDate).toLocaleDateString() === today.toLocaleDateString()).length} project(s) expected to complete today!`}
+          </span>
+        </div>
+      )}
+      {/* Delayed alert section */}
+      {data.filter((entry) => isDatePast(entry.endDate)).length > 0 && (
+        <div className="mb-4 flex items-center rounded border border-red-700 bg-red-100 p-3 text-red-700">
+          <IoWarningOutline className="mr-2 text-xl" />
+          <span className="text-xs md:text-base">
+            {`You have ${data.filter((entry) => isDatePast(entry.endDate)).length} delayed project(s). Please check the table for warnings.`}
+          </span>
+        </div>
+      )}
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
           <thead>
@@ -119,7 +148,7 @@ const InProgressTable = () => {
               <th className="min-w-[100px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:text-base">
                 Start Date
               </th>
-              <th className="min-w-[100px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:text-base">
+              <th className="min-w-[100px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:min-w-[130px] md:text-base">
                 End Date
               </th>
               <th className="min-w-[100px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:text-base">
@@ -168,7 +197,22 @@ const InProgressTable = () => {
                   {entry.startDate}
                 </td>
                 <td className="border border-gray-300 p-2 text-xs md:text-base">
-                  {entry.endDate}
+                  <div className="flex items-center justify-between">
+                    {entry.endDate}
+                    {/* Display icon if endDate is today or overdue */}
+                    {new Date(entry.endDate).toLocaleDateString() ===
+                    today.toLocaleDateString() ? (
+                      <FaRegCalendarCheck
+                        className="ml-2 text-green-500 md:text-2xl"
+                        title="Project expected to finish today!"
+                      />
+                    ) : new Date(entry.endDate) < today ? (
+                      <GrStatusWarning
+                        className="ml-2 text-red-500 md:text-2xl"
+                        title="Project is delayed!"
+                      />
+                    ) : null}
+                  </div>
                 </td>
                 {/* Action buttons */}
                 <td className="border border-gray-300 p-2 text-xs md:text-base">

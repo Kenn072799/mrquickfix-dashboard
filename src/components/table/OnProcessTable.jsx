@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { FaAngleLeft, FaAngleRight, FaClockRotateLeft } from "react-icons/fa6";
 import { LiaEdit } from "react-icons/lia";
 import { MdOutlineCancel } from "react-icons/md";
-import { IoAlertCircleOutline } from "react-icons/io5";
-import { FaRegCalendarCheck } from "react-icons/fa";
+import { FaRegCalendarAlt } from "react-icons/fa";
 import useOnProcessData from "../hooks/useOnProcessData";
 import OnProcessForm from "../form/OnProcessForm";
 import CancelPopUp from "../common/CancelPopUp";
@@ -22,38 +21,50 @@ const OnProcessTable = () => {
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-center">Error: {error}</div>;
 
+  // Sort data by inspection date
   const sortedData = [...data].sort((a, b) => {
     const dateA = new Date(a.inspectionDate);
     const dateB = new Date(b.inspectionDate);
     return dateA - dateB;
   });
 
+  //Pagination
   const totalPages = Math.ceil(sortedData.length / rowsPerPage);
   const displayedData = sortedData.slice(
     currentPage * rowsPerPage,
     currentPage * rowsPerPage + rowsPerPage,
   );
 
+  // Filter for inspections today
   const today = new Date().toLocaleDateString();
   const scheduledToday = sortedData.filter(
     (item) => new Date(item.inspectionDate).toLocaleDateString() === today,
   );
 
+  // Filter for inspections in the past (waiting for quotation)
+  const waitingForQuotation = sortedData.filter(
+    (item) =>
+      new Date(item.inspectionDate) < new Date() &&
+      new Date(item.inspectionDate).toLocaleDateString() !== today,
+  );
+
+  // Handle edit click
   const handleEditClick = (item) => {
     setSelectedItem(item);
     setIsFormVisible(true);
   };
 
+  //Handle cancel click
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedItem(null);
   };
-
   const handleCancelClick = (item) => {
     setCustomerToCancel(item);
     setIsCancelPopUpVisible(true);
   };
 
+  //Handle cancellation
   const handleCancellation = () => {
     //Put cancel logic here
     console.log("Cancelling transaction:", customerToCancel);
@@ -64,6 +75,7 @@ const OnProcessTable = () => {
     setCustomerToCancel(null);
   };
 
+  //Handle cancel delete
   const handleCancelDelete = () => {
     setIsCancelPopUpVisible(false);
     setCustomerToCancel(null);
@@ -71,10 +83,24 @@ const OnProcessTable = () => {
 
   return (
     <div className="rounded-lg bg-white p-4 shadow">
+      {/* Scheduled today alert */}
       {scheduledToday.length > 0 && (
-        <div className="mb-4 rounded bg-yellow-200 p-2 font-semibold">
-          <IoAlertCircleOutline className="mr-1 inline text-xl text-red-500" />
-          You have {scheduledToday.length} inspection(s) scheduled for today!
+        <div className="mb-4 rounded bg-green-200 p-2 text-green-700 border border-green-700">
+          <FaRegCalendarAlt className="mr-2 inline text-xl" />
+          <span className="text-xs md:text-base">
+            You have {scheduledToday.length} inspection(s) scheduled for today.
+          </span>
+        </div>
+      )}
+
+      {/* Waiting for quotation alert */}
+      {waitingForQuotation.length > 0 && (
+        <div className="mb-4 rounded bg-yellow-200 p-2 text-yellow-700 border border-yellow-700">
+          <FaClockRotateLeft className="mr-2 inline text-xl" />
+          <span className="text-xs md:text-base">
+            You have {waitingForQuotation.length} project(s) waiting for
+            quotation.
+          </span>
         </div>
       )}
       <div className="overflow-x-auto">
@@ -142,8 +168,8 @@ const OnProcessTable = () => {
                     {item.inspectionDate}
                     {new Date(item.inspectionDate).toLocaleDateString() ===
                     today ? (
-                      <FaRegCalendarCheck
-                        className="ml-2 text-red-500 md:text-2xl"
+                      <FaRegCalendarAlt
+                        className="ml-2 text-green-500 md:text-2xl"
                         title="Inspection scheduled for today!"
                       />
                     ) : (
