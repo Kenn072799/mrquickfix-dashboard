@@ -9,6 +9,7 @@ import ContentManagement from "./components/main/ContentManagement";
 import AccountManagement from "./components/main/AccountManagement";
 import MyProfile from "./components/main/MyProfile";
 import ActivityLog from "./components/main/ActivityLog";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/activity" element={<ActivityLog />} />
         <Route path="/profile" element={<MyProfile />} />
       </Routes>
+      <ToastContainer />
     </Layout>
   );
 }

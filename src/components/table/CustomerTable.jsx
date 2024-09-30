@@ -4,12 +4,17 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { LiaEdit } from "react-icons/lia";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import CustomerInquiryForm from "../form/CustomerInquiryForm";
+import DeletePopUp from "../common/DeletePopUp";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CustomerTable = () => {
   const { customers, loading, error } = useFetchCustomers();
   const [currentPage, setCurrentPage] = useState(0);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [isDeletePopUpVisible, setIsDeletePopUpVisible] = useState(false);
+  const [customerToDelete, setCustomerToDelete] = useState(null);
   const rowsPerPage = 10;
 
   if (loading) {
@@ -49,6 +54,26 @@ const CustomerTable = () => {
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedCustomer(null);
+  };
+
+  const handleDeleteClick = (customer) => {
+    setCustomerToDelete(customer);
+    setIsDeletePopUpVisible(true);
+  };
+
+  const handleConfirmDelete = () => {
+    //Put delete logic here
+    console.log("Deleting customer:", customerToDelete);
+
+    toast.success("Deleted successfully!");
+
+    setIsDeletePopUpVisible(false);
+    setCustomerToDelete(null);
+  };
+
+  const handleCancelDelete = () => {
+    setIsDeletePopUpVisible(false);
+    setCustomerToDelete(null);
   };
 
   return (
@@ -119,7 +144,10 @@ const CustomerTable = () => {
                         </div>
                       </div>
                       <div className="group relative">
-                        <button className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600">
+                        <button
+                          onClick={() => handleDeleteClick(customer)}
+                          className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+                        >
                           <RiDeleteBin2Line className="text-lg md:text-xl" />
                         </button>
                         <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
@@ -159,6 +187,16 @@ const CustomerTable = () => {
           </>
         )}
       </div>
+
+      {/* Delete Pop-up */}
+      {isDeletePopUpVisible && (
+        <DeletePopUp
+          message={`Are you sure you want to delete ${customerToDelete.firstName} ${customerToDelete.lastName} inquiry?`}
+          onConfirm={handleConfirmDelete}
+          onCancel={handleCancelDelete}
+        />
+      )}
+
       {/* Pagination */}
       <div className="mt-4 flex items-center justify-between">
         <button

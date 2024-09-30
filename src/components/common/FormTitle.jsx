@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
-const FormTitle = ({children, className = ""}) => {
-  return (
-    <div className={`text-xl font-bold" ${className}`}>{children}</div>
-  )
-}
+const FormTitle = ({ children, className = "" }) => {
+  return <div className={`font-bold text-xl ${className}`}>{children}</div>;
+};
 
-export default FormTitle
+export default FormTitle;

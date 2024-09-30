@@ -6,11 +6,16 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import useOnProcessData from "../hooks/useOnProcessData";
 import OnProcessForm from "../form/OnProcessForm";
+import CancelPopUp from "../common/CancelPopUp";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OnProcessTable = () => {
   const { data, loading, error } = useOnProcessData();
   const [currentPage, setCurrentPage] = useState(0);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isCancelPopUpVisible, setIsCancelPopUpVisible] = useState(false);
+  const [customerToCancel, setCustomerToCancel] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const rowsPerPage = 10;
 
@@ -44,11 +49,31 @@ const OnProcessTable = () => {
     setSelectedItem(null);
   };
 
+  const handleCancelClick = (item) => {
+    setCustomerToCancel(item);
+    setIsCancelPopUpVisible(true);
+  };
+
+  const handleCancellation = () => {
+    //Put cancel logic here
+    console.log("Cancelling transaction:", customerToCancel);
+
+    toast.success("Cancellation successfully!");
+
+    setIsCancelPopUpVisible(false);
+    setCustomerToCancel(null);
+  };
+
+  const handleCancelDelete = () => {
+    setIsCancelPopUpVisible(false);
+    setCustomerToCancel(null);
+  };
+
   return (
     <div className="rounded-lg bg-white p-4 shadow">
       {scheduledToday.length > 0 && (
-        <div className="mb-4 rounded bg-yellow-200 p-2">
-          <IoAlertCircleOutline className="mr-1 inline text-red-500" />
+        <div className="mb-4 rounded bg-yellow-200 p-2 font-semibold">
+          <IoAlertCircleOutline className="mr-1 inline text-xl text-red-500" />
           You have {scheduledToday.length} inspection(s) scheduled for today!
         </div>
       )}
@@ -56,7 +81,6 @@ const OnProcessTable = () => {
         <table className="min-w-[800px] border-collapse border border-gray-300 md:min-w-full">
           <thead>
             <tr>
-              {/* Table headers */}
               <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[150px] md:text-base">
                 First Name
               </th>
@@ -73,9 +97,9 @@ const OnProcessTable = () => {
                 Phone Number
               </th>
               <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
-                Type of Jobs
+                Type of Job
               </th>
-              <th className="min-w-[150px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[100px] md:text-base">
+              <th className="min-w-[150px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
                 Services
               </th>
               <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
@@ -126,12 +150,13 @@ const OnProcessTable = () => {
                       new Date(item.inspectionDate) < new Date() && (
                         <FaClockRotateLeft
                           className="ml-2 text-yellow-500 md:text-2xl"
-                          title="Waiting for approval"
+                          title="Waiting for quotation!"
                         />
                       )
                     )}
                   </div>
                 </td>
+                {/* Action buttons */}
                 <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
                   <div className="relative flex justify-evenly">
                     <div className="group relative">
@@ -146,7 +171,10 @@ const OnProcessTable = () => {
                       </div>
                     </div>
                     <div className="group relative">
-                      <button className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600">
+                      <button
+                        onClick={() => handleCancelClick(item)}
+                        className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+                      >
                         <MdOutlineCancel className="text-lg md:text-xl" />
                       </button>
                       <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
@@ -189,6 +217,15 @@ const OnProcessTable = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <OnProcessForm item={selectedItem} onClose={closeForm} />
         </div>
+      )}
+
+      {/* Cancel Pop-up */}
+      {isCancelPopUpVisible && (
+        <CancelPopUp
+          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName} transaction?`}
+          onConfirm={handleCancellation}
+          onCancel={handleCancelDelete}
+        />
       )}
     </div>
   );

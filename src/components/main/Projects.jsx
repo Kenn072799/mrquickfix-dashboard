@@ -6,6 +6,7 @@ import Button from "../common/Button";
 import CustomerTable from "../table/CustomerTable";
 import AddJobOrderForm from "../form/AddJobOrderForm";
 import OnProcessTable from "../table/OnProcessTable";
+import InProgressTable from "../table/InProgressTable";
 
 const Projects = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -46,6 +47,13 @@ const Projects = () => {
         </Title>
         <section className="py-4">
           <OnProcessTable />
+        </section>
+        <Title className="flex items-center">
+          <FaCircle size={10} className="mr-2 text-yellow-500" />
+          In Progress
+        </Title>
+        <section className="py-4">
+          <InProgressTable />
         </section>
       </section>
 

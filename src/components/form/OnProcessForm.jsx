@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import Button from "../common/Button";
 import FormTitle from "../common/FormTitle";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useFormState from "../hooks/function/useFormState";
 import useCategories from "../hooks/function/useCategories";
@@ -78,7 +78,7 @@ const OnProcessForm = ({ onClose }) => {
         >
           <MdOutlineClose className="h-8 w-8 rounded-full p-1 hover:bg-secondary-200 active:bg-secondary-200 active:text-secondary-500" />
         </button>
-        <FormTitle className="text-xl font-bold">On Process Form</FormTitle>
+        <FormTitle>On Process Form</FormTitle>
         <div className="my-4 h-[1px] w-full bg-secondary-500"></div>
 
         {/* First Name and Last Name */}
@@ -241,34 +241,41 @@ const OnProcessForm = ({ onClose }) => {
             <option value="Admin 3">Admin 3</option>
           </select>
         </div>
-        {/* Schedule Inspection */}
+        {/* Rescheduled Inspection */}
         <div className="mx-auto flex items-center justify-center py-4 text-center">
-          <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
+          <div className="mb-2 mt-4 h-[1px] w-1/2 bg-secondary-500"></div>
           <p className="w-full px-2 text-sm font-semibold text-red-500">
-            Schedule Inspection
+            Recheduled Inspection?
           </p>
-          <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
+          <div className="mb-2 mt-4 h-[1px] w-1/2 bg-secondary-500"></div>
         </div>
-
-        <label className="w-full text-sm font-semibold">Inspection Date:</label>
+        <label className="w-full text-sm font-semibold">
+          New Inspection Date:
+        </label>
         <input
           type="date"
           name="inspectionDate"
           onChange={handleInputChange}
           className="w-full border p-2 outline-none"
         />
+        <div className="mt-2">
+          <Button variant="save" size="sm">
+            Save Changes
+          </Button>
+        </div>
 
         {/* Buttons */}
-        <div className="flex gap-4 py-4">
-          <Button variant="submit" size="sm" type="submit">
+        <div className="py-2">
+          <Button
+            variant="submit"
+            size="sm"
+            type="submit"
+            disabled={!quotationUploaded}
+          >
             Proceed
-          </Button>
-          <Button variant="cancel" size="sm">
-            Cancel
           </Button>
         </div>
       </form>
-      <ToastContainer />
     </div>
   );
 };

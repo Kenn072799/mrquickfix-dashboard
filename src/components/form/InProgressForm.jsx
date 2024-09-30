@@ -1,30 +1,23 @@
-import React, { useState, useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { MdOutlineClose } from "react-icons/md";
 import Button from "../common/Button";
 import FormTitle from "../common/FormTitle";
-import useCategories from "../hooks/function/useCategories";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useFormState from "../hooks/function/useFormState";
+import useCategories from "../hooks/function/useCategories";
+import { IoWarningOutline } from "react-icons/io5";
 
-const AddJobOrderForm = ({ onClose }) => {
+const InProgressForm = ({ onClose }) => {
   const formRef = useRef(null);
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    address: "",
-    email: "",
-    phoneNumber: "",
-    jobType: "",
-    services: [],
-    quotation: "",
-    startDate: "",
-    endDate: "",
-    admin: "",
-    inspectionDate: "",
-  });
+  const { formData, handleInputChange } = useFormState();
   const [quotationUploaded, setQuotationUploaded] = useState(false);
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
   const { selectedCategories, handleCategorySelect } = useCategories();
+
+  const handleFileChange = (e) => {
+    setQuotationUploaded(e.target.files.length > 0);
+  };
 
   const allCategories = [
     "Fits-outs",
@@ -36,19 +29,20 @@ const AddJobOrderForm = ({ onClose }) => {
     "Household Cleaning Services",
   ];
 
-  const handleFileChange = (e) => {
-    setQuotationUploaded(e.target.files.length > 0);
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [onClose]);
   const toggleCategoryDropdown = () => {
     setShowCategoryDropdown((prevState) => !prevState);
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -69,7 +63,7 @@ const AddJobOrderForm = ({ onClose }) => {
     console.log("Admin:", formData.admin);
     console.log("Inspection Date:", formData.inspectionDate);
 
-    toast.success("Submitted successfully!");
+    toast.success("Saved successfully!");
   };
 
   return (
@@ -85,9 +79,10 @@ const AddJobOrderForm = ({ onClose }) => {
         >
           <MdOutlineClose className="h-8 w-8 rounded-full p-1 hover:bg-secondary-200 active:bg-secondary-200 active:text-secondary-500" />
         </button>
-        <FormTitle>Job Order Form</FormTitle>
+        <FormTitle>In Progress Form</FormTitle>
         <div className="my-4 h-[1px] w-full bg-secondary-500"></div>
 
+        {/* First Name and Last Name */}
         <div className="flex w-full gap-2">
           <div className="flex w-full flex-col">
             <label className="w-full text-sm font-semibold">
@@ -114,7 +109,7 @@ const AddJobOrderForm = ({ onClose }) => {
             />
           </div>
         </div>
-
+        {/* Home Address */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">
             Home Address:<span className="text-red-500">*</span>
@@ -127,6 +122,7 @@ const AddJobOrderForm = ({ onClose }) => {
             className="w-full border p-2 outline-none"
           />
         </div>
+        {/* Email Address */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Email Address:</label>
           <input
@@ -136,6 +132,7 @@ const AddJobOrderForm = ({ onClose }) => {
             className="w-full border p-2 outline-none"
           />
         </div>
+        {/* Phone Number */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Phone Number:</label>
           <input
@@ -165,8 +162,7 @@ const AddJobOrderForm = ({ onClose }) => {
             <option value="Renovation">Renovation</option>
           </select>
         </div>
-
-        {/* Category Type of Job */}
+        {/* Category Dropdown */}
         <div className="relative mt-2">
           <label className="w-full text-sm font-semibold">Services:</label>
           <div
@@ -185,7 +181,6 @@ const AddJobOrderForm = ({ onClose }) => {
                 <label key={category} className="flex items-center p-1">
                   <input
                     type="checkbox"
-                    name="services"
                     checked={selectedCategories.includes(category)}
                     onChange={() => handleCategorySelect(category)}
                     className="mr-2"
@@ -204,13 +199,11 @@ const AddJobOrderForm = ({ onClose }) => {
             type="file"
             name="quotation"
             accept=".pdf"
-            defaultValue=""
             className="w-full border p-2 outline-none"
             onChange={handleFileChange}
           />
         </div>
-
-        {/* Start Date && End Date */}
+        {/* Start Date and End Date */}
         <div className="flex items-center justify-center gap-2">
           <div className="mt-2 flex w-full flex-col">
             <label className="w-full text-sm font-semibold">Start Date:</label>
@@ -222,22 +215,11 @@ const AddJobOrderForm = ({ onClose }) => {
               disabled={!quotationUploaded}
             />
           </div>
-          <div className="mt-2 flex w-full flex-col">
-            <label className="w-full text-sm font-semibold">End Date:</label>
-            <input
-              type="date"
-              name="endDate"
-              onChange={handleInputChange}
-              className="w-full border p-2 outline-none"
-              disabled={!quotationUploaded}
-            />
-          </div>
         </div>
         {/* Admin */}
         <div className="mt-2">
           <label className="w-full text-sm font-semibold">Admin:</label>
           <select
-            id="admin"
             name="admin"
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
@@ -250,32 +232,29 @@ const AddJobOrderForm = ({ onClose }) => {
             <option value="Admin 3">Admin 3</option>
           </select>
         </div>
-
-        {/* Schedule Inspection */}
+        {/* Rescheduled Inspection */}
         <div className="mx-auto flex items-center justify-center py-4 text-center">
-          <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
+          <div className="mb-2 mt-4 h-[1px] w-1/2 bg-secondary-500"></div>
           <p className="w-full px-2 text-sm font-semibold text-red-500">
-            Schedule Inspection
+            Extend End Date?
           </p>
-          <div className="mb-2 mt-4 h-[1px] w-full bg-secondary-500"></div>
+          <div className="mb-2 mt-4 h-[1px] w-1/2 bg-secondary-500"></div>
         </div>
-        <label className="w-full text-sm font-semibold">Inspection Date:</label>
+        <label className="w-full text-sm font-semibold">End Date:</label>
         <input
           type="date"
-          name="inspectionDate"
+          name="endDate"
           onChange={handleInputChange}
           className="w-full border p-2 outline-none"
+          disabled={!quotationUploaded}
         />
-
-        {/* Buttons */}
-        <div className="mt-4 flex justify-center gap-2">
-          <Button variant="submit" size="sm">
-            Submit
-          </Button>
-        </div>
+        <div className="mt-2 flex w-full flex-col"></div>
+        <Button variant="save" size="sm">
+          Save Changes
+        </Button>
       </form>
     </div>
   );
 };
 
-export default AddJobOrderForm;
+export default InProgressForm;

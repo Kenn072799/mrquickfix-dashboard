@@ -1,0 +1,123 @@
+[
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "address": "123 Main St, Cityville",
+      "email": "john.doe@example.com",
+      "phoneNumber": "555-1234",
+      "jobType": "Repair",
+      "services": ["Electrical Works", "Door and Window Repairs"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-09-28",
+      "endDate": "2024-09-29"
+    },
+    {
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "address": "456 Oak St, Townsville",
+      "email": "jane.smith@example.com",
+      "phoneNumber": "555-5678",
+      "jobType": "Renovation",
+      "services": ["Kitchen and Bath Renovation", "Household Cleaning Services"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-10-05",
+      "endDate": "2024-10-20"
+    },
+    {
+      "firstName": "Michael",
+      "lastName": "Johnson",
+      "address": "789 Pine St, Villagetown",
+      "email": "michael.johnson@example.com",
+      "phoneNumber": "555-8765",
+      "jobType": "Preventive Maintenance Services",
+      "services": ["Aircon Services"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-10-10",
+      "endDate": "2024-10-17"
+    },
+    {
+      "firstName": "Emily",
+      "lastName": "Davis",
+      "address": "135 Maple St, Countryville",
+      "email": "emily.davis@example.com",
+      "phoneNumber": "555-4321",
+      "jobType": "Repair",
+      "services": ["Outdoor and Landscaping"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-10-15",
+      "endDate": "2024-10-22"
+    },
+    {
+      "firstName": "William",
+      "lastName": "Brown",
+      "address": "246 Cedar St, Metrocity",
+      "email": "william.brown@example.com",
+      "phoneNumber": "555-3456",
+      "jobType": "Renovation",
+      "services": ["Kitchen and Bath Renovation", "Electrical Works"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-10-20",
+      "endDate": "2024-10-30"
+    },
+    {
+      "firstName": "Olivia",
+      "lastName": "Jones",
+      "address": "357 Birch St, Farmtown",
+      "email": "olivia.jones@example.com",
+      "phoneNumber": "555-6543",
+      "jobType": "Preventive Maintenance Services",
+      "services": ["Door and Window Repairs"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-10-25",
+      "endDate": "2024-10-31"
+    },
+    {
+      "firstName": "James",
+      "lastName": "Garcia",
+      "address": "579 Spruce St, Hilltop",
+      "email": "james.garcia@example.com",
+      "phoneNumber": "555-7890",
+      "jobType": "Repair",
+      "services": ["Household Cleaning Services"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-11-01",
+      "endDate": "2024-11-10"
+    },
+    {
+      "firstName": "Sophia",
+      "lastName": "Martinez",
+      "address": "481 Elm St, Lakeside",
+      "email": "sophia.martinez@example.com",
+      "phoneNumber": "555-0987",
+      "jobType": "Renovation",
+      "services": ["Electrical Works", "Aircon Services"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-11-05",
+      "endDate": "2024-11-15"
+    },
+    {
+      "firstName": "Benjamin",
+      "lastName": "Rodriguez",
+      "address": "264 Willow St, Rivertown",
+      "email": "benjamin.rodriguez@example.com",
+      "phoneNumber": "555-1122",
+      "jobType": "Preventive Maintenance Services",
+      "services": ["Outdoor and Landscaping"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-11-10",
+      "endDate": "2024-11-20"
+    },
+    {
+      "firstName": "Ava",
+      "lastName": "Wilson",
+      "address": "579 Cherry St, Baytown",
+      "email": "ava.wilson@example.com",
+      "phoneNumber": "555-3344",
+      "jobType": "Repair",
+      "services": ["Fits-outs", "Kitchen and Bath Renovation"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "startDate": "2024-11-15",
+      "endDate": "2024-11-25"
+    }
+  ]
+  

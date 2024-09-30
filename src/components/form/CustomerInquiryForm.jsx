@@ -3,7 +3,7 @@ import Button from "../common/Button";
 import { MdOutlineClose } from "react-icons/md";
 import FormTitle from "../common/FormTitle";
 import useCategories from "../hooks/function/useCategories";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useFormState from "../hooks/function/useFormState";
 
@@ -80,7 +80,6 @@ const CustomerInquiryForm = ({ onClose }) => {
       ref={formRef}
       className="max-h-[500px] max-w-[350px] overflow-y-auto bg-white p-8 shadow-lg md:max-h-[600px] md:max-w-[500px]"
     >
-      <ToastContainer />
       <form className="relative" onSubmit={handleSubmit}>
         <button
           onClick={onClose}
@@ -88,9 +87,7 @@ const CustomerInquiryForm = ({ onClose }) => {
         >
           <MdOutlineClose className="h-8 w-8 rounded-full p-1 hover:bg-secondary-200 active:bg-secondary-200 active:text-secondary-500" />
         </button>
-        <FormTitle className="text-xl font-bold">
-          Client's Inquiry Form
-        </FormTitle>
+        <FormTitle>Client's Inquiry Form</FormTitle>
         <div className="my-4 h-[1px] w-full bg-secondary-500"></div>
 
         <div className="flex w-full gap-2">
@@ -283,12 +280,9 @@ const CustomerInquiryForm = ({ onClose }) => {
         />
 
         {/* Buttons */}
-        <div className="flex gap-4 py-4">
+        <div className="py-4">
           <Button variant="submit" size="sm" type="submit">
             Proceed
-          </Button>
-          <Button variant="cancel" size="sm" onClick={handleDelete}>
-            Delete
           </Button>
         </div>
       </form>
