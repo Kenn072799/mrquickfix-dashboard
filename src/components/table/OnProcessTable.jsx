@@ -85,7 +85,7 @@ const OnProcessTable = () => {
     <div className="rounded-lg bg-white p-4 shadow">
       {/* Scheduled today alert */}
       {scheduledToday.length > 0 && (
-        <div className="mb-4 rounded bg-green-200 p-2 text-green-700 border border-green-700">
+        <div className="mb-4 rounded bg-green-200 p-3 text-green-700 border border-green-700">
           <FaRegCalendarAlt className="mr-2 inline text-xl" />
           <span className="text-xs md:text-base">
             You have {scheduledToday.length} inspection(s) scheduled for today.
@@ -95,7 +95,7 @@ const OnProcessTable = () => {
 
       {/* Waiting for quotation alert */}
       {waitingForQuotation.length > 0 && (
-        <div className="mb-4 rounded bg-yellow-200 p-2 text-yellow-700 border border-yellow-700">
+        <div className="mb-4 rounded bg-yellow-200 p-3 text-yellow-700 border border-yellow-700">
           <FaClockRotateLeft className="mr-2 inline text-xl" />
           <span className="text-xs md:text-base">
             You have {waitingForQuotation.length} project(s) waiting for
