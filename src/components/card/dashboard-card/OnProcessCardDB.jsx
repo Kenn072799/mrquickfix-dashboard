@@ -48,7 +48,7 @@ const OnProcessCardDB = () => {
         {/* Waiting Quotations Notification */}
         {waitingCount > 0 && (
           <div
-            className="absolute right-4 top-4 flex items-center"
+            className="absolute right-14 top-4 flex items-center"
             title={`${waitingCount} quotation(s) waiting`}
           >
             <FaClockRotateLeft className="text-2xl" />
@@ -61,7 +61,7 @@ const OnProcessCardDB = () => {
         {/* Scheduled Inspections Notification */}
         {scheduledCount > 0 && (
           <div
-            className="absolute right-14 top-4 flex items-center"
+            className="absolute right-4 top-4 flex items-center"
             title={`${scheduledCount} inspection(s) scheduled for today`}
           >
             <FaRegCalendarAlt className="relative text-2xl" />

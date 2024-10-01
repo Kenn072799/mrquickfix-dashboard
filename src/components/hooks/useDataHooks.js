@@ -39,7 +39,7 @@ export const useFetchCustomers = () => {
       try {
         const response = await fetch("/SampleData/CustomerInquiryData.json"); // Replace with real API
         if (!response.ok) {
-          throw new Error("Failed to fetch customer data");
+          throw new Error("Failed to fetch data");
         }
         const data = await response.json();
         const uniqueIds = new Set();
@@ -81,7 +81,7 @@ export const useFetchInProgressData = () => {
       try {
         const response = await fetch("/SampleData/InProgressData.json"); // Replace with real API
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error("Failed to fetch data");
         }
         const jsonData = await response.json();
         const sortedData = jsonData.sort(
@@ -169,7 +169,7 @@ export const useOnProcessData = () => {
       try {
         const response = await fetch("/SampleData/OnProcessData.json"); // Replace with real API
         if (!response.ok) {
-          throw new Error("Network response was not ok");
+          throw new Error("Failed to fetch data");
         }
         const jsonData = await response.json();
         const sortedData = jsonData.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -216,3 +216,33 @@ export const useCompletedData = () => {
   
     return { data, loading, error };
   };
+
+// Cancelled Data
+export const useCancelData = () => {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await fetch("/SampleData/CancelData.json"); // Replace with real API
+          if (!response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+          const result = await response.json();
+          setData(result);
+        } catch (error) {
+          setError(error.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchData();
+    }, []);
+  
+
+  
+    return { data, loading, error };
+}

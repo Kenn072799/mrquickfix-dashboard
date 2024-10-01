@@ -15,14 +15,11 @@ const CustomerTable = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isDeletePopUpVisible, setIsDeletePopUpVisible] = useState(false);
   const [customerToDelete, setCustomerToDelete] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const rowsPerPage = 10;
 
   if (loading) {
     return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
   }
 
   if (error) {
@@ -40,8 +37,14 @@ const CustomerTable = () => {
     return data.find((customer) => customer.id === id);
   });
 
-  const totalPages = Math.ceil(uniqueCustomers.length / rowsPerPage);
-  const displayedCustomers = uniqueCustomers.slice(
+  const filteredCustomers = uniqueCustomers.filter((customer) =>
+    `${customer.firstName} ${customer.lastName}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase()),
+  );
+
+  const totalPages = Math.ceil(filteredCustomers.length / rowsPerPage);
+  const displayedCustomers = filteredCustomers.slice(
     currentPage * rowsPerPage,
     currentPage * rowsPerPage + rowsPerPage,
   );
@@ -62,11 +65,9 @@ const CustomerTable = () => {
   };
 
   const handleConfirmDelete = () => {
-    //Put delete logic here
+    // Put delete logic here
     console.log("Deleting customer:", customerToDelete);
-
     toast.success("Deleted successfully!");
-
     setIsDeletePopUpVisible(false);
     setCustomerToDelete(null);
   };
@@ -78,6 +79,17 @@ const CustomerTable = () => {
 
   return (
     <div className="rounded-lg bg-white p-4 shadow">
+      {/* Search Input */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full rounded border border-gray-300 p-2"
+        />
+      </div>
+
       <div className="overflow-x-auto">
         <table className="min-w-[800px] border-collapse border border-gray-200 md:min-w-full">
           <thead className="bg-gray-100">

@@ -7,6 +7,7 @@ const CompleteTable = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const rowsPerPage = 10;
   const [sortedData, setSortedData] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const sorted = [...data].sort(
@@ -15,8 +16,17 @@ const CompleteTable = () => {
     setSortedData(sorted);
   }, [data]);
 
-  const totalPages = Math.ceil(sortedData.length / rowsPerPage);
-  const displayedData = sortedData.slice(
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const filteredData = sortedData.filter((item) => {
+    const fullName = `${item.firstName} ${item.lastName}`.toLowerCase();
+    return fullName.includes(searchQuery.toLowerCase());
+  });
+
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const displayedData = filteredData.slice(
     currentPage * rowsPerPage,
     currentPage * rowsPerPage + rowsPerPage,
   );
@@ -31,6 +41,16 @@ const CompleteTable = () => {
 
   return (
     <div className="rounded-lg bg-white p-4 shadow">
+      <div className="mb-4">
+        {/* Search input */}
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
+          className="w-full rounded border border-gray-300 p-2"
+        />
+      </div>
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
           <thead>
@@ -81,10 +101,10 @@ const CompleteTable = () => {
                     {item.address}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.email}
+                    {item.email || "None"}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.phoneNumber}
+                    {item.phoneNumber || "None"}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.jobType}

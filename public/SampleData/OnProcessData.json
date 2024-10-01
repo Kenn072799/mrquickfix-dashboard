@@ -46,7 +46,7 @@
       "firstName": "Michael",
       "lastName": "Brown",
       "address": "135 Oak St, Star City, IL",
-      "email": "michael.brown@example.com",
+      "email": "",
       "phoneNumber": "555-4321",
       "jobType": "Repair",
       "services": [
@@ -59,7 +59,7 @@
       "firstName": "Sophia",
       "lastName": "Davis",
       "address": "246 Pine St, Smallville, IL",
-      "email": "sophia.davis@example.com",
+      "email": "",
       "phoneNumber": "555-2468",
       "jobType": "Renovation",
       "services": [
@@ -87,7 +87,7 @@
       "lastName": "Wilson",
       "address": "468 Birch St, Coast City, IL",
       "email": "olivia.wilson@example.com",
-      "phoneNumber": "555-8521",
+      "phoneNumber": "",
       "jobType": "Repair",
       "services": [
         "Household Cleaning Services",

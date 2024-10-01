@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { FaCircle, FaPlus } from "react-icons/fa6";
-import { IoIosSearch } from "react-icons/io";
 import Title from "../common/Title";
 import Button from "../common/Button";
 import CustomerTable from "../table/CustomerTable";
@@ -9,6 +8,7 @@ import OnProcessTable from "../table/OnProcessTable";
 import InProgressTable from "../table/InProgressTable";
 import CompleteTable from "../table/CompleteTable";
 import CancelTable from "../table/CancelTable";
+import ProjectNavBar from "./navigation/ProjectNavBar";
 
 const Projects = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -18,22 +18,12 @@ const Projects = () => {
 
   return (
     <main className="bg-slate-100 p-4">
-      <section className="flex flex-wrap gap-4 py-4">
-        <div className="flex">
-          <input
-            placeholder="Search"
-            className="w-full border border-slate-300 px-2 outline-none md:p-2"
-            type="text"
-          />
-          <Button size="sm" variant="primary">
-            <IoIosSearch size={16} className="mr-2" />
-            Search
-          </Button>
-        </div>
+      <section className="rounded-md bg-white p-4 shadow-sm flex justify-between items-center">
         <Button size="sm" variant="primary" onClick={openForm}>
           <FaPlus size={16} className="mr-2" />
           Add Job Order
         </Button>
+        <ProjectNavBar />
       </section>
 
       {/* Client's Inquiry Section */}

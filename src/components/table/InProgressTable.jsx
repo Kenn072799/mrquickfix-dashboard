@@ -21,6 +21,7 @@ const InProgressTable = () => {
   const [customerToCancel, setCustomerToCancel] = useState(null);
   const [isCompletePopUpVisible, setIsCompletePopUpVisible] = useState(false);
   const [customerToComplete, setCustomerToComplete] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const rowsPerPage = 10;
   const today = new Date();
 
@@ -32,14 +33,20 @@ const InProgressTable = () => {
     return <div>Error: {error}</div>;
   }
 
-  const totalPages = Math.ceil(data.length / rowsPerPage);
-  const displayedData = data.slice(
-    currentPage * rowsPerPage,
-    currentPage * rowsPerPage + rowsPerPage,
+  const filteredData = data.filter(
+    (item) =>
+      item.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.lastName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleEditClick = (entry) => {
-    setSelectedItem(entry);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const displayedData = filteredData.slice(
+    currentPage * rowsPerPage,
+    currentPage * rowsPerPage + rowsPerPage
+  );
+
+  const handleEditClick = (item) => {
+    setSelectedItem(item);
     setIsFormVisible(true);
   };
 
@@ -48,34 +55,26 @@ const InProgressTable = () => {
     setSelectedItem(null);
   };
 
-  const handleCancelClick = (entry) => {
-    setCustomerToCancel(entry);
+  const handleCancelClick = (item) => {
+    setCustomerToCancel(item);
     setIsCancelPopUpVisible(true);
   };
 
   const handleCancellation = () => {
-    //Put cancel logic here
-    console.log("Cancelling transaction:", customerToCancel);
-
-    toast.success("Cancellation successfully!");
-
+    toast.success("Cancellation successful!");
     setIsCancelPopUpVisible(false);
     setCustomerToCancel(null);
   };
 
-  const handleCompleteClick = (entry) => {
-    setCustomerToComplete(entry);
+  const handleCompleteClick = (item) => {
+    setCustomerToComplete(item);
     setIsCompletePopUpVisible(true);
   };
 
   const handleCompletion = () => {
-    //Put complete logic here
-    console.log("Complete project:", customerToComplete);
-
     toast.success(
-      `${customerToComplete.firstName} ${customerToComplete.lastName}'s project has been completed!`,
+      `${customerToComplete.firstName} ${customerToComplete.lastName}'s project has been completed!`
     );
-
     setIsCompletePopUpVisible(false);
     setCustomerToComplete(null);
   };
@@ -104,31 +103,43 @@ const InProgressTable = () => {
 
   return (
     <div className="rounded-lg bg-white p-4 shadow">
+      {/* Search Input */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full rounded border border-gray-300 p-2"
+        />
+      </div>
+
       {/* Expected completion alert section */}
       {data.filter(
-        (entry) =>
-          new Date(entry.endDate).toLocaleDateString() ===
-          today.toLocaleDateString(),
+        (item) =>
+          new Date(item.endDate).toLocaleDateString() ===
+          today.toLocaleDateString()
       ).length > 0 && (
         <div className="mb-4 flex items-center rounded border border-green-700 bg-green-100 p-3 text-green-700">
           <FaRegCalendarCheck className="mr-2 text-xl" />
           <span className="text-xs md:text-base">
-            {`You have ${data.filter((entry) => new Date(entry.endDate).toLocaleDateString() === today.toLocaleDateString()).length} project(s) expected to complete today.`}
+            You have {data.filter((item) => new Date(item.endDate).toLocaleDateString() === today.toLocaleDateString()).length} project(s) expected to complete today.
           </span>
         </div>
       )}
       {/* Delayed alert section */}
-      {data.filter((entry) => isDatePast(entry.endDate)).length > 0 && (
+      {data.filter((item) => isDatePast(item.endDate)).length > 0 && (
         <div className="mb-4 flex items-center rounded border border-red-700 bg-red-100 p-3 text-red-700">
           <IoWarningOutline className="mr-2 text-2xl md:text-xl" />
           <span className="text-xs md:text-base">
-            {`You have ${data.filter((entry) => isDatePast(entry.endDate)).length} delayed project(s). Please check the table for warnings.`}
+            You have {data.filter((item) => isDatePast(item.endDate)).length} delayed project(s). Please check the table for warnings.
           </span>
         </div>
       )}
+      
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
-          <thead>
+        <thead>
             <tr>
               {/* Table headers */}
               <th className="min-w-[100px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:text-base">
@@ -168,56 +179,56 @@ const InProgressTable = () => {
           </thead>
           <tbody>
             {displayedData.length > 0 ? (
-              displayedData.map((entry, index) => (
+              displayedData.map((item, index) => (
                 <tr
                   key={index}
                   className={`${index % 2 === 0 ? "bg-white" : "bg-yellow-50"}`}
                 >
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {entry.firstName}
+                    {item.firstName}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {entry.lastName}
+                    {item.lastName}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {entry.address}
+                    {item.address}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {entry.email}
+                    {item.email || "None"}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {entry.phoneNumber}
+                    {item.phoneNumber || "None"}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {entry.jobType}
+                    {item.jobType}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {entry.services.join(", ")}
+                    {item.services.join(", ")}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
-                      href={entry.quotation}
+                      href={item.quotation}
                       className="text-blue-600 hover:underline"
                     >
                       View Quotation
                     </a>
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {entry.startDate}
+                    {item.startDate}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     <div className="flex items-center justify-between">
-                      {entry.endDate}
+                      {item.endDate}
                       {/* Display icon if endDate is today or overdue */}
-                      {new Date(entry.endDate).toLocaleDateString() ===
+                      {new Date(item.endDate).toLocaleDateString() ===
                       today.toLocaleDateString() ? (
                         <FaRegCalendarCheck
                           className="ml-2 text-green-500 md:text-2xl"
                           title="Expected to complete today."
                         />
-                      ) : new Date(entry.endDate) < today ? (
+                      ) : new Date(item.endDate) < today ? (
                         <GrStatusWarning
                           className="ml-2 text-red-500 md:text-2xl"
                           title="Project is delayed!"
@@ -230,7 +241,7 @@ const InProgressTable = () => {
                     <div className="flex justify-evenly">
                       <div className="group relative">
                         <button
-                          onClick={() => handleCompleteClick(entry)}
+                          onClick={() => handleCompleteClick(item)}
                           className="rounded-md bg-green-500 px-2 py-1 text-white hover:bg-green-600"
                         >
                           <FaRegCheckCircle className="text-lg" />
@@ -241,7 +252,7 @@ const InProgressTable = () => {
                       </div>
                       <div className="group relative">
                         <button
-                          onClick={() => handleEditClick(entry)}
+                          onClick={() => handleEditClick(item)}
                           className="ml-2 rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
                         >
                           <LiaEdit className="text-lg md:text-xl" />
@@ -252,7 +263,7 @@ const InProgressTable = () => {
                       </div>
                       <div className="group relative">
                         <button
-                          onClick={() => handleCancelClick(entry)}
+                          onClick={() => handleCancelClick(item)}
                           className="ml-2 rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
                         >
                           <MdOutlineCancel className="text-lg" />
@@ -278,6 +289,7 @@ const InProgressTable = () => {
           </tbody>
         </table>
       </div>
+
       {/* Pagination */}
       <div className="mt-4 flex items-center justify-between">
         <button
@@ -302,6 +314,7 @@ const InProgressTable = () => {
           <FaAngleRight />
         </button>
       </div>
+
       {/* Popup Form */}
       {isFormVisible && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
@@ -311,7 +324,7 @@ const InProgressTable = () => {
       {/* Cancel Pop-up */}
       {isCancelPopUpVisible && (
         <CancelPopUp
-          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName}'s project?`}
+          item={customerToCancel}
           onConfirm={handleCancellation}
           onCancel={handleCancelDelete}
         />
@@ -319,7 +332,7 @@ const InProgressTable = () => {
       {/* Complete Pop-up */}
       {isCompletePopUpVisible && (
         <CompletePopUp
-          message={`Are you sure you want to mark ${customerToComplete.firstName} ${customerToComplete.lastName}'s project as completed?`}
+          item={customerToComplete}
           onConfirm={handleCompletion}
           onCancel={handleCancelComplete}
         />

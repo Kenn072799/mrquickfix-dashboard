@@ -1,0 +1,123 @@
+[
+    {
+      "id": "1",  
+      "firstName": "John",
+      "lastName": "Doe",
+      "address": "123 Maple Street",
+      "email": "",
+      "phoneNumber": "123-456-7890",
+      "jobType": "Repair",
+      "services": ["Fits-outs", "Electrical Works"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "cancelDate": "2024-09-28"
+    },
+    {
+      "id": "2",  
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "address": "456 Oak Avenue",
+      "email": "jane.smith@example.com",
+      "phoneNumber": "987-654-3210",
+      "jobType": "Renovation",
+      "services": ["Kitchen and Bath Renovation", "Aircon Services"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "cancelDate": "2024-09-15"
+    },
+    {
+      "id": "3",  
+      "firstName": "Michael",
+      "lastName": "Johnson",
+      "address": "789 Pine Road",
+      "email": "",
+      "phoneNumber": "555-123-4567",
+      "jobType": "Preventive Maintenance Services",
+      "services": ["Aircon Services", "Electrical Works"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "cancelDate": "2024-09-16"
+    },
+    {
+      "id": "4",  
+      "firstName": "Emily",
+      "lastName": "Davis",
+      "address": "101 Birch Lane",
+      "email": "emily.davis@example.com",
+      "phoneNumber": "555-987-6543",
+      "jobType": "Repair",
+      "services": ["Door and Window Repairs", "Household Cleaning Services"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "cancelDate": "2024-09-14"
+    },
+    {
+      "id": "5",  
+      "firstName": "William",
+      "lastName": "Brown",
+      "address": "202 Cedar Drive",
+      "email": "",
+      "phoneNumber": "123-789-4560",
+      "jobType": "Renovation",
+      "services": ["Outdoor and Landscaping", "Fits-outs"],
+      "quotation": "",
+      "cancelDate": "2024-09-10"
+    },
+    {
+      "id": "6",  
+      "firstName": "Olivia",
+      "lastName": "Jones",
+      "address": "303 Elm Street",
+      "email": "olivia.jones@example.com",
+      "phoneNumber": "987-321-6540",
+      "jobType": "Preventive Maintenance Services",
+      "services": ["Household Cleaning Services", "Electrical Works"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "cancelDate": "2024-09-20"
+    },
+    {
+      "id": "7",  
+      "firstName": "James",
+      "lastName": "Garcia",
+      "address": "404 Walnut Avenue",
+      "email": "james.garcia@example.com",
+      "phoneNumber": "",
+      "jobType": "Repair",
+      "services": ["Door and Window Repairs", "Aircon Services"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "cancelDate": "2024-09-25"
+    },
+    {
+      "id": "8",  
+      "firstName": "Sophia",
+      "lastName": "Martinez",
+      "address": "505 Maple Street",
+      "email": "",
+      "phoneNumber": "321-654-9876",
+      "jobType": "Renovation",
+      "services": ["Kitchen and Bath Renovation", "Fits-outs"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "cancelDate": "2024-09-20"
+    },
+    {
+      "id": "9",  
+      "firstName": "Benjamin",
+      "lastName": "Rodriguez",
+      "address": "606 Pine Lane",
+      "email": "benjamin.rodriguez@example.com",
+      "phoneNumber": "456-789-1230",
+      "jobType": "Preventive Maintenance Services",
+      "services": ["Outdoor and Landscaping", "Household Cleaning Services"],
+      "quotation": "../SampleAsset/SampleQuotation.pdf",
+      "cancelDate": "2024-09-15"
+    },
+    {
+      "id": "10",  
+      "firstName": "Ava",
+      "lastName": "Wilson",
+      "address": "707 Oak Avenue",
+      "email": "ava.wilson@example.com",
+      "phoneNumber": "654-321-0987",
+      "jobType": "Repair",
+      "services": ["Aircon Services", "Fits-outs"],
+      "quotation": "",
+      "cancelDate": "2024-09-10"
+    }
+  ]
+  

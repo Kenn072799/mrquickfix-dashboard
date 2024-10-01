@@ -16,33 +16,39 @@ const OnProcessTable = () => {
   const [isCancelPopUpVisible, setIsCancelPopUpVisible] = useState(false);
   const [customerToCancel, setCustomerToCancel] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const rowsPerPage = 10;
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  // Sort data by inspection date
   const sortedData = [...data].sort((a, b) => {
     const dateA = new Date(a.inspectionDate);
     const dateB = new Date(b.inspectionDate);
     return dateA - dateB;
   });
 
-  //Pagination
-  const totalPages = Math.ceil(sortedData.length / rowsPerPage);
-  const displayedData = sortedData.slice(
+  const filteredData = sortedData.filter((item) =>
+    `${item.firstName} ${item.lastName}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase()),
+  );
+
+  // Pagination
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const displayedData = filteredData.slice(
     currentPage * rowsPerPage,
     currentPage * rowsPerPage + rowsPerPage,
   );
 
   // Filter for inspections today
   const today = new Date().toLocaleDateString();
-  const scheduledToday = sortedData.filter(
+  const scheduledToday = filteredData.filter(
     (item) => new Date(item.inspectionDate).toLocaleDateString() === today,
   );
 
   // Filter for inspections in the past (waiting for quotation)
-  const waitingForQuotation = sortedData.filter(
+  const waitingForQuotation = filteredData.filter(
     (item) =>
       new Date(item.inspectionDate) < new Date() &&
       new Date(item.inspectionDate).toLocaleDateString() !== today,
@@ -54,7 +60,7 @@ const OnProcessTable = () => {
     setIsFormVisible(true);
   };
 
-  //Handle cancel click
+  // Handle cancel click
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedItem(null);
@@ -64,18 +70,15 @@ const OnProcessTable = () => {
     setIsCancelPopUpVisible(true);
   };
 
-  //Handle cancellation
+  // Handle cancellation
   const handleCancellation = () => {
-    //Put cancel logic here
     console.log("Cancelling transaction:", customerToCancel);
-
     toast.success("Cancellation successfully!");
-
     setIsCancelPopUpVisible(false);
     setCustomerToCancel(null);
   };
 
-  //Handle cancel delete
+  // Handle cancel delete
   const handleCancelDelete = () => {
     setIsCancelPopUpVisible(false);
     setCustomerToCancel(null);
@@ -83,6 +86,17 @@ const OnProcessTable = () => {
 
   return (
     <div className="rounded-lg bg-white p-4 shadow">
+      {/* Search Input */}
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="Search by name"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="w-full rounded border border-gray-300 p-2"
+        />
+      </div>
+
       {/* Scheduled today alert */}
       {scheduledToday.length > 0 && (
         <div className="mb-4 rounded border border-green-700 bg-green-100 p-3 text-green-700">
@@ -103,6 +117,7 @@ const OnProcessTable = () => {
           </span>
         </div>
       )}
+
       <div className="overflow-x-auto">
         <table className="min-w-[800px] border-collapse border border-gray-300 md:min-w-full">
           <thead>
@@ -113,16 +128,16 @@ const OnProcessTable = () => {
               <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[150px] md:text-base">
                 Last Name
               </th>
-              <th className="min-w-[250px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
+              <th className="min-w-[250px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[150px] md:text-base">
                 Home Address
               </th>
-              <th className="min-w-[150px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
+              <th className="min-w-[150px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
                 Email Address
               </th>
-              <th className="min-w-[130px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
+              <th className="min-w-[130px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
                 Phone Number
               </th>
-              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
+              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[150px] md:text-base">
                 Type of Job
               </th>
               <th className="min-w-[150px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
@@ -153,10 +168,10 @@ const OnProcessTable = () => {
                     {item.address}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                    {item.email}
+                    {item.email || "None"}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                    {item.phoneNumber}
+                    {item.phoneNumber || "None"}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
                     {item.jobType}
@@ -183,13 +198,12 @@ const OnProcessTable = () => {
                       )}
                     </div>
                   </td>
-                  {/* Action buttons */}
                   <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                    <div className="relative flex justify-evenly">
+                    <div className="flex justify-evenly">
                       <div className="group relative">
                         <button
-                          onClick={() => handleEditClick(item)}
-                          className="rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
+                          onClick={() => handleEditClick(entry)}
+                          className="ml-2 rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
                         >
                           <LiaEdit className="text-lg md:text-xl" />
                         </button>
@@ -199,10 +213,10 @@ const OnProcessTable = () => {
                       </div>
                       <div className="group relative">
                         <button
-                          onClick={() => handleCancelClick(item)}
-                          className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+                          onClick={() => handleCancelClick(entry)}
+                          className="ml-2 rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
                         >
-                          <MdOutlineCancel className="text-lg md:text-xl" />
+                          <MdOutlineCancel className="text-lg" />
                         </button>
                         <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
                           Cancel
@@ -225,6 +239,7 @@ const OnProcessTable = () => {
           </tbody>
         </table>
       </div>
+
       {/* Pagination */}
       <div className="mt-4 flex items-center justify-between">
         <button
@@ -249,19 +264,17 @@ const OnProcessTable = () => {
           <FaAngleRight />
         </button>
       </div>
-      {/* Popup Form */}
+
+      {/* Edit Form */}
       {isFormVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <OnProcessForm item={selectedItem} onClose={closeForm} />
-        </div>
+        <OnProcessForm onClose={closeForm} selectedItem={selectedItem} />
       )}
 
-      {/* Cancel Pop-up */}
+      {/* Cancel Confirmation Popup */}
       {isCancelPopUpVisible && (
         <CancelPopUp
-          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName}'s transaction?`}
+          onClose={handleCancelDelete}
           onConfirm={handleCancellation}
-          onCancel={handleCancelDelete}
         />
       )}
     </div>
