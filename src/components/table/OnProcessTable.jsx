@@ -72,7 +72,8 @@ const OnProcessTable = () => {
 
   // Handle cancellation
   const handleCancellation = () => {
-    console.log("Cancelling transaction:", customerToCancel);
+    // Cancellation logic here
+    console.log("Cancellation:", customerToCancel);
     toast.success("Cancellation successfully!");
     setIsCancelPopUpVisible(false);
     setCustomerToCancel(null);
@@ -202,7 +203,7 @@ const OnProcessTable = () => {
                     <div className="flex justify-evenly">
                       <div className="group relative">
                         <button
-                          onClick={() => handleEditClick(entry)}
+                          onClick={() => handleEditClick(item)}
                           className="ml-2 rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
                         >
                           <LiaEdit className="text-lg md:text-xl" />
@@ -213,7 +214,7 @@ const OnProcessTable = () => {
                       </div>
                       <div className="group relative">
                         <button
-                          onClick={() => handleCancelClick(entry)}
+                          onClick={() => handleCancelClick(item)}
                           className="ml-2 rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
                         >
                           <MdOutlineCancel className="text-lg" />
@@ -265,16 +266,19 @@ const OnProcessTable = () => {
         </button>
       </div>
 
-      {/* Edit Form */}
+      {/* Popup Form */}
       {isFormVisible && (
-        <OnProcessForm onClose={closeForm} selectedItem={selectedItem} />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <OnProcessForm item={selectedItem} onClose={closeForm} />
+        </div>
       )}
 
-      {/* Cancel Confirmation Popup */}
+      {/* Cancel Pop-up */}
       {isCancelPopUpVisible && (
         <CancelPopUp
-          onClose={handleCancelDelete}
+          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName}'s progress?`}
           onConfirm={handleCancellation}
+          onCancel={handleCancelDelete}
         />
       )}
     </div>

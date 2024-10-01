@@ -65,6 +65,12 @@ const OnProcessForm = ({ onClose }) => {
     toast.success("Submitted successfully!");
   };
 
+  const handleSaveChanges = () => {
+    // You can add your save logic here
+    console.log("New Inspection Date:", formData.inspectionDate);
+    toast.success("Changes saved successfully!");
+  };
+
   return (
     <div
       ref={formRef}
@@ -259,7 +265,7 @@ const OnProcessForm = ({ onClose }) => {
           className="w-full border p-2 outline-none"
         />
         <div className="mt-2">
-          <Button variant="save" size="sm">
+          <Button variant="save" size="sm" onClick={handleSaveChanges}>
             Save Changes
           </Button>
         </div>

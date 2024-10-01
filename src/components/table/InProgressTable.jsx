@@ -36,13 +36,13 @@ const InProgressTable = () => {
   const filteredData = data.filter(
     (item) =>
       item.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.lastName.toLowerCase().includes(searchQuery.toLowerCase())
+      item.lastName.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   const totalPages = Math.ceil(filteredData.length / rowsPerPage);
   const displayedData = filteredData.slice(
     currentPage * rowsPerPage,
-    currentPage * rowsPerPage + rowsPerPage
+    currentPage * rowsPerPage + rowsPerPage,
   );
 
   const handleEditClick = (item) => {
@@ -56,24 +56,28 @@ const InProgressTable = () => {
   };
 
   const handleCancelClick = (item) => {
+    // cancellation logic here
+    console.log("Cancellation:", item);
     setCustomerToCancel(item);
     setIsCancelPopUpVisible(true);
   };
 
-  const handleCancellation = () => {
+  const handleCancellation = (item) => {
     toast.success("Cancellation successful!");
     setIsCancelPopUpVisible(false);
     setCustomerToCancel(null);
   };
 
   const handleCompleteClick = (item) => {
+    // complete logic here
+    console.log("Complete:", item);
     setCustomerToComplete(item);
     setIsCompletePopUpVisible(true);
   };
 
   const handleCompletion = () => {
     toast.success(
-      `${customerToComplete.firstName} ${customerToComplete.lastName}'s project has been completed!`
+      `${customerToComplete.firstName} ${customerToComplete.lastName}'s project has been completed!`,
     );
     setIsCompletePopUpVisible(false);
     setCustomerToComplete(null);
@@ -118,12 +122,20 @@ const InProgressTable = () => {
       {data.filter(
         (item) =>
           new Date(item.endDate).toLocaleDateString() ===
-          today.toLocaleDateString()
+          today.toLocaleDateString(),
       ).length > 0 && (
         <div className="mb-4 flex items-center rounded border border-green-700 bg-green-100 p-3 text-green-700">
           <FaRegCalendarCheck className="mr-2 text-xl" />
           <span className="text-xs md:text-base">
-            You have {data.filter((item) => new Date(item.endDate).toLocaleDateString() === today.toLocaleDateString()).length} project(s) expected to complete today.
+            You have{" "}
+            {
+              data.filter(
+                (item) =>
+                  new Date(item.endDate).toLocaleDateString() ===
+                  today.toLocaleDateString(),
+              ).length
+            }{" "}
+            project(s) expected to complete today.
           </span>
         </div>
       )}
@@ -132,14 +144,15 @@ const InProgressTable = () => {
         <div className="mb-4 flex items-center rounded border border-red-700 bg-red-100 p-3 text-red-700">
           <IoWarningOutline className="mr-2 text-2xl md:text-xl" />
           <span className="text-xs md:text-base">
-            You have {data.filter((item) => isDatePast(item.endDate)).length} delayed project(s). Please check the table for warnings.
+            You have {data.filter((item) => isDatePast(item.endDate)).length}{" "}
+            delayed project(s). Please check the table for warnings.
           </span>
         </div>
       )}
-      
+
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
-        <thead>
+          <thead>
             <tr>
               {/* Table headers */}
               <th className="min-w-[100px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:text-base">
@@ -324,7 +337,7 @@ const InProgressTable = () => {
       {/* Cancel Pop-up */}
       {isCancelPopUpVisible && (
         <CancelPopUp
-          item={customerToCancel}
+          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName}'s progress?`}
           onConfirm={handleCancellation}
           onCancel={handleCancelDelete}
         />
@@ -332,7 +345,7 @@ const InProgressTable = () => {
       {/* Complete Pop-up */}
       {isCompletePopUpVisible && (
         <CompletePopUp
-          item={customerToComplete}
+          message={`Are you sure you want to complete ${customerToComplete.firstName} ${customerToComplete.lastName}'s project?`}
           onConfirm={handleCompletion}
           onCancel={handleCancelComplete}
         />
