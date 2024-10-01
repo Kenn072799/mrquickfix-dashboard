@@ -22,7 +22,9 @@ const OnProcessCardDB = () => {
 
   // Filter for inspections scheduled for today
   const scheduledToday = data.filter(
-    (item) => new Date(item.inspectionDate).toLocaleDateString() === today.toLocaleDateString(),
+    (item) =>
+      new Date(item.inspectionDate).toLocaleDateString() ===
+      today.toLocaleDateString(),
   );
   const scheduledCount = scheduledToday.length;
 
@@ -46,7 +48,7 @@ const OnProcessCardDB = () => {
         {/* Waiting Quotations Notification */}
         {waitingCount > 0 && (
           <div
-            className="absolute right-2 top-2 flex items-center"
+            className="absolute right-4 top-4 flex items-center"
             title={`${waitingCount} quotation(s) waiting`}
           >
             <FaClockRotateLeft className="text-2xl" />
@@ -59,7 +61,7 @@ const OnProcessCardDB = () => {
         {/* Scheduled Inspections Notification */}
         {scheduledCount > 0 && (
           <div
-            className="absolute right-2 top-10 flex items-center"
+            className="absolute right-14 top-4 flex items-center"
             title={`${scheduledCount} inspection(s) scheduled for today`}
           >
             <FaRegCalendarAlt className="relative text-2xl" />
@@ -69,10 +71,10 @@ const OnProcessCardDB = () => {
           </div>
         )}
 
-        <header className="py-2 text-center">
+        <header className="flex items-center pl-4 py-4 border-b">
           <TitleCard>On Process</TitleCard>
         </header>
-        <div className="flex items-center justify-center pt-4">
+        <div className="flex items-center pl-4 pt-4">
           <p className="text-5xl font-bold">
             <CountUp
               start={0}

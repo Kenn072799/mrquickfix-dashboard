@@ -18,11 +18,11 @@ const CustomerTable = () => {
   const rowsPerPage = 10;
 
   if (loading) {
-    return (
-      <div className="flex h-full items-center justify-center">
-        <div className="loader" />
-      </div>
-    );
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
   }
 
   if (error) {

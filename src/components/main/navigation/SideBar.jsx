@@ -1,14 +1,18 @@
 import React, { useState } from "react";
 import Logo from "../../../assets/Mr.QuickFixLogo.png";
 import { NavLink } from "react-router-dom";
-import {
-  IoChevronDownOutline,
-  IoChevronBackOutline,
-  IoSettingsOutline,
-} from "react-icons/io5";
+import { IoChevronDownOutline, IoChevronBackOutline } from "react-icons/io5";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
-import { MdOutlineSpaceDashboard } from "react-icons/md";
+import {
+  MdOutlineSpaceDashboard,
+  MdOutlineManageAccounts,
+} from "react-icons/md";
 import { LiaProjectDiagramSolid } from "react-icons/lia";
+import { RiAccountCircleLine } from "react-icons/ri";
+import { TbSettings } from "react-icons/tb";
+import { BiBookContent } from "react-icons/bi";
+import { CgNotes } from "react-icons/cg";
+import { MdOutlineLogout } from "react-icons/md";
 
 const SideBar = () => {
   const [isMiscOpen, setIsMiscOpen] = useState(false);
@@ -90,7 +94,7 @@ const SideBar = () => {
               className="flex cursor-pointer items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100"
               onClick={toggleMiscellaneous}
             >
-              <IoSettingsOutline size={24} className="mr-2" />
+              <TbSettings size={24} className="mr-2" />
               Miscellaneous
               <IoChevronDownOutline
                 size={18}
@@ -98,37 +102,45 @@ const SideBar = () => {
               />
             </li>
             {isMiscOpen && (
-              <ul className="pl-8">
-                <li className="px-4 py-2 text-lg font-semibold hover:bg-slate-100">
+              <ul className="bg-slate-200">
+                <li className="flex items-center border-t border-slate-300 py-2 pl-6 text-lg font-semibold hover:bg-slate-300">
+                  <BiBookContent size={24} className="mr-2" />
                   Content Management
                 </li>
-                <li className="px-4 py-2 text-lg font-semibold hover:bg-slate-100">
+                <li className="flex items-center py-2 pl-6 text-lg font-semibold hover:bg-slate-300">
+                  <MdOutlineManageAccounts size={24} className="mr-2" />
                   Account Management
                 </li>
-                <li className="px-4 py-2 text-lg font-semibold hover:bg-slate-100">
+                <li className="flex items-center border-b border-slate-300 py-2 pl-6 text-lg font-semibold hover:bg-slate-300">
+                  <CgNotes size={24} className="mr-2" />
                   Activity Log
                 </li>
               </ul>
             )}
 
-            <NavLink
-              to="/profile"
-              className={({ isActive }) =>
-                `block px-4 py-4 text-lg font-semibold hover:bg-slate-100 ${
-                  isActive ? "bg-slate-200" : ""
-                }`
-              }
-              onClick={toggleSidebar}
-            >
-              My Profile
-            </NavLink>
+            <div className="absolute bottom-4 w-full">
+              <NavLink
+                to="/profile"
+                className={({ isActive }) =>
+                  `block px-4 py-4 text-lg font-semibold hover:bg-slate-100 ${
+                    isActive ? "bg-slate-200" : ""
+                  }`
+                }
+                onClick={toggleSidebar}
+              >
+                <li className="flex items-center">
+                  <RiAccountCircleLine size={24} className="mr-2" />
+                  My Profile
+                </li>
+              </NavLink>
 
-            <li
-              className="px-4 py-4 text-lg font-semibold hover:bg-slate-100"
-              onClick={toggleSidebar}
-            >
-              Logout
-            </li>
+              <li
+                className="item-center flex px-4 py-4 text-lg font-semibold hover:bg-slate-100"
+              >
+                <MdOutlineLogout size={24} className="mr-2" />
+                Log out
+              </li>
+            </div>
           </ul>
         </nav>
       </div>

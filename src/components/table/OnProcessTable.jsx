@@ -18,8 +18,8 @@ const OnProcessTable = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const rowsPerPage = 10;
 
-  if (loading) return <div className="text-center">Loading...</div>;
-  if (error) return <div className="text-center">Error: {error}</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   // Sort data by inspection date
   const sortedData = [...data].sort((a, b) => {

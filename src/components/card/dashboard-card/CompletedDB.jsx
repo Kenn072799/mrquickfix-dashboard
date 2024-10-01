@@ -18,10 +18,10 @@ const CompletedDB = () => {
 
   return (
     <div className="h-[150px] min-w-[300px] border-t-8 border-green-500 bg-white shadow-md md:w-[300px]">
-      <header className="py-2 text-center">
+      <header className="flex items-center border-b py-4 pl-4">
         <TitleCard>Completed</TitleCard>
       </header>
-      <div className="flex items-center justify-center pt-4">
+      <div className="flex items-center pl-4 pt-4">
         <p className="text-5xl font-bold">
           <CountUp
             start={0}
