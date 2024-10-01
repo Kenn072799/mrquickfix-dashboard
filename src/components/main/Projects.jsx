@@ -8,6 +8,7 @@ import AddJobOrderForm from "../form/AddJobOrderForm";
 import OnProcessTable from "../table/OnProcessTable";
 import InProgressTable from "../table/InProgressTable";
 import CompleteTable from "../table/CompleteTable";
+import CancelTable from "../table/CancelTable";
 
 const Projects = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -66,10 +67,19 @@ const Projects = () => {
         {/* Complete Section */}
         <Title className="flex items-center">
           <FaCircle size={10} className="mr-2 text-green-500" />
-          Complete
+          Completed
         </Title>
         <section className="py-4">
           <CompleteTable />
+        </section>
+
+        {/* Cancel Section */}
+        <Title className="flex items-center">
+          <FaCircle size={10} className="mr-2 text-red-500" />
+          Cancelled
+        </Title>
+        <section className="py-4">
+          <CancelTable />
         </section>
       </section>
 

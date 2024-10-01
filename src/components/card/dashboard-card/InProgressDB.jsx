@@ -1,10 +1,10 @@
 import React from "react";
 import TitleCard from "../../common/TitleCard";
 import CountUp from "react-countup";
-import useFetchInProgressData from "../../hooks/useFetchInProgressData";
 import { GrStatusWarning } from "react-icons/gr";
-import { FaRegCalendarCheck } from "react-icons/fa"; // Import for expected completion icon
+import { FaRegCalendarCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useFetchInProgressData } from "../../hooks/useDataHooks";
 
 const InProgressDB = () => {
   const { data, loading, error } = useFetchInProgressData();

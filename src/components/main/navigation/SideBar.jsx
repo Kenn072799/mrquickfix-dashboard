@@ -83,7 +83,7 @@ const SideBar = () => {
               onClick={toggleSidebar}
             >
               <LiaProjectDiagramSolid size={24} className="mr-2" />
-              Job Order List
+              Track Job Order
             </NavLink>
 
             <li

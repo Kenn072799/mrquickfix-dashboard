@@ -3,11 +3,11 @@ import { FaAngleLeft, FaAngleRight, FaClockRotateLeft } from "react-icons/fa6";
 import { LiaEdit } from "react-icons/lia";
 import { MdOutlineCancel } from "react-icons/md";
 import { FaRegCalendarAlt } from "react-icons/fa";
-import useOnProcessData from "../hooks/useOnProcessData";
 import OnProcessForm from "../form/OnProcessForm";
-import CancelPopUp from "../common/CancelPopUp";
+import CancelPopUp from "../common/popup/CancelPopUp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useOnProcessData } from "../hooks/useDataHooks";
 
 const OnProcessTable = () => {
   const { data, loading, error } = useOnProcessData();
@@ -85,7 +85,7 @@ const OnProcessTable = () => {
     <div className="rounded-lg bg-white p-4 shadow">
       {/* Scheduled today alert */}
       {scheduledToday.length > 0 && (
-        <div className="mb-4 rounded bg-green-100 p-3 text-green-700 border border-green-700">
+        <div className="mb-4 rounded border border-green-700 bg-green-100 p-3 text-green-700">
           <FaRegCalendarAlt className="mr-2 inline text-xl" />
           <span className="text-xs md:text-base">
             You have {scheduledToday.length} inspection(s) scheduled for today.
@@ -95,7 +95,7 @@ const OnProcessTable = () => {
 
       {/* Waiting for quotation alert */}
       {waitingForQuotation.length > 0 && (
-        <div className="mb-4 rounded bg-yellow-100 p-3 text-yellow-700 border border-yellow-700">
+        <div className="mb-4 rounded border border-yellow-700 bg-yellow-100 p-3 text-yellow-700">
           <FaClockRotateLeft className="mr-2 inline text-xl" />
           <span className="text-xs md:text-base">
             You have {waitingForQuotation.length} project(s) waiting for
@@ -137,80 +137,91 @@ const OnProcessTable = () => {
             </tr>
           </thead>
           <tbody>
-            {displayedData.map((item, index) => (
-              <tr
-                key={index}
-                className={`${index % 2 === 0 ? "bg-white" : "bg-blue-50"}`}
-              >
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.firstName}
-                </td>
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.lastName}
-                </td>
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.address}
-                </td>
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.email}
-                </td>
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.phoneNumber}
-                </td>
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.jobType}
-                </td>
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  {item.services.join(", ")}
-                </td>
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  <div className="flex items-center justify-between">
-                    {item.inspectionDate}
-                    {new Date(item.inspectionDate).toLocaleDateString() ===
-                    today ? (
-                      <FaRegCalendarAlt
-                        className="ml-2 text-green-500 md:text-2xl"
-                        title="Inspection scheduled for today!"
-                      />
-                    ) : (
-                      new Date(item.inspectionDate) < new Date() && (
-                        <FaClockRotateLeft
-                          className="ml-2 text-yellow-500 md:text-2xl"
-                          title="Waiting for quotation!"
+            {displayedData.length > 0 ? (
+              displayedData.map((item, index) => (
+                <tr
+                  key={index}
+                  className={`${index % 2 === 0 ? "bg-white" : "bg-blue-50"}`}
+                >
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    {item.firstName}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    {item.lastName}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    {item.address}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    {item.email}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    {item.phoneNumber}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    {item.jobType}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    {item.services.join(", ")}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    <div className="flex items-center justify-between">
+                      {item.inspectionDate}
+                      {new Date(item.inspectionDate).toLocaleDateString() ===
+                      today ? (
+                        <FaRegCalendarAlt
+                          className="ml-2 text-green-500 md:text-2xl"
+                          title="Inspection scheduled for today!"
                         />
-                      )
-                    )}
-                  </div>
-                </td>
-                {/* Action buttons */}
-                <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                  <div className="relative flex justify-evenly">
-                    <div className="group relative">
-                      <button
-                        onClick={() => handleEditClick(item)}
-                        className="rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
-                      >
-                        <LiaEdit className="text-lg md:text-xl" />
-                      </button>
-                      <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
-                        Edit
+                      ) : (
+                        new Date(item.inspectionDate) < new Date() && (
+                          <FaClockRotateLeft
+                            className="ml-2 text-yellow-500 md:text-2xl"
+                            title="Waiting for quotation!"
+                          />
+                        )
+                      )}
+                    </div>
+                  </td>
+                  {/* Action buttons */}
+                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
+                    <div className="relative flex justify-evenly">
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleEditClick(item)}
+                          className="rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
+                        >
+                          <LiaEdit className="text-lg md:text-xl" />
+                        </button>
+                        <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
+                          Edit
+                        </div>
+                      </div>
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleCancelClick(item)}
+                          className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+                        >
+                          <MdOutlineCancel className="text-lg md:text-xl" />
+                        </button>
+                        <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
+                          Cancel
+                        </div>
                       </div>
                     </div>
-                    <div className="group relative">
-                      <button
-                        onClick={() => handleCancelClick(item)}
-                        className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
-                      >
-                        <MdOutlineCancel className="text-lg md:text-xl" />
-                      </button>
-                      <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
-                        Cancel
-                      </div>
-                    </div>
-                  </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td
+                  colSpan="9"
+                  className="p-4 text-center text-xs sm:text-sm md:text-base"
+                >
+                  No data available
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -248,7 +259,7 @@ const OnProcessTable = () => {
       {/* Cancel Pop-up */}
       {isCancelPopUpVisible && (
         <CancelPopUp
-          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName} transaction?`}
+          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName}'s transaction?`}
           onConfirm={handleCancellation}
           onCancel={handleCancelDelete}
         />

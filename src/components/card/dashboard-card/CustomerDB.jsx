@@ -1,8 +1,8 @@
 import React from "react";
 import TitleCard from "../../common/TitleCard";
-import useCustomerData from "../../hooks/useCustomerData";
 import CountUp from "react-countup";
 import { Link } from "react-router-dom";
+import { useCustomerData } from "../../hooks/useDataHooks";
 
 const CustomerDB = () => {
   const { data, loading, error } = useCustomerData();

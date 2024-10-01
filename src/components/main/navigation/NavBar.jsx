@@ -1,14 +1,13 @@
 import React from "react";
 import Profile from "../../../assets/profile.png";
 import { IoNotificationsOutline, IoNotificationsSharp } from "react-icons/io5";
-import useNotifications from "../../hooks/useNotifications";
 import useToggle from "../../hooks/function/useToggle";
 import useCurrentTime from "../../hooks/function/useCurrentTime";
 import { Link } from "react-router-dom";
+import { useNotifications } from "../../hooks/useDataHooks";
 
 const NavBar = () => {
-  const { notifications, markAsRead, visibleCount, loadMore } =
-    useNotifications();
+  const { notifications, markAsRead, visibleCount, loadMore } = useNotifications();
   const notificationToggle = useToggle();
   const dropdownToggle = useToggle();
   const { timeAgo } = useCurrentTime();

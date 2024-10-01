@@ -1,10 +1,10 @@
 import React from "react";
 import TitleCard from "../../common/TitleCard";
 import CountUp from "react-countup";
-import useOnProcessData from "../../hooks/useOnProcessData";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useOnProcessData } from "../../hooks/useDataHooks";
 
 const OnProcessCardDB = () => {
   const { data, loading, error } = useOnProcessData();

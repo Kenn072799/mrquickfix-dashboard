@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import useFetchCustomers from "../hooks/useFetchCustomers";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { LiaEdit } from "react-icons/lia";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import CustomerInquiryForm from "../form/CustomerInquiryForm";
-import DeletePopUp from "../common/DeletePopUp";
+import DeletePopUp from "../common/popup/DeletePopUp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useFetchCustomers } from "../hooks/useDataHooks";
 
 const CustomerTable = () => {
-  const { customers, loading, error } = useFetchCustomers();
+  const { data, loading, error } = useFetchCustomers();
   const [currentPage, setCurrentPage] = useState(0);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -35,9 +35,9 @@ const CustomerTable = () => {
   }
 
   const uniqueCustomers = Array.from(
-    new Set(customers.map((customer) => customer.id)),
+    new Set(data.map((customer) => customer.id)),
   ).map((id) => {
-    return customers.find((customer) => customer.id === id);
+    return data.find((customer) => customer.id === id);
   });
 
   const totalPages = Math.ceil(uniqueCustomers.length / rowsPerPage);
@@ -164,7 +164,7 @@ const CustomerTable = () => {
                   colSpan="7"
                   className="p-4 text-center text-xs sm:text-sm md:text-base"
                 >
-                  No customer data available
+                  No data available
                 </td>
               </tr>
             )}
@@ -191,7 +191,7 @@ const CustomerTable = () => {
       {/* Delete Pop-up */}
       {isDeletePopUpVisible && (
         <DeletePopUp
-          message={`Are you sure you want to delete ${customerToDelete.firstName} ${customerToDelete.lastName} inquiry?`}
+          message={`Are you sure you want to delete ${customerToDelete.firstName} ${customerToDelete.lastName}'s inquiry?`}
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />
