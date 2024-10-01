@@ -123,7 +123,7 @@ const CompleteTable = () => {
                     </a>
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {new Date(item.completeDate).toLocaleDateString()}
+                    {item.completeDate}
                   </td>
                 </tr>
               ))

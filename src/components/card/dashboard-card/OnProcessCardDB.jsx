@@ -28,18 +28,20 @@ const OnProcessCardDB = () => {
   );
   const scheduledCount = scheduledToday.length;
 
-  // Filter for waiting quotations (inspections not scheduled for today)
-  const waitingQuotations = data.filter((item) => {
-    const inspectionDate = new Date(item.inspectionDate);
+  // Check quotations waiting for approval
+  const isDatePast = (endDate) => {
+    const end = new Date(endDate);
     return (
-      inspectionDate.getFullYear() > today.getFullYear() ||
-      (inspectionDate.getFullYear() === today.getFullYear() &&
-        inspectionDate.getMonth() > today.getMonth()) ||
-      (inspectionDate.getFullYear() === today.getFullYear() &&
-        inspectionDate.getMonth() === today.getMonth() &&
-        inspectionDate.getDate() <= today.getDate())
+      end.getFullYear() < today.getFullYear() ||
+      (end.getFullYear() === today.getFullYear() &&
+        end.getMonth() < today.getMonth()) ||
+      (end.getFullYear() === today.getFullYear() &&
+        end.getMonth() === today.getMonth() &&
+        end.getDate() < today.getDate())
     );
-  });
+  };
+
+  const waitingQuotations = data.filter((item) => isDatePast(item.inspectionDate));
   const waitingCount = waitingQuotations.length;
 
   return (
