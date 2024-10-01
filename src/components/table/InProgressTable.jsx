@@ -89,7 +89,15 @@ const InProgressTable = () => {
   };
 
   const isDatePast = (endDate) => {
-    return new Date(endDate) < today;
+    const end = new Date(endDate);
+    return (
+      end.getFullYear() < today.getFullYear() ||
+      (end.getFullYear() === today.getFullYear() &&
+        end.getMonth() < today.getMonth()) ||
+      (end.getFullYear() === today.getFullYear() &&
+        end.getMonth() === today.getMonth() &&
+        end.getDate() < today.getDate())
+    );
   };
 
   return (
@@ -110,7 +118,7 @@ const InProgressTable = () => {
       {/* Delayed alert section */}
       {data.filter((entry) => isDatePast(entry.endDate)).length > 0 && (
         <div className="mb-4 flex items-center rounded border border-red-700 bg-red-100 p-3 text-red-700">
-          <IoWarningOutline className="mr-2 text-xl" />
+          <IoWarningOutline className="mr-2 text-2xl md:text-xl" />
           <span className="text-xs md:text-base">
             {`You have ${data.filter((entry) => isDatePast(entry.endDate)).length} delayed project(s). Please check the table for warnings.`}
           </span>
@@ -204,7 +212,7 @@ const InProgressTable = () => {
                     today.toLocaleDateString() ? (
                       <FaRegCalendarCheck
                         className="ml-2 text-green-500 md:text-2xl"
-                        title="Project expected to finish today!"
+                        title="Expected to complete today."
                       />
                     ) : new Date(entry.endDate) < today ? (
                       <GrStatusWarning
@@ -290,7 +298,7 @@ const InProgressTable = () => {
       {/* Cancel Pop-up */}
       {isCancelPopUpVisible && (
         <CancelPopUp
-          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName} transaction?`}
+          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName}'s project?`}
           onConfirm={handleCancellation}
           onCancel={handleCancelDelete}
         />
@@ -298,7 +306,7 @@ const InProgressTable = () => {
       {/* Complete Pop-up */}
       {isCompletePopUpVisible && (
         <CompletePopUp
-          message={`Are you sure you want to complete ${customerToComplete.firstName} ${customerToComplete.lastName} project?`}
+          message={`Are you sure you want to mark ${customerToComplete.firstName} ${customerToComplete.lastName}'s project as complete?`}
           onConfirm={handleCompletion}
           onCancel={handleCancelComplete}
         />

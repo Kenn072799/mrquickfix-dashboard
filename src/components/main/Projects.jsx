@@ -7,6 +7,7 @@ import CustomerTable from "../table/CustomerTable";
 import AddJobOrderForm from "../form/AddJobOrderForm";
 import OnProcessTable from "../table/OnProcessTable";
 import InProgressTable from "../table/InProgressTable";
+import CompleteTable from "../table/CompleteTable";
 
 const Projects = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -33,6 +34,8 @@ const Projects = () => {
           Add Job Order
         </Button>
       </section>
+
+      {/* Client's Inquiry Section */}
       <section className="py-8">
         <Title className="flex items-center">
           <FaCircle size={10} className="mr-2 text-slate-500" />
@@ -41,6 +44,8 @@ const Projects = () => {
         <section className="py-4">
           <CustomerTable />
         </section>
+
+        {/* On Process Section */}
         <Title className="flex items-center">
           <FaCircle size={10} className="mr-2 text-blue-500" />
           On Process
@@ -48,12 +53,23 @@ const Projects = () => {
         <section className="py-4">
           <OnProcessTable />
         </section>
+
+        {/* In Progress Section */}
         <Title className="flex items-center">
           <FaCircle size={10} className="mr-2 text-yellow-500" />
           In Progress
         </Title>
         <section className="py-4">
           <InProgressTable />
+        </section>
+
+        {/* Complete Section */}
+        <Title className="flex items-center">
+          <FaCircle size={10} className="mr-2 text-green-500" />
+          Complete
+        </Title>
+        <section className="py-4">
+          <CompleteTable />
         </section>
       </section>
 
