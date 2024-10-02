@@ -30,12 +30,7 @@ const MyProfile = () => {
             <p className="font-semibold">
               Email: <span className="font-normal">{adminEmail}</span>
             </p>
-            <div className="absolute bottom-8 flex gap-2">
-              <Link to="change-email">
-                <Button size="sm">
-                  <FaRegEdit size={16} className="mr-2" /> Change Email
-                </Button>
-              </Link>
+            <div className="absolute bottom-8">
               <Link to="otp-password">
                 <Button size="sm">
                   <MdOutlineLock size={16} className="mr-2" /> Change password
