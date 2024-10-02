@@ -203,7 +203,7 @@ const CustomerTable = () => {
       {/* Delete Pop-up */}
       {isDeletePopUpVisible && (
         <DeletePopUp
-          message={`Are you sure you want to delete ${customerToDelete.firstName} ${customerToDelete.lastName}'s inquiry?`}
+          message={`This action cannot be undone. Are you sure you want to delete ${customerToDelete.firstName} ${customerToDelete.lastName}'s inquiry?`}
           onConfirm={handleConfirmDelete}
           onCancel={handleCancelDelete}
         />

@@ -4,10 +4,10 @@ import CountUp from "react-countup";
 import { GrStatusWarning } from "react-icons/gr";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useFetchInProgressData } from "../../hooks/useDataHooks";
+import { useInProgressData } from "../../hooks/useDataHooks";
 
 const InProgressDB = () => {
-  const { data, loading, error } = useFetchInProgressData();
+  const { data, loading, error } = useInProgressData();
 
   if (loading) {
     return <div>Loading...</div>;

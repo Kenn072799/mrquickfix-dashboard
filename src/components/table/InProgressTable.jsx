@@ -10,10 +10,10 @@ import CancelPopUp from "../common/popup/CancelPopUp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CompletePopUp from "../common/popup/CompletePopUp";
-import { useFetchInProgressData } from "../hooks/useDataHooks";
+import { useInProgressData } from "../hooks/useDataHooks";
 
 const InProgressTable = () => {
-  const { data, loading, error } = useFetchInProgressData();
+  const { data, loading, error } = useInProgressData();
   const [currentPage, setCurrentPage] = useState(0);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -330,7 +330,7 @@ const InProgressTable = () => {
 
       {/* Popup Form */}
       {isFormVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
           <InProgressForm item={selectedItem} onClose={closeForm} />
         </div>
       )}

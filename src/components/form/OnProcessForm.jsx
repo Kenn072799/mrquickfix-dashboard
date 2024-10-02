@@ -251,7 +251,7 @@ const OnProcessForm = ({ onClose }) => {
         <div className="mx-auto flex items-center justify-center py-4 text-center">
           <div className="mb-2 mt-4 h-[1px] w-1/2 bg-secondary-500"></div>
           <p className="w-full px-2 text-sm font-semibold text-red-500">
-            Recheduled Inspection?
+            Rescheduled Inspection?
           </p>
           <div className="mb-2 mt-4 h-[1px] w-1/2 bg-secondary-500"></div>
         </div>

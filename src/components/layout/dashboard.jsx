@@ -8,7 +8,7 @@ const dashboard = ({ children }) => {
       <SideBar />
       <div className="md:ml-64">
         <NavBar />
-        <div>{children}</div>
+        <div className="h-screen bg-slate-100">{children}</div>
       </div>
     </>
   );

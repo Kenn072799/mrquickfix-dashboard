@@ -268,7 +268,7 @@ const OnProcessTable = () => {
 
       {/* Popup Form */}
       {isFormVisible && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
           <OnProcessForm item={selectedItem} onClose={closeForm} />
         </div>
       )}
@@ -276,7 +276,7 @@ const OnProcessTable = () => {
       {/* Cancel Pop-up */}
       {isCancelPopUpVisible && (
         <CancelPopUp
-          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName}'s progress?`}
+          message={`Are you sure you want to cancel ${customerToCancel.firstName} ${customerToCancel.lastName}'s process?`}
           onConfirm={handleCancellation}
           onCancel={handleCancelDelete}
         />

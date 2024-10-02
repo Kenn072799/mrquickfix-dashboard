@@ -71,7 +71,7 @@ export const useFetchCustomers = () => {
 };
 
 // In Progress
-export const useFetchInProgressData = () => {
+export const useInProgressData = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

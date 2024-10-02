@@ -1,13 +1,20 @@
 import React from "react";
 import Profile from "../../../assets/profile.png";
 import { IoNotificationsOutline, IoNotificationsSharp } from "react-icons/io5";
+import { RiAccountCircleLine } from "react-icons/ri";
+import { MdOutlineLogout } from "react-icons/md";
 import useToggle from "../../hooks/function/useToggle";
 import useCurrentTime from "../../hooks/function/useCurrentTime";
 import { Link } from "react-router-dom";
 import { useNotifications } from "../../hooks/useDataHooks";
 
 const NavBar = () => {
-  const { notifications, markAsRead, visibleCount, loadMore } = useNotifications();
+  //TEST DATA
+  const adminName = "Kenneth Altes";
+  const adminRole = "Admin";
+
+  const { notifications, markAsRead, visibleCount, loadMore } =
+    useNotifications();
   const notificationToggle = useToggle();
   const dropdownToggle = useToggle();
   const { timeAgo } = useCurrentTime();
@@ -101,18 +108,22 @@ const NavBar = () => {
             className="h-12 w-12 cursor-pointer rounded-full"
           />
           <div className="hidden flex-col items-center pl-4 hover:text-primary-500 hover:underline sm:flex">
-            <p className="cursor-pointer">Kenneth Altes</p>
-            <p className="cursor-pointer">Admin</p>
+            <p className="cursor-pointer">{adminName}</p>
+            <p className="cursor-pointer">{adminRole}</p>
           </div>
 
           {/* Admin Dropdown */}
           {dropdownToggle.isActive && (
             <div className="absolute right-0 top-16 z-10 w-48 rounded-lg border bg-white shadow-lg">
               <ul className="p-2">
-                <li className="cursor-pointer px-4 py-2 hover:bg-gray-100">
-                  My Profile
-                </li>
-                <li className="cursor-pointer px-4 py-2 hover:bg-gray-100">
+                <Link to="/profile">
+                  <li className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100">
+                    <RiAccountCircleLine size={20} className="mr-2" />
+                    My Profile
+                  </li>
+                </Link>
+                <li className="flex cursor-pointer items-center px-4 py-2 hover:bg-gray-100">
+                  <MdOutlineLogout size={20} className="mr-2" />
                   Logout
                 </li>
               </ul>

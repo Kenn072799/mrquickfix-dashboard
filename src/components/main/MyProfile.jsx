@@ -1,9 +1,52 @@
-import React from 'react'
+import React from "react";
+import Profile from "../../assets/profile.png";
+import { FaRegEdit } from "react-icons/fa";
+import { MdOutlineLock } from "react-icons/md";
+import Title from "../common/Title";
+import Button from "../common/Button";
+import { Link } from "react-router-dom";
 
 const MyProfile = () => {
-  return (
-    <div>MyProfile</div>
-  )
-}
+  //Sample Data
+  const adminName = "Kenneth Altes";
+  const adminRole = "Admin";
+  const adminEmail = "kenneth.altes@example.com";
 
-export default MyProfile
+  return (
+    <section className="p-4">
+      <div className="py-8">
+        <Title>My Profile</Title>
+        <div className="relative my-4 h-[580px] rounded-md bg-white shadow-md md:h-[700px]">
+          <div className="flex w-full flex-col items-center justify-center">
+            <img
+              src={Profile}
+              alt={adminName}
+              className="m-[20px] mt-20 h-32 w-32 rounded-full border-4 border-primary-500"
+            />
+            <p className="text-xl">{adminName}</p>
+            <p className="mb-8 font-semibold">{adminRole}</p>
+            <div className="h-[1px] w-full bg-slate-100"></div>
+            <h1 className="mb-4 mt-8 text-lg font-bold">Contact Information</h1>
+            <p className="font-semibold">
+              Email: <span className="font-normal">{adminEmail}</span>
+            </p>
+            <div className="absolute bottom-8 flex gap-2">
+              <Link to="change-email">
+                <Button size="sm">
+                  <FaRegEdit size={16} className="mr-2" /> Change Email
+                </Button>
+              </Link>
+              <Link to="otp-password">
+                <Button size="sm">
+                  <MdOutlineLock size={16} className="mr-2" /> Change password
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default MyProfile;
