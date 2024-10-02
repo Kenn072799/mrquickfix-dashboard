@@ -52,11 +52,13 @@ const CustomerTable = () => {
   const handleEditClick = (customer) => {
     setSelectedCustomer(customer);
     setIsFormVisible(true);
+    document.body.style.overflow = 'hidden';
   };
-
+  
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedCustomer(null);
+    document.body.style.overflow = 'auto';
   };
 
   const handleDeleteClick = (customer) => {

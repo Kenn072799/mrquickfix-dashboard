@@ -86,7 +86,7 @@ const SideBar = () => {
             </NavLink>
 
             <li
-              className="flex cursor-pointer items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100"
+              className="flex cursor-pointer items-center px-4 py-4 text-lg font-semibold active:bg-slate-100"
               onClick={toggleMiscellaneous}
             >
               <TbSettings size={24} className="mr-2" />
@@ -97,7 +97,7 @@ const SideBar = () => {
               />
             </li>
             {isMiscOpen && (
-              <ul className="bg-slate-200">
+              <ul className="bg-slate-100">
                 <NavLink to="content">
                   <li className="flex items-center border-t border-slate-300 py-2 pl-6 text-lg font-semibold hover:bg-slate-300">
                     <BiBookContent size={24} className="mr-2" />

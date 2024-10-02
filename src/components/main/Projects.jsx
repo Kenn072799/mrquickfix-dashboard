@@ -26,8 +26,15 @@ const Projects = () => {
 
   const [isFormOpen, setIsFormOpen] = useState(false);
 
-  const openForm = () => setIsFormOpen(true);
-  const closeForm = () => setIsFormOpen(false);
+  const openForm = () => {
+    setIsFormOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeForm = () => {
+    setIsFormOpen(false);
+    document.body.style.overflow = 'auto';
+  };
 
   return (
     <main className="bg-slate-100 p-4">
@@ -47,7 +54,11 @@ const Projects = () => {
       <section id="client" className="py-8">
         <Title className="flex items-center">
           <FaCircle size={10} className="mr-2 text-slate-500" />
-          Client's Inquiry <span className="ml-2 cursor-default" title="total"> - {customerData?.length || 0}</span>
+          Client's Inquiry{" "}
+          <span className="ml-2 cursor-default" title="total">
+            {" "}
+            - {customerData?.length || 0}
+          </span>
         </Title>
         <section className="py-4">
           <CustomerTable />
@@ -57,7 +68,11 @@ const Projects = () => {
         <header id="onprocess">
           <Title className="flex items-center">
             <FaCircle size={10} className="mr-2 text-blue-500" />
-            On Process <span className="ml-2 cursor-default" title="total"> - {onProcessData?.length || 0}</span>
+            On Process{" "}
+            <span className="ml-2 cursor-default" title="total">
+              {" "}
+              - {onProcessData?.length || 0}
+            </span>
           </Title>
         </header>
         <section className="py-4">
@@ -68,7 +83,11 @@ const Projects = () => {
         <header id="inprogress">
           <Title className="flex items-center">
             <FaCircle size={10} className="mr-2 text-yellow-500" />
-            In Progress <span className="ml-2 cursor-default" title="total"> - {onProgressData?.length || 0}</span>
+            In Progress{" "}
+            <span className="ml-2 cursor-default" title="total">
+              {" "}
+              - {onProgressData?.length || 0}
+            </span>
           </Title>
         </header>
         <section className="py-4">
@@ -79,7 +98,11 @@ const Projects = () => {
         <header id="completed">
           <Title className="flex items-center">
             <FaCircle size={10} className="mr-2 text-green-500" />
-            Completed <span className="ml-2 cursor-default" title="total"> - {completeData?.length || 0}</span>
+            Completed{" "}
+            <span className="ml-2 cursor-default" title="total">
+              {" "}
+              - {completeData?.length || 0}
+            </span>
           </Title>
         </header>
         <section className="py-4">
@@ -90,7 +113,11 @@ const Projects = () => {
         <header id="cancelled">
           <Title className="flex items-center">
             <FaCircle size={10} className="mr-2 text-red-500" />
-            Cancelled <span className="ml-2 cursor-default" title="total"> - {cancelData?.length || 0}</span>
+            Cancelled{" "}
+            <span className="ml-2 cursor-default" title="total">
+              {" "}
+              - {cancelData?.length || 0}
+            </span>
           </Title>
         </header>
         <section className="py-4">

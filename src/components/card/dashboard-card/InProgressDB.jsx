@@ -45,7 +45,7 @@ const InProgressDB = () => {
 
   return (
     <Link to="/projects">
-      <div className="relative h-[150px] min-w-[300px] border-t-8 border-yellow-500 bg-white shadow-md md:w-[300px]">
+      <div className="relative h-[150px] min-w-[300px] rounded-md border-t-8 border-yellow-500 bg-white shadow-md md:w-[300px]">
         {/* Delayed Projects Notification */}
         {delayedCount > 0 && (
           <div

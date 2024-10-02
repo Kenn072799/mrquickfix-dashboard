@@ -34,7 +34,7 @@ const ChangeEmail = () => {
         <div className="my-4 h-[580px] rounded-md bg-white shadow-md md:h-[700px]">
           <div className="flex h-full w-full flex-col items-center justify-center">
             <h1 className="py-4 text-center text-xl font-semibold">
-              Please enter your new email.
+              Please enter your new email address.
             </h1>
             <div className="w-[250px] px-4 md:w-[300px]">
               <label className="w-full text-sm font-semibold md:text-base">

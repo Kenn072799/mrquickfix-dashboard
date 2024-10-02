@@ -28,7 +28,7 @@ export const useCustomerData = () => {
   return { data, loading, error };
 };
 
-// Customers
+// Customers in table
 export const useFetchCustomers = () => {
   const [data, setCustomers] = useState([]);
   const [loading, setLoading] = useState(true);

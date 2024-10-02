@@ -41,12 +41,14 @@ const OnProcessCardDB = () => {
     );
   };
 
-  const waitingQuotations = data.filter((item) => isDatePast(item.inspectionDate));
+  const waitingQuotations = data.filter((item) =>
+    isDatePast(item.inspectionDate),
+  );
   const waitingCount = waitingQuotations.length;
 
   return (
     <Link to="/projects">
-      <div className="relative h-[150px] min-w-[300px] border-t-8 border-blue-500 bg-white shadow-md md:w-[300px]">
+      <div className="relative h-[150px] min-w-[300px] rounded-md border-t-8 border-blue-500 bg-white shadow-md md:w-[300px]">
         {/* Waiting Quotations Notification */}
         {waitingCount > 0 && (
           <div
@@ -73,7 +75,7 @@ const OnProcessCardDB = () => {
           </div>
         )}
 
-        <header className="flex items-center pl-4 py-4 border-b">
+        <header className="flex items-center border-b py-4 pl-4">
           <TitleCard>On Process</TitleCard>
         </header>
         <div className="flex items-center pl-4 pt-4">

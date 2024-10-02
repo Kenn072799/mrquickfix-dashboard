@@ -19,7 +19,7 @@ const CompletedDB = () => {
 
   return (
     <Link to="/projects">
-      <div className="h-[150px] min-w-[300px] border-t-8 border-green-500 bg-white shadow-md md:w-[300px]">
+      <div className="h-[150px] min-w-[300px] rounded-md border-t-8 border-green-500 bg-white shadow-md md:w-[300px]">
         <header className="flex items-center border-b py-4 pl-4">
           <TitleCard>Completed</TitleCard>
         </header>

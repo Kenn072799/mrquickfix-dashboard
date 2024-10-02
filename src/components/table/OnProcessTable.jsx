@@ -58,12 +58,14 @@ const OnProcessTable = () => {
   const handleEditClick = (item) => {
     setSelectedItem(item);
     setIsFormVisible(true);
+    document.body.style.overflow = 'hidden';
   };
 
   // Handle cancel click
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedItem(null);
+    document.body.style.overflow = 'auto';
   };
   const handleCancelClick = (item) => {
     setCustomerToCancel(item);

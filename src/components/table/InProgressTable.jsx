@@ -48,11 +48,13 @@ const InProgressTable = () => {
   const handleEditClick = (item) => {
     setSelectedItem(item);
     setIsFormVisible(true);
+    document.body.style.overflow = 'hidden';
   };
 
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedItem(null);
+    document.body.style.overflow = 'auto';
   };
 
   const handleCancelClick = (item) => {
