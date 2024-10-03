@@ -5,6 +5,8 @@ import CompletedDB from "../card/dashboard-card/CompletedDB";
 import CancelledDB from "../card/dashboard-card/CancelledDB";
 import Title from "../common/Title";
 import CustomerDB from "../card/dashboard-card/CustomerDB";
+import { FaChartLine, FaChartPie } from "react-icons/fa6";
+import { NavLink, Outlet } from "react-router-dom";
 
 const DashboardHero = () => {
   return (
@@ -18,16 +20,35 @@ const DashboardHero = () => {
           <CompletedDB />
           <CancelledDB />
         </section>
-        <Title>Analytics</Title>
-        <section className="grid grid-cols-1 gap-4 py-4 sm:grid-cols-2">
-          <div className="flex h-[300px] w-full items-center justify-center border border-red-500">
-            Pie Chart
-          </div>
-          <div className="flex h-[300px] w-full items-center justify-center border border-red-500">
-            Line Chart
-          </div>
-        </section>
+        <Title className="pt-8">Analytics</Title>
+        <div className="mt-4 flex flex-wrap gap-4 rounded-md bg-white px-4 py-4 shadow-sm">
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "rounded-md bg-primary-500 text-white"
+                : "rounded-md border border-primary-500 text-primary-500"
+            }
+            to="line-chart-completed"
+          >
+            <button className="flex items-center px-4 py-2">
+              <FaChartLine className="mr-2 inline md:text-xl" /> Line chart
+            </button>
+          </NavLink>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "rounded-md bg-primary-500 text-white"
+                : "rounded-md border border-primary-500 text-primary-500"
+            }
+            to="pie-chart-completed"
+          >
+            <button className="flex items-center px-4 py-2">
+              <FaChartPie className="mr-2 inline md:text-xl" /> Pie Chart
+            </button>
+          </NavLink>
+        </div>
       </section>
+      <Outlet />
     </main>
   );
 };

@@ -14,19 +14,31 @@ import OtpPassword from "./components/main/edit-account/OtpPassword";
 import AddAccountForm from "./components/form/AddAccountForm";
 import AdminList from "./components/main/AdminList";
 import Welcome from "./components/main/Welcome";
+import LineCompletedCard from "./components/chart/Completed/LineCompletedCard";
+import PieCompletedCard from "./components/chart/Completed/PieCompletedCard";
 
 function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<DashboardHero />} />
+        <Route path="/" element={<DashboardHero />}>
+          <Route
+            index
+            element={<Navigate to="/line-chart-completed" replace />}
+          />
+          <Route path="line-chart-completed" element={<LineCompletedCard />} />
+          <Route path="pie-chart-completed" element={<PieCompletedCard />} />
+        </Route>
+
         <Route path="/projects" element={<Projects />} />
         <Route path="/content" element={<ContentManagement />} />
+
         <Route path="/account" element={<AccountManagement />}>
           <Route index element={<Navigate to="create-account" replace />} />
           <Route path="create-account" element={<AddAccountForm />} />
           <Route path="admin-list" element={<AdminList />} />
         </Route>
+
         <Route path="welcome" element={<Welcome />} />
         <Route path="/profile" element={<MyProfile />} />
         <Route path="/profile/otp-password" element={<OtpPassword />} />
