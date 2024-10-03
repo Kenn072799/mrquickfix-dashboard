@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Title from "../../common/Title";
 import Button from "../../common/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const OtpPassword = () => {
   const navigate = useNavigate();

@@ -13,6 +13,7 @@ const Button = ({ variant = "primary", size = "md", children, ...props }) => {
     cancel:
       "bg-zinc-300 text-sm w-full md:text-base text-black hover:bg-zinc-400 flex items-center justify-center",
     save: "bg-gray-500 text-sm w-full md:text-base text-white hover:bg-gray-600 flex items-center justify-center",
+    delete: "bg-red-500 text-sm w-full md:text-base text-white hover:bg-red-600 flex items-center justify-center",
   };
 
   const sizeStyle = {

@@ -23,8 +23,8 @@ const MyProfile = () => {
               alt={adminName}
               className="m-[20px] mt-20 h-32 w-32 rounded-full border-4 border-primary-500"
             />
-            <p className="text-xl">{adminName}</p>
-            <p className="mb-8 font-semibold">{adminRole}</p>
+            <p className="text-xl font-bold">{adminName}</p>
+            <p className="mb-8">{adminRole}</p>
             <div className="h-[1px] w-full bg-slate-100"></div>
             <h1 className="mb-4 mt-8 text-lg font-bold">Contact Information</h1>
             <p className="font-semibold">

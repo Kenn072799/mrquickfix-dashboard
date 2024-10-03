@@ -70,6 +70,7 @@ const AddJobOrderForm = ({ onClose }) => {
     console.log("Inspection Date:", formData.inspectionDate);
 
     toast.success("Submitted successfully!");
+    onClose();
   };
 
   return (

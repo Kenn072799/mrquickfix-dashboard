@@ -46,23 +46,12 @@ const OnProcessForm = ({ onClose }) => {
     e.preventDefault();
 
     const fileInput = document.querySelector('input[type="file"]');
-    const file = fileInput?.files[0];
+    fileInput?.files[0];
 
-    console.log("Submitted Form Data:");
-    console.log("First Name:", formData.firstName);
-    console.log("Last Name:", formData.lastName);
-    console.log("Address:", formData.address);
-    console.log("Email:", formData.email);
-    console.log("Phone Number:", formData.phoneNumber);
-    console.log("Job Type:", formData.jobType);
-    console.log("Services (selected categories):", selectedCategories);
-    console.log("Quotation File:", file ? file.name : "No file uploaded");
-    console.log("Start Date:", formData.startDate);
-    console.log("End Date:", formData.endDate);
-    console.log("Admin:", formData.admin);
-    console.log("Inspection Date:", formData.inspectionDate);
+    console.log("Form Data Submitted:", formData);
 
     toast.success("Submitted successfully!");
+    onClose();
   };
 
   const handleSaveChanges = () => {

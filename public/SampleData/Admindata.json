@@ -1,0 +1,38 @@
+[
+    {
+      "id": 1,
+      "adminProfile": "../SampleAsset/profile.png",
+      "adminName": "Kenneth Altes",
+      "adminRole": "Admin",
+      "adminEmail": "kenneth.altes@example.com"
+    },
+    {
+      "id": 2,
+      "adminProfile": "../SampleAsset/woman.png",
+      "adminName": "Jane Doe",
+      "adminRole": "Admin",
+      "adminEmail": "jane.doe@example.com"
+    },
+    {
+      "id": 3,
+      "adminProfile": "../SampleAsset/profile.png",
+      "adminName": "Michael Smith",
+      "adminRole": "Admin",
+      "adminEmail": "michael.smith@example.com"
+    },
+    {
+      "id": 4,
+      "adminProfile": "../SampleAsset/profile.png",
+      "adminName": "Olivia Johnson",
+      "adminRole": "Admin",
+      "adminEmail": "olivia.johnson@example.com"
+    },
+    {
+      "id": 5,
+      "adminProfile": "../SampleAsset/woman.png",
+      "adminName": "Sophia Brown",
+      "adminRole": "Admin",
+      "adminEmail": "sophia.brown@example.com"
+    }
+  ]
+  
