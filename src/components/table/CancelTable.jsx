@@ -58,10 +58,10 @@ const CancelTable = () => {
                 Last Name
               </th>
               <th className="min-w-[200px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:min-w-[230px] md:text-base">
-                Address
+                Home Address
               </th>
               <th className="min-w-[100px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:text-base">
-                Email
+                Email Address
               </th>
               <th className="min-w-[110px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:min-w-[140px] md:text-base">
                 Phone Number

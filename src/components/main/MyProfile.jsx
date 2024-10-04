@@ -1,6 +1,5 @@
 import React from "react";
 import Profile from "../../assets/profile.png";
-import { FaRegEdit } from "react-icons/fa";
 import { MdOutlineLock } from "react-icons/md";
 import Title from "../common/Title";
 import Button from "../common/Button";

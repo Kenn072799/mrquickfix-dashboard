@@ -13,7 +13,8 @@ const PieChartData = () => {
     value: entry.completed,
   }));
 
-  const colors = [
+  const colors = [    
+    "#FFC0CB",
     "#115fa6",
     "#94ae0a",
     "#a61120",

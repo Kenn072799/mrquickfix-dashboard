@@ -62,10 +62,10 @@ const CompleteTable = () => {
                 Last Name
               </th>
               <th className="min-w-[200px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:min-w-[230px] md:text-base">
-                Address
+                Home Address
               </th>
               <th className="min-w-[100px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:text-base">
-                Email
+                Email Address
               </th>
               <th className="min-w-[110px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:min-w-[140px] md:text-base">
                 Phone Number
@@ -100,8 +100,8 @@ const CompleteTable = () => {
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.address}
                   </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.email || "None"}
+                  <td className="border border-gray-300 p-2 text-xs text-blue-500 hover:underline md:text-base">
+                    <a href={`mailto:${item.email}`}>{item.email || "None"}</a>
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.phoneNumber || "None"}
