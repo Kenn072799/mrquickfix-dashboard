@@ -12,6 +12,7 @@ import { LiaProjectDiagramSolid } from "react-icons/lia";
 import { RiAccountCircleLine } from "react-icons/ri";
 import { TbSettings } from "react-icons/tb";
 import { BiBookContent } from "react-icons/bi";
+import { CgNotes } from "react-icons/cg";
 
 const SideBar = () => {
   const [isMiscOpen, setIsMiscOpen] = useState(false);
@@ -30,6 +31,11 @@ const SideBar = () => {
     if (!isSidebarOpen) {
       closeMiscellaneous();
     }
+  };
+
+  const handleClick = () => {
+    setCurrentPage();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -59,13 +65,13 @@ const SideBar = () => {
         <nav>
           <ul className="font-roboto">
             <NavLink
-              to="/"
+              to="/dashboard"
               className={({ isActive }) =>
                 `mt-12 flex items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100 ${
                   isActive ? "bg-slate-200" : ""
                 }`
               }
-              onClick={toggleSidebar}
+              onClick={handleClick}
             >
               <MdOutlineSpaceDashboard size={24} className="mr-2" />
               Dashboard
@@ -78,12 +84,23 @@ const SideBar = () => {
                   isActive ? "bg-slate-200" : ""
                 }`
               }
-              onClick={toggleSidebar}
+              onClick={handleClick}
             >
               <LiaProjectDiagramSolid size={24} className="mr-2" />
               Track Job Order
             </NavLink>
-
+            <NavLink
+              to="/reports"
+              onClick={handleClick}
+              className={({ isActive }) =>
+                `flex items-center px-4 py-4 text-lg font-semibold hover:bg-slate-100 ${
+                  isActive ? "bg-slate-200" : ""
+                }`
+              }
+            >
+              <CgNotes size={24} className="mr-2" />
+              Reports
+            </NavLink>
             <li
               className="flex cursor-pointer items-center px-4 py-4 text-lg font-semibold active:bg-slate-100"
               onClick={toggleMiscellaneous}
@@ -97,13 +114,13 @@ const SideBar = () => {
             </li>
             {isMiscOpen && (
               <ul className="bg-slate-100">
-                <NavLink to="content">
+                <NavLink to="content" onClick={handleClick}>
                   <li className="flex items-center border-t border-slate-300 py-2 pl-6 text-lg font-semibold hover:bg-slate-300">
                     <BiBookContent size={24} className="mr-2" />
                     Content Management
                   </li>
                 </NavLink>
-                <NavLink to="account">
+                <NavLink to="account" onClick={handleClick}>
                   <li className="flex items-center py-2 pl-6 text-lg font-semibold hover:bg-slate-300">
                     <MdOutlineManageAccounts size={24} className="mr-2" />
                     Account Management
@@ -111,7 +128,6 @@ const SideBar = () => {
                 </NavLink>
               </ul>
             )}
-
             <div className="absolute bottom-4 w-full">
               <NavLink
                 to="/profile"
@@ -120,7 +136,7 @@ const SideBar = () => {
                     isActive ? "bg-slate-200" : ""
                   }`
                 }
-                onClick={toggleSidebar}
+                onClick={handleClick}
               >
                 <li className="flex items-center">
                   <RiAccountCircleLine size={24} className="mr-2" />

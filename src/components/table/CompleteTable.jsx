@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { useCompletedData } from "../hooks/useDataHooks";
+import { LuEye } from "react-icons/lu";
+import CompletedDetails from "../form/CompletedDetails";
 
 const CompleteTable = () => {
   const { data, loading, error } = useCompletedData();
@@ -8,6 +10,8 @@ const CompleteTable = () => {
   const rowsPerPage = 10;
   const [sortedData, setSortedData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isViewFormVisible, setIsViewFormVisible] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
 
   useEffect(() => {
     const sorted = [...data].sort(
@@ -18,6 +22,20 @@ const CompleteTable = () => {
 
   const handleSearch = (query) => {
     setSearchQuery(query);
+  };
+
+  // Handle view click
+  const handleViewClick = (item) => {
+    setSelectedCustomer(item);
+    setIsViewFormVisible(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  // Close view form
+  const closeViewForm = () => {
+    setIsViewFormVisible(false);
+    setSelectedCustomer(null);
+    document.body.style.overflow = "auto";
   };
 
   const filteredData = sortedData.filter((item) => {
@@ -61,14 +79,8 @@ const CompleteTable = () => {
               <th className="min-w-[100px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:text-base">
                 Last Name
               </th>
-              <th className="min-w-[200px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:min-w-[230px] md:text-base">
-                Home Address
-              </th>
               <th className="min-w-[100px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:text-base">
                 Email Address
-              </th>
-              <th className="min-w-[110px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:min-w-[140px] md:text-base">
-                Phone Number
               </th>
               <th className="min-w-[120px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:min-w-[100px] md:text-base">
                 Job Type
@@ -81,6 +93,9 @@ const CompleteTable = () => {
               </th>
               <th className="min-w-[130px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:min-w-[150px] md:text-base">
                 Completion Date
+              </th>
+              <th className="min-w-[100px] border border-gray-300 bg-green-500 p-2 text-center text-xs text-white md:text-base">
+                Action
               </th>
             </tr>
           </thead>
@@ -97,14 +112,8 @@ const CompleteTable = () => {
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.lastName}
                   </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.address}
-                  </td>
                   <td className="border border-gray-300 p-2 text-xs text-blue-500 hover:underline md:text-base">
                     <a href={`mailto:${item.email}`}>{item.email || "None"}</a>
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.phoneNumber || "None"}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.jobType}
@@ -125,12 +134,27 @@ const CompleteTable = () => {
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.completeDate}
                   </td>
+                  <td className="border border-gray-300 p-2 text-xs md:text-base">
+                    <div className="relative flex justify-center">
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleViewClick(item)}
+                          className="ml-2 rounded-md bg-orange-500 px-2 py-1 text-white hover:bg-orange-600"
+                        >
+                          <LuEye className="text-lg md:text-xl" />
+                        </button>
+                        <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
+                          View Details
+                        </div>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
                 <td
-                  colSpan={9}
+                  colSpan={8}
                   className="p-4 text-center text-xs sm:text-sm md:text-base"
                 >
                   No data available
@@ -164,6 +188,15 @@ const CompleteTable = () => {
           <FaAngleRight />
         </button>
       </div>
+
+      {/* View Pop-up */}
+      {isViewFormVisible && (
+        <>
+          <div className="fixed inset-0 z-50 flex items-center bg-black/20 justify-center">
+            <CompletedDetails item={selectedCustomer} onClose={closeViewForm} />
+          </div>
+        </>
+      )}
     </div>
   );
 };

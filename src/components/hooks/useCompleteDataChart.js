@@ -14,9 +14,23 @@ export const useCompletedData = () => {
         }
         const result = await response.json();
 
+        const currentDate = new Date();
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+
+        //
+        const months = [];
+        for (let i = 0; i < 13; i++) {
+          const date = new Date(currentYear, currentMonth - i);
+          const monthName = date.toLocaleString("default", { month: "short" });
+          const year = date.getFullYear();
+          months.push(`${monthName} ${year}`);
+        }
+        months.reverse();
+
         const dateCountMap = result.reduce((acc, curr) => {
           const date = new Date(curr.completeDate);
-          const month = date.toLocaleString("default", { month: "long" });
+          const month = date.toLocaleString("default", { month: "short" });
           const year = date.getFullYear();
           const monthYear = `${month} ${year}`;
 
@@ -28,12 +42,10 @@ export const useCompletedData = () => {
           return acc;
         }, {});
 
-        const formattedData = Object.keys(dateCountMap).map((monthYear) => ({
+        const formattedData = months.map((monthYear) => ({
           date: monthYear,
-          completed: dateCountMap[monthYear],
+          completed: dateCountMap[monthYear] || 0,
         }));
-
-        formattedData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
         setData(formattedData);
       } catch (error) {

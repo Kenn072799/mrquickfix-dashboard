@@ -189,7 +189,7 @@
     "jobType": "Repair",
     "services": ["Door and Window Repairs", "Outdoor and Landscaping"],
     "quotation": "../SampleAsset/SampleQuotation.pdf",
-    "completeDate": "2024-10-09"
+    "completeDate": "2024-09-09"
   },
   {
     "id": "17",
@@ -238,5 +238,53 @@
     "services": ["Aircon Services", "Door and Window Repairs"],
     "quotation": "../SampleAsset/SampleQuotation.pdf",
     "completeDate": "2024-10-11"
+  },
+  {
+    "id": "21",
+    "firstName": "Ella",
+    "lastName": "Hernandez",
+    "address": "1717 Spruce Court",
+    "email": "ella.hernandez@example.com",
+    "phoneNumber": "456-012-3456",
+    "jobType": "Preventive Maintenance Services",
+    "services": ["Aircon Services", "Door and Window Repairs"],
+    "quotation": "../SampleAsset/SampleQuotation.pdf",
+    "completeDate": "2023-10-11"
+  },
+  {
+    "id": "22",
+    "firstName": "Ella",
+    "lastName": "Hernandez",
+    "address": "1717 Spruce Court",
+    "email": "ella.hernandez@example.com",
+    "phoneNumber": "456-012-3456",
+    "jobType": "Preventive Maintenance Services",
+    "services": ["Aircon Services", "Door and Window Repairs"],
+    "quotation": "../SampleAsset/SampleQuotation.pdf",
+    "completeDate": "2023-10-11"
+  },
+  {
+    "id": "23",
+    "firstName": "Ella",
+    "lastName": "Hernandez",
+    "address": "1717 Spruce Court",
+    "email": "ella.hernandez@example.com",
+    "phoneNumber": "456-012-3456",
+    "jobType": "Preventive Maintenance Services",
+    "services": ["Aircon Services", "Door and Window Repairs"],
+    "quotation": "../SampleAsset/SampleQuotation.pdf",
+    "completeDate": "2023-11-11"
+  },
+  {
+    "id": "24",
+    "firstName": "Ella",
+    "lastName": "Hernandez",
+    "address": "1717 Spruce Court",
+    "email": "ella.hernandez@example.com",
+    "phoneNumber": "456-012-3456",
+    "jobType": "Preventive Maintenance Services",
+    "services": ["Aircon Services", "Door and Window Repairs"],
+    "quotation": "../SampleAsset/SampleQuotation.pdf",
+    "completeDate": "2023-12-11"
   }
 ]

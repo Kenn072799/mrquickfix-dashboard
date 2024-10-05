@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { FaAngleLeft, FaAngleRight, FaClockRotateLeft } from "react-icons/fa6";
+import { FaAngleLeft, FaAngleRight, FaRegClock } from "react-icons/fa6";
 import { LiaEdit } from "react-icons/lia";
 import { MdOutlineCancel } from "react-icons/md";
+import { LuEye } from "react-icons/lu";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import OnProcessForm from "../form/OnProcessForm";
 import CancelPopUp from "../common/popup/CancelPopUp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useOnProcessData } from "../hooks/useDataHooks";
+import OnProcessInquiryDetails from "../form/OnProcessInquiryDetails";
 
 const OnProcessTable = () => {
   const { data, loading, error } = useOnProcessData();
@@ -15,6 +17,8 @@ const OnProcessTable = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isCancelPopUpVisible, setIsCancelPopUpVisible] = useState(false);
   const [customerToCancel, setCustomerToCancel] = useState(null);
+  const [isViewFormVisible, setIsViewFormVisible] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [selectedItem, setSelectedItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const rowsPerPage = 10;
@@ -58,18 +62,32 @@ const OnProcessTable = () => {
   const handleEditClick = (item) => {
     setSelectedItem(item);
     setIsFormVisible(true);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   // Handle cancel click
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedItem(null);
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   };
   const handleCancelClick = (item) => {
     setCustomerToCancel(item);
     setIsCancelPopUpVisible(true);
+  };
+
+  // Handle view click
+  const handleViewClick = (item) => {
+    setSelectedCustomer(item);
+    setIsViewFormVisible(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  // Close view form
+  const closeViewForm = () => {
+    setIsViewFormVisible(false);
+    setSelectedCustomer(null);
+    document.body.style.overflow = "auto";
   };
 
   // Handle cancellation
@@ -113,7 +131,7 @@ const OnProcessTable = () => {
       {/* Waiting for quotation alert */}
       {waitingForQuotation.length > 0 && (
         <div className="mb-4 rounded border border-yellow-700 bg-yellow-100 p-3 text-yellow-700">
-          <FaClockRotateLeft className="mr-2 inline text-xl" />
+          <FaRegClock className="mr-2 inline text-xl" />
           <span className="text-xs md:text-base">
             You have {waitingForQuotation.length} project(s) waiting for
             quotation.
@@ -125,31 +143,22 @@ const OnProcessTable = () => {
         <table className="min-w-[800px] border-collapse border border-gray-300 md:min-w-full">
           <thead>
             <tr>
-              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[150px] md:text-base">
+              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 First Name
               </th>
-              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[150px] md:text-base">
+              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 Last Name
-              </th>
-              <th className="min-w-[250px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[150px] md:text-base">
-                Home Address
-              </th>
-              <th className="min-w-[150px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
-                Email Address
-              </th>
-              <th className="min-w-[130px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
-                Phone Number
               </th>
               <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[150px] md:text-base">
                 Type of Job
               </th>
-              <th className="min-w-[150px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
+              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 Services
               </th>
-              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[200px] md:text-base">
+              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 Inspection Schedule
               </th>
-              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:min-w-[100px] md:text-base">
+              <th className="min-w-[100px] border border-gray-300 bg-blue-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 Action
               </th>
             </tr>
@@ -168,15 +177,6 @@ const OnProcessTable = () => {
                     {item.lastName}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                    {item.address}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                    {item.email || "None"}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                    {item.phoneNumber || "None"}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
                     {item.jobType}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
@@ -188,13 +188,13 @@ const OnProcessTable = () => {
                       {new Date(item.inspectionDate).toLocaleDateString() ===
                       today ? (
                         <FaRegCalendarAlt
-                          className="ml-2 text-green-500 md:text-2xl"
+                          className="text-green-500 md:text-2xl"
                           title="Inspection scheduled for today!"
                         />
                       ) : (
                         new Date(item.inspectionDate) < new Date() && (
-                          <FaClockRotateLeft
-                            className="ml-2 text-yellow-500 md:text-2xl"
+                          <FaRegClock
+                            className="text-yellow-500 md:text-2xl"
                             title="Waiting for quotation!"
                           />
                         )
@@ -202,11 +202,22 @@ const OnProcessTable = () => {
                     </div>
                   </td>
                   <td className="border border-gray-300 p-2 text-xs sm:text-sm md:text-base">
-                    <div className="flex justify-evenly">
+                    <div className="relative flex justify-center gap-2">
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleViewClick(item)}
+                          className="rounded-md bg-orange-500 px-2 py-1 text-white hover:bg-orange-600"
+                        >
+                          <LuEye className="text-lg md:text-xl" />
+                        </button>
+                        <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
+                          View Details
+                        </div>
+                      </div>
                       <div className="group relative">
                         <button
                           onClick={() => handleEditClick(item)}
-                          className="ml-2 rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
+                          className="rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
                         >
                           <LiaEdit className="text-lg md:text-xl" />
                         </button>
@@ -217,7 +228,7 @@ const OnProcessTable = () => {
                       <div className="group relative">
                         <button
                           onClick={() => handleCancelClick(item)}
-                          className="ml-2 rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+                          className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
                         >
                           <MdOutlineCancel className="text-lg" />
                         </button>
@@ -232,7 +243,7 @@ const OnProcessTable = () => {
             ) : (
               <tr>
                 <td
-                  colSpan="9"
+                  colSpan="6"
                   className="p-4 text-center text-xs sm:text-sm md:text-base"
                 >
                   No data available
@@ -267,6 +278,19 @@ const OnProcessTable = () => {
           <FaAngleRight />
         </button>
       </div>
+
+      {/* View Pop-up */}
+      {isViewFormVisible && (
+        <>
+          <div className="fixed inset-0 z-40 bg-black/20" onClick={closeForm} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <OnProcessInquiryDetails
+              item={selectedCustomer}
+              onClose={closeViewForm}
+            />
+          </div>
+        </>
+      )}
 
       {/* Popup Form */}
       {isFormVisible && (

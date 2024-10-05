@@ -7,11 +7,14 @@ import DeletePopUp from "../common/popup/DeletePopUp";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useFetchCustomers } from "../hooks/useDataHooks";
+import { LuEye } from "react-icons/lu";
+import CustomerInquiryDetails from "../form/CustomerInquiryDetails";
 
 const CustomerTable = () => {
   const { data, loading, error } = useFetchCustomers();
   const [currentPage, setCurrentPage] = useState(0);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isViewFormVisible, setIsViewFormVisible] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [isDeletePopUpVisible, setIsDeletePopUpVisible] = useState(false);
   const [customerToDelete, setCustomerToDelete] = useState(null);
@@ -23,12 +26,7 @@ const CustomerTable = () => {
   }
 
   if (error) {
-    return (
-      <div className="text-center text-red-500">
-        <p>Error: {error}</p>
-        <p>Please try refreshing the page.</p>
-      </div>
-    );
+    return <div>Error: {error}</div>;
   }
 
   const uniqueCustomers = Array.from(
@@ -52,18 +50,32 @@ const CustomerTable = () => {
   const handleEditClick = (customer) => {
     setSelectedCustomer(customer);
     setIsFormVisible(true);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
-  
+
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedCustomer(null);
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   };
 
   const handleDeleteClick = (customer) => {
     setCustomerToDelete(customer);
     setIsDeletePopUpVisible(true);
+  };
+
+  // Handle view click
+  const handleViewClick = (customer) => {
+    setSelectedCustomer(customer);
+    setIsViewFormVisible(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  // Close view form
+  const closeViewForm = () => {
+    setIsViewFormVisible(false);
+    setSelectedCustomer(null);
+    document.body.style.overflow = "auto";
   };
 
   const handleConfirmDelete = () => {
@@ -96,10 +108,10 @@ const CustomerTable = () => {
         <table className="min-w-[800px] border-collapse border border-gray-200 md:min-w-full">
           <thead className="bg-gray-100">
             <tr>
-              <th className="min-w-[150px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
+              <th className="min-w-[100px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 First Name
               </th>
-              <th className="min-w-[150px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
+              <th className="min-w-[100px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 Last Name
               </th>
               <th className="min-w-[150px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
@@ -108,7 +120,7 @@ const CustomerTable = () => {
               <th className="min-w-[150px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 Phone Number
               </th>
-              <th className="min-w-[350px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
+              <th className="min-w-[100px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
                 Message
               </th>
               <th className="min-w-[150px] border border-gray-200 bg-slate-500 p-2 text-center text-xs text-white sm:text-sm md:text-base">
@@ -139,13 +151,26 @@ const CustomerTable = () => {
                     {customer.phoneNumber}
                   </td>
                   <td className="border border-gray-200 p-2 text-xs sm:text-sm md:text-base">
-                    {customer.message}
+                    <div className="max-w-[300px] overflow-hidden text-ellipsis whitespace-nowrap">
+                      {customer.message}
+                    </div>
                   </td>
                   <td className="border border-gray-200 p-2 text-xs sm:text-sm md:text-base">
                     {new Date(customer.date).toLocaleString()}
                   </td>
                   <td className="border border-gray-200 p-2 text-xs sm:text-sm md:text-base">
-                    <div className="relative flex justify-evenly">
+                    <div className="relative flex justify-center gap-2">
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleViewClick(customer)}
+                          className="rounded-md bg-orange-500 px-2 py-1 text-white hover:bg-orange-600"
+                        >
+                          <LuEye className="text-lg md:text-xl" />
+                        </button>
+                        <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
+                          View Details
+                        </div>
+                      </div>
                       <div className="group relative">
                         <button
                           onClick={() => handleEditClick(customer)}
@@ -201,6 +226,19 @@ const CustomerTable = () => {
           </>
         )}
       </div>
+
+      {/* View Pop-up */}
+      {isViewFormVisible && (
+        <>
+          <div className="fixed inset-0 z-40 bg-black/20" onClick={closeForm} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <CustomerInquiryDetails
+              customer={selectedCustomer}
+              onClose={closeViewForm}
+            />
+          </div>
+        </>
+      )}
 
       {/* Delete Pop-up */}
       {isDeletePopUpVisible && (

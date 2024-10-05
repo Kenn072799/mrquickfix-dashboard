@@ -1,7 +1,7 @@
 import React from "react";
 import TitleCard from "../../common/TitleCard";
 import CountUp from "react-countup";
-import { FaClockRotateLeft } from "react-icons/fa6";
+import { FaRegClock } from "react-icons/fa6";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useOnProcessData } from "../../hooks/useDataHooks";
@@ -55,7 +55,7 @@ const OnProcessCardDB = () => {
             className="absolute right-14 top-4 flex items-center"
             title={`${waitingCount} quotation(s) waiting`}
           >
-            <FaClockRotateLeft className="text-2xl" />
+            <FaRegClock className="text-2xl" />
             <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs text-white">
               {waitingCount}
             </span>

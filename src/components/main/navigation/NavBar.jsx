@@ -62,7 +62,7 @@ const NavBar = () => {
             <ul className="max-h-64 overflow-y-auto p-2">
               {notifications.length > 0 ? (
                 notifications.slice(0, visibleCount).map((notification) => (
-                  <Link to="/projects">
+                  <Link to="/projects" onClick={notificationToggle.close}>
                     <li
                       key={notification.id}
                       className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${

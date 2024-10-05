@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AdminCard from "../card/admin-profile/adminCard";
 import { useAdminData } from "../hooks/useDataHooks";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import DeletePopUp from "../common/popup/DeletePopUp";
 
 const AdminList = () => {

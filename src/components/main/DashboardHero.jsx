@@ -12,7 +12,7 @@ const DashboardHero = () => {
   return (
     <main className="bg-slate-100 p-4">
       <section className="py-8">
-        <Title>Monitoring</Title>
+        <Title>Monitoring Job Order</Title>
         <section className="flex flex-wrap justify-center gap-4 py-4">
           <CustomerDB />
           <OnProcessCardDB />
@@ -21,14 +21,14 @@ const DashboardHero = () => {
           <CancelledDB />
         </section>
         <Title className="pt-8">Analytics</Title>
-        <div className="mt-4 flex flex-wrap gap-4 rounded-md bg-white px-4 py-4 shadow-sm">
+        <div className="mt-4 flex flex-wrap gap-4 rounded-md bg-white px-4 py-4 shadow-md">
           <NavLink
             className={({ isActive }) =>
               isActive
                 ? "rounded-md bg-primary-500 text-white"
                 : "rounded-md border border-primary-500 text-primary-500"
             }
-            to="line-chart-completed"
+            to="dashboard"
           >
             <button className="flex items-center px-4 py-2">
               <FaChartLine className="mr-2 inline md:text-xl" /> Line chart

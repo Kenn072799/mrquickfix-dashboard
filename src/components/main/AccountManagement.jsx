@@ -1,7 +1,6 @@
 import React from "react";
 import Title from "../common/Title";
 import { NavLink, Outlet } from "react-router-dom";
-import Welcome from "./Welcome";
 
 const AccountManagement = () => {
   return (

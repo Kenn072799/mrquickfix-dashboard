@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { useCancelData } from "../hooks/useDataHooks";
+import { LuEye } from "react-icons/lu";
+import CancelledDetails from "../form/CancelledDetails";
 
 const CancelTable = () => {
   const { data, loading, error } = useCancelData();
@@ -9,6 +11,22 @@ const CancelTable = () => {
   const rowsPerPage = 10;
   const [sortedData, setSortedData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [isViewFormVisible, setIsViewFormVisible] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+
+  // Handle view click
+  const handleViewClick = (item) => {
+    setSelectedCustomer(item);
+    setIsViewFormVisible(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  // Close view form
+  const closeViewForm = () => {
+    setIsViewFormVisible(false);
+    setSelectedCustomer(null);
+    document.body.style.overflow = "auto";
+  };
 
   useEffect(() => {
     const sorted = [...data].sort(
@@ -57,15 +75,6 @@ const CancelTable = () => {
               <th className="min-w-[100px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:text-base">
                 Last Name
               </th>
-              <th className="min-w-[200px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:min-w-[230px] md:text-base">
-                Home Address
-              </th>
-              <th className="min-w-[100px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:text-base">
-                Email Address
-              </th>
-              <th className="min-w-[110px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:min-w-[140px] md:text-base">
-                Phone Number
-              </th>
               <th className="min-w-[120px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:min-w-[100px] md:text-base">
                 Job Type
               </th>
@@ -77,6 +86,9 @@ const CancelTable = () => {
               </th>
               <th className="min-w-[130px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:min-w-[150px] md:text-base">
                 Cancel Date
+              </th>
+              <th className="min-w-[100px] border border-gray-300 bg-red-500 p-2 text-center text-xs text-white md:text-base">
+                Action
               </th>
             </tr>
           </thead>
@@ -92,15 +104,6 @@ const CancelTable = () => {
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.lastName}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.address}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.email || "None"}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.phoneNumber || "None"}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.jobType}
@@ -126,6 +129,21 @@ const CancelTable = () => {
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.cancelDate}
+                  </td>
+                  <td className="border border-gray-300 p-2 text-xs md:text-base">
+                    <div className="flex justify-evenly">
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleViewClick(item)}
+                          className="ml-2 rounded-md bg-orange-500 px-2 py-1 text-white hover:bg-orange-600"
+                        >
+                          <LuEye className="text-lg md:text-xl" />
+                        </button>
+                        <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
+                          View Details
+                        </div>
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -165,6 +183,18 @@ const CancelTable = () => {
         >
           <FaAngleRight />
         </button>
+
+        {/* View Pop-up */}
+        {isViewFormVisible && (
+          <>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+              <CancelledDetails
+                item={selectedCustomer}
+                onClose={closeViewForm}
+              />
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

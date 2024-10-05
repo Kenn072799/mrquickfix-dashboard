@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import LineChartData from "../LineChart";
-import { FaMinus } from "react-icons/fa";
-import { IoMdDownload } from "react-icons/io";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 import Title from "../../common/Title";
 import { useCompletedData } from "../../hooks/useCompleteDataChart";
+import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
+import html2canvas from "html2canvas";
 
 const convertToCSV = (data) => {
   const header = "Date,Completed\n";
@@ -24,8 +25,19 @@ const downloadCSV = (data, filename) => {
   document.body.removeChild(link);
 };
 
+const downloadChartAsPNG = (chartRef) => {
+  html2canvas(chartRef.current).then((canvas) => {
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = "completed_projects_chart.png";
+    link.click();
+  });
+};
+
 const LineCompletedCard = () => {
   const { data, loading, error } = useCompletedData();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const chartRef = useRef();
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -38,37 +50,90 @@ const LineCompletedCard = () => {
     prev.completed < current.completed ? prev : current,
   );
 
+  const firstEntry = data[0];
+  const lastEntry = data[data.length - 1];
+
+  const firstMonthCompleted = firstEntry ? firstEntry.completed : 0;
+  const lastMonthCompleted = lastEntry ? lastEntry.completed : 0;
+
+  // Formula for calculating percentage change
+  // (last month completed - first month completed) / first month completed * 100
+  const percentageChange =
+    firstMonthCompleted === 0
+      ? lastMonthCompleted > 0
+        ? 100
+        : 0
+      : ((lastMonthCompleted - firstMonthCompleted) / firstMonthCompleted) *
+        100;
+
   return (
     <div className="relative mb-24 w-full rounded-md border-t-8 border-primary-500 bg-white px-2 py-4 shadow-md md:px-8">
-      <Title className="pb-8 md:text-center md:text-3xl">
-        Completed Projects Data
+      <Title className="pb-2 text-sm md:text-center md:text-xl">
+        Completed Projects Data (Year over Year)
       </Title>
       <div className="mb-4 flex justify-end">
         <button
-          title="Download as CSV"
-          onClick={() => downloadCSV(data, "completed_projects_data.csv")}
-          className="absolute right-2 top-2 rounded-md border border-primary-500 px-3 py-2 text-primary-500 hover:bg-primary-600 hover:text-white active:bg-primary-500 active:text-white md:px-4"
+          className="absolute right-2 top-4"
+          onClick={() => setIsMenuOpen((prev) => !prev)}
         >
-          <IoMdDownload className="text-sm md:text-lg" />
+          <BiDotsVerticalRounded className="cursor-pointer text-2xl text-primary-500" />
+          {isMenuOpen && (
+            <div className="absolute right-0 z-10 mt-2 w-40 rounded-md border bg-white shadow-lg">
+              <button
+                onClick={() => downloadCSV(data, "completed_projects_data.csv")}
+                className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+              >
+                Download CSV
+              </button>
+              <button
+                onClick={() => downloadChartAsPNG(chartRef)}
+                className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-100"
+              >
+                Download PNG
+              </button>
+            </div>
+          )}
         </button>
+      </div>
+      <strong className="text-sm md:text-base">Comparison</strong>
+      <div className="mb-4 text-sm md:text-base">
+        <strong className="mr-1">{firstEntry?.date}:</strong>
+        {firstMonthCompleted} completed.
+        <br />
+        <strong className="mr-1">{lastEntry?.date}:</strong>
+        {lastMonthCompleted} completed.
+        <br />
+        <div className="flex items-center">
+          <strong className="mr-1">Percentage Change:</strong>
+          {percentageChange.toFixed(2)}%
+          {percentageChange >= 0 ? (
+            <FaAngleDoubleUp className="ml-2 text-green-500" />
+          ) : (
+            <FaAngleDoubleDown className="ml-2 text-red-500" />
+          )}
+        </div>
       </div>
       <div className="mb-4">
         {highestValueEntry && (
-          <div className="pb-2 text-sm text-secondary-900 md:text-lg">
-            <FaMinus className="mr-2 inline text-green-500 md:text-xl" />
-            <strong>{highestValueEntry.date}</strong> -{" "}
-            {highestValueEntry.completed} completed project(s).
+          <div className="text-sm md:text-base">
+            <p className="mr-2 inline font-bold">All Time High:</p>
+            {highestValueEntry.date}
+            <span className="ml-1">
+              ({highestValueEntry.completed} completed)
+            </span>
           </div>
         )}
         {lowestValueEntry && (
-          <div className="mr-1 text-sm text-secondary-900 md:text-lg">
-            <FaMinus className="mr-2 inline text-red-500 md:text-xl" />
-            <strong>{lowestValueEntry.date}</strong> -{" "}
-            {lowestValueEntry.completed} completed project(s).
+          <div className="mr-1 text-sm md:text-base">
+            <p className="mr-2 inline font-bold">Recent Low:</p>
+            {lowestValueEntry.date}
+            <span className="ml-1">
+              ({lowestValueEntry.completed} completed)
+            </span>
           </div>
         )}
       </div>
-      <div className="rounded-md border bg-slate-100 p-4">
+      <div className="rounded-md border bg-slate-100 p-4" ref={chartRef}>
         <LineChartData />
       </div>
     </div>

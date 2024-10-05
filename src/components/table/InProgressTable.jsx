@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CompletePopUp from "../common/popup/CompletePopUp";
 import { useInProgressData } from "../hooks/useDataHooks";
+import { LuEye } from "react-icons/lu";
+import InProgressInquiryDetails from "../form/InProgressInquiryDetails";
 
 const InProgressTable = () => {
   const { data, loading, error } = useInProgressData();
@@ -22,6 +24,8 @@ const InProgressTable = () => {
   const [isCompletePopUpVisible, setIsCompletePopUpVisible] = useState(false);
   const [customerToComplete, setCustomerToComplete] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isViewFormVisible, setIsViewFormVisible] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
   const rowsPerPage = 10;
   const today = new Date();
 
@@ -48,13 +52,27 @@ const InProgressTable = () => {
   const handleEditClick = (item) => {
     setSelectedItem(item);
     setIsFormVisible(true);
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   };
 
   const closeForm = () => {
     setIsFormVisible(false);
     setSelectedItem(null);
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
+  };
+
+  // Handle view click
+  const handleViewClick = (item) => {
+    setSelectedCustomer(item);
+    setIsViewFormVisible(true);
+    document.body.style.overflow = "hidden";
+  };
+
+  // Close view form
+  const closeViewForm = () => {
+    setIsViewFormVisible(false);
+    setSelectedCustomer(null);
+    document.body.style.overflow = "auto";
   };
 
   const handleCancelClick = (item) => {
@@ -163,15 +181,6 @@ const InProgressTable = () => {
               <th className="min-w-[100px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:text-base">
                 Last Name
               </th>
-              <th className="min-w-[200px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:min-w-[230px] md:text-base">
-                Home Address
-              </th>
-              <th className="min-w-[100px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:text-base">
-                Email Address
-              </th>
-              <th className="min-w-[110px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:min-w-[140px] md:text-base">
-                Phone Number
-              </th>
               <th className="min-w-[120px] border border-gray-300 bg-yellow-500 p-2 text-center text-xs text-white md:min-w-[100px] md:text-base">
                 Type of Job
               </th>
@@ -206,15 +215,6 @@ const InProgressTable = () => {
                     {item.lastName}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.address}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.email || "None"}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.phoneNumber || "None"}
-                  </td>
-                  <td className="border border-gray-300 p-2 text-xs md:text-base">
                     {item.jobType}
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
@@ -240,12 +240,12 @@ const InProgressTable = () => {
                       {new Date(item.endDate).toLocaleDateString() ===
                       today.toLocaleDateString() ? (
                         <FaRegCalendarCheck
-                          className="ml-2 text-green-500 md:text-2xl"
+                          className="text-green-500 md:text-2xl"
                           title="Expected to complete today."
                         />
                       ) : new Date(item.endDate) < today ? (
                         <GrStatusWarning
-                          className="ml-2 text-red-500 md:text-2xl"
+                          className="text-red-500 md:text-2xl"
                           title="Project is delayed!"
                         />
                       ) : null}
@@ -253,7 +253,7 @@ const InProgressTable = () => {
                   </td>
                   {/* Action buttons */}
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    <div className="flex justify-evenly">
+                    <div className="relative flex justify-center gap-2">
                       <div className="group relative">
                         <button
                           onClick={() => handleCompleteClick(item)}
@@ -267,8 +267,19 @@ const InProgressTable = () => {
                       </div>
                       <div className="group relative">
                         <button
+                          onClick={() => handleViewClick(item)}
+                          className="rounded-md bg-orange-500 px-2 py-1 text-white hover:bg-orange-600"
+                        >
+                          <LuEye className="text-lg md:text-xl" />
+                        </button>
+                        <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
+                          View Details
+                        </div>
+                      </div>
+                      <div className="group relative">
+                        <button
                           onClick={() => handleEditClick(item)}
-                          className="ml-2 rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
+                          className="rounded-md bg-blue-500 px-2 py-1 text-white hover:bg-blue-600"
                         >
                           <LiaEdit className="text-lg md:text-xl" />
                         </button>
@@ -279,7 +290,7 @@ const InProgressTable = () => {
                       <div className="group relative">
                         <button
                           onClick={() => handleCancelClick(item)}
-                          className="ml-2 rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+                          className="rounded-md bg-red-500 px-2 py-1 text-white hover:bg-red-600"
                         >
                           <MdOutlineCancel className="text-lg" />
                         </button>
@@ -294,7 +305,7 @@ const InProgressTable = () => {
             ) : (
               <tr>
                 <td
-                  colSpan="11"
+                  colSpan="8"
                   className="p-4 text-center text-xs sm:text-sm md:text-base"
                 >
                   No data available
@@ -336,6 +347,20 @@ const InProgressTable = () => {
           <InProgressForm item={selectedItem} onClose={closeForm} />
         </div>
       )}
+
+      {/* View Pop-up */}
+      {isViewFormVisible && (
+        <>
+          <div className="fixed inset-0 z-40 bg-black/20" onClick={closeForm} />
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <InProgressInquiryDetails
+              item={selectedCustomer}
+              onClose={closeViewForm}
+            />
+          </div>
+        </>
+      )}
+
       {/* Cancel Pop-up */}
       {isCancelPopUpVisible && (
         <CancelPopUp

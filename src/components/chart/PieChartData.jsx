@@ -13,8 +13,7 @@ const PieChartData = () => {
     value: entry.completed,
   }));
 
-  const colors = [    
-    "#FFC0CB",
+  const colors = [
     "#115fa6",
     "#94ae0a",
     "#a61120",
@@ -23,6 +22,14 @@ const PieChartData = () => {
     "#800000",
     "#F25454",
     "#81BEF7",
+    "#7D4B8B",
+    "#FF6F61",
+    "#6B5B95",
+    "#88B04B",
+    "#F7CAC9",
+    "#92A8D1",
+    "#955251",
+    "#B6B23E",
   ];
 
   return (
@@ -30,7 +37,17 @@ const PieChartData = () => {
       <div className="h-full w-full">
         <ResponsiveContainer>
           <PieChart>
-            <Tooltip />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#ffffff",
+                border: "1px solid #eaeaea",
+                borderRadius: "5px",
+              }}
+              itemStyle={{
+                color: "#000",
+                fontWeight: "bold",
+              }}
+            />
             <Pie
               className="text-xs focus:outline-none md:text-base"
               data={pieData}
@@ -40,11 +57,16 @@ const PieChartData = () => {
               cy="50%"
               labelLine={true}
               label={({ name, value }) => `${name} (${value})`}
+              isAnimationActive={true}
+              animationDuration={800}
+              animationEasing="ease-in-out"
             >
               {pieData.map((entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={colors[index % colors.length]}
+                  stroke="#fff"
+                  strokeWidth={2}
                 />
               ))}
             </Pie>

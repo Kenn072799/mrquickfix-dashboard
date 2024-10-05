@@ -7,6 +7,7 @@ import SpinLoaderNoBg from "./components/loader/SpinLoaderNoBg";
 // Lazy load pages
 const DashboardHero = lazy(() => import("./components/main/DashboardHero"));
 const Projects = lazy(() => import("./components/main/Projects"));
+const Report = lazy(() => import("./components/main/Report"));
 const ContentManagement = lazy(
   () => import("./components/main/ContentManagement"),
 );
@@ -42,17 +43,12 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<DashboardHero />}>
-            <Route
-              index
-              element={<Navigate to="/line-chart-completed" replace />}
-            />
-            <Route
-              path="line-chart-completed"
-              element={<LineCompletedCard />}
-            />
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path="dashboard" element={<LineCompletedCard />} />
             <Route path="pie-chart-completed" element={<PieCompletedCard />} />
           </Route>
 
+          <Route path="/reports" element={<Report />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/content" element={<ContentManagement />} />
 
