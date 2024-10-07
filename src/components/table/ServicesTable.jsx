@@ -19,13 +19,10 @@ const ServicesTable = () => {
         <thead>
           <tr>
             <th className="min-w-[100px] border border-gray-300 bg-secondary-950 p-2 text-center text-xs text-white md:text-base">
-              Project Name
+              Title
             </th>
             <th className="min-w-[100px] border border-gray-300 bg-secondary-950 p-2 text-center text-xs text-white md:text-base">
-              Categories
-            </th>
-            <th className="min-w-[100px] border border-gray-300 bg-secondary-950 p-2 text-center text-xs text-white md:text-base">
-              Date
+              Description
             </th>
             <th className="min-w-[100px] border border-gray-300 bg-secondary-950 p-2 text-center text-xs text-white md:text-base">
               Action
@@ -48,15 +45,12 @@ const ServicesTable = () => {
                 <td className="border border-gray-300 p-2 text-xs md:text-base">
                   {item.services}
                 </td>
-                <td className="border border-gray-300 p-2 text-xs md:text-base">
-                  {item.services}
-                </td>
               </tr>
             ))
           ) : (
             <tr>
               <td
-                colSpan={4}
+                colSpan={3}
                 className="p-4 text-center text-xs sm:text-sm md:text-base"
               >
                 No data available

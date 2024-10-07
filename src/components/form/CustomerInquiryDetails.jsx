@@ -21,22 +21,22 @@ const CustomerInquiryDetails = ({ customer, onClose }) => {
         <div className="my-4 h-[1px] w-full bg-secondary-500"></div>
         <div className="mb-4 flex flex-col text-sm md:text-base">
           {/* First Name */}
-          <span className="font-semibold">First Name:</span>
+          <span className="py-1 font-semibold">First Name:</span>
           <p className="bg-gray-200 p-2">{customer.firstName}</p>
           {/* Last Name */}
-          <span className="font-semibold">Last Name: </span>
+          <span className="py-1 font-semibold">Last Name: </span>
           <p className="bg-gray-200 p-2">{customer.lastName}</p>
           {/* Email */}
-          <span className="font-semibold">Email:</span>
+          <span className="py-1 font-semibold">Email:</span>
           <p className="bg-gray-200 p-2">{customer.email}</p>
           {/* Phone Number */}
-          <span className="font-semibold">Phone Number:</span>
+          <span className="py-1 font-semibold">Phone Number:</span>
           <p className="bg-gray-200 p-2">{customer.phoneNumber}</p>
           {/* Message */}
           <span className="font-semibold">Message:</span>
           <p className="bg-gray-200 p-2">{customer.message}</p>
           {/* Date */}
-          <span className="font-semibold">Date:</span>
+          <span className="py-1 font-semibold">Date:</span>
           <p className="bg-gray-200 p-2">
             {new Date(customer.date).toLocaleString()}
           </p>

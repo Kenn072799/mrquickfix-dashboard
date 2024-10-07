@@ -18,16 +18,16 @@ const ContentTable = () => {
       <table className="min-w-full border-collapse border border-gray-300">
         <thead>
           <tr>
-            <th className="min-w-[100px] border border-gray-300 bg-primary-500 p-2 text-center text-xs text-white md:text-base">
+            <th className="min-w-[100px] border border-gray-300 bg-secondary-950 p-2 text-center text-xs text-white md:text-base">
               Project Name
             </th>
-            <th className="min-w-[100px] border border-gray-300 bg-primary-500 p-2 text-center text-xs text-white md:text-base">
+            <th className="min-w-[100px] border border-gray-300 bg-secondary-950 p-2 text-center text-xs text-white md:text-base">
               Categories
             </th>
-            <th className="min-w-[100px] border border-gray-300 bg-primary-500 p-2 text-center text-xs text-white md:text-base">
+            <th className="min-w-[100px] border border-gray-300 bg-secondary-950 p-2 text-center text-xs text-white md:text-base">
               Date
             </th>
-            <th className="min-w-[100px] border border-gray-300 bg-primary-500 p-2 text-center text-xs text-white md:text-base">
+            <th className="min-w-[100px] border border-gray-300 bg-secondary-950 p-2 text-center text-xs text-white md:text-base">
               Action
             </th>
           </tr>
@@ -37,7 +37,7 @@ const ContentTable = () => {
             displayedProjects.map((item, index) => (
               <tr
                 key={index}
-                className={`${index % 2 === 0 ? "bg-white" : "bg-primary-50"}`}
+                className={`${index % 2 === 0 ? "bg-white" : "bg-secondary-50"}`}
               >
                 <td className="border border-gray-300 p-2 text-xs md:text-base">
                   {item.project}

@@ -4,22 +4,34 @@ import Title from "../../common/Title";
 import Button from "../../common/Button";
 import { LuEye, LuEyeOff } from "react-icons/lu";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(""); // State for error message
+
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevVisibility) => !prevVisibility);
   };
 
   // Handle save password
   const handleSavePassword = () => {
-    // You can add logic to validate and save the password here
-    console.log("Password:", password);
-    toast.success("Password changed successfully!");
+    // Reset error state
+    setError("");
 
-    navigate("/");
+    // Validation checks
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters long.");
+    } else if (!/[A-Z]/.test(password)) {
+      setError("Password must contain at least 1 uppercase letter.");
+    } else if (!/[0-9]/.test(password)) {
+      setError("Password must contain at least 1 number.");
+    } else {
+      toast.success("Password changed successfully!");
+      navigate("/");
+    }
   };
 
   return (
@@ -56,6 +68,7 @@ const ChangePassword = () => {
                   />
                 )}
               </div>
+              {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
               <div className="mt-4">
                 <Button variant="submit" size="sm" onClick={handleSavePassword}>
                   Save

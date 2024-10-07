@@ -30,10 +30,15 @@ const OtpPassword = () => {
         <Title>Verify Your Email</Title>
         <div className="my-4 h-[580px] rounded-md bg-white shadow-md md:h-[700px]">
           <div className="flex h-full w-full flex-col items-center justify-center">
+            <span className="rounded-full border text-sm border-red-500 bg-red-50 px-4 py-2 text-red-500">
+              For testing purpose, your otp code: 123456
+            </span>
+            {/* Success Message */}
             <h1 className="px-4 py-4 text-center text-xl font-semibold">
               We sent an OTP code to your email address.
             </h1>
             <div className="w-[250px] px-4 md:w-[300px]">
+              {/* OTP Input */}
               <label className="w-full text-sm font-semibold md:text-base">
                 Enter 6-digits OTP code:
               </label>

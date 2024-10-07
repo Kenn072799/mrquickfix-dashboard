@@ -6,6 +6,7 @@ import { MdFileUpload } from "react-icons/md";
 import ServicesTable from "../table/ServicesTable";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UploadProjectForm from "../form/ContentManagementForms/UploadProjectForm";
 
 const ContentManagement = () => {
   const [headline, setHeadline] = useState("");
@@ -18,12 +19,19 @@ const ContentManagement = () => {
       console.log("Headline:", headline);
       console.log("Description:", description);
 
-      toast.success("Project added successfully!");
+      toast.success("Submitted successfully!");
+      setError("");
       setHeadline("");
       setDescription("");
     } else {
       setError("Please fill out both the headline and description.");
     }
+  };
+
+  const handleOnWorking = () => {
+    toast.error(
+      "Sorry we are still working on this feature! This form will be available soon.",
+    );
   };
 
   return (
@@ -60,9 +68,10 @@ const ContentManagement = () => {
 
           <div className="my-12 h-[1px] w-full bg-gray-300 md:my-12"></div>
 
+          {/* Upload Button */}
           <div className="flex w-full justify-end">
-            <Button variant="primary" size="sm">
-              <MdFileUpload size={20} className="mr-2" /> Upload Project
+            <Button variant="primary" size="sm" onClick={handleOnWorking}>
+              <MdFileUpload size={20} className="mr-2" /> Upload Projects
             </Button>
           </div>
 
@@ -70,10 +79,21 @@ const ContentManagement = () => {
           <div className="mt-8 w-full">
             <ContentTable />
           </div>
+
+          {/* Services Button */}
+          <div className="mt-12 flex w-full justify-end">
+            <Button variant="primary" size="sm" onClick={handleOnWorking}>
+              <MdFileUpload size={20} className="mr-2" /> Add Services
+            </Button>
+          </div>
+
           {/* Service Table */}
           <div className="mt-8 w-full">
             <ServicesTable />
           </div>
+        </div>
+        <div className="hidden">
+          <UploadProjectForm />
         </div>
       </div>
     </section>
