@@ -17,7 +17,7 @@ const LineChartData = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="h-[400px] w-full overflow-x-auto">
+    <div className="h-[400px] w-full">
       <div className="h-full w-full md:w-full">
         <ResponsiveContainer>
           <LineChart data={data}>

@@ -57,14 +57,13 @@ const LineCompletedCard = () => {
   const lastMonthCompleted = lastEntry ? lastEntry.completed : 0;
 
   // Formula for calculating percentage change
-  // (last month completed - first month completed) / first month completed * 100
+  // (last month completed - first month completed) / first month completed
   const percentageChange =
     firstMonthCompleted === 0
       ? lastMonthCompleted > 0
         ? 100
         : 0
-      : ((lastMonthCompleted - firstMonthCompleted) / firstMonthCompleted) *
-        100;
+      : (lastMonthCompleted - firstMonthCompleted) / firstMonthCompleted;
 
   return (
     <div className="relative mb-24 w-full rounded-md border-t-8 border-primary-500 bg-white px-2 py-4 shadow-md md:px-8">

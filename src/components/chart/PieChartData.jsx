@@ -55,8 +55,8 @@ const PieChartData = () => {
               nameKey="name"
               cx="50%"
               cy="50%"
+              label={({ name, value }) => `${name}: ${value}`}
               labelLine={true}
-              label={({ name, value }) => `${name} (${value})`}
               isAnimationActive={true}
               animationDuration={800}
               animationEasing="ease-in-out"
