@@ -200,14 +200,14 @@ const GeneralComparison = () => {
           </div>
           <div className="flex gap-2 py-2">
             <button
-              className="rounded-md bg-blue-500 px-4 py-2 text-xs text-white hover:bg-blue-600 md:text-sm"
+              className="rounded-md bg-blue-500 px-4 py-2 text-xs text-white hover:bg-blue-600 active:bg-blue-700 md:text-sm"
               onClick={handleSearch}
             >
               Compare
             </button>
             <button
               onClick={handleReset}
-              className="rounded-md bg-gray-300 px-4 py-2 text-xs text-black hover:bg-gray-400 md:text-sm"
+              className="rounded bg-gray-500 px-4 py-2 text-xs text-white hover:bg-gray-600 active:bg-gray-700 md:text-sm"
             >
               Reset
             </button>

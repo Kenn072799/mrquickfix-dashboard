@@ -27,10 +27,11 @@ const CancelledReports = () => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [dateSortOrder, setDateSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(0);
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+  const [selectedYear, setSelectedYear] = useState(null);
   const itemsPerPage = 10;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const chartRef = useRef();
+  const [inputYear, setInputYear] = useState(new Date().getFullYear());
 
   useEffect(() => {
     if (error) {
@@ -46,11 +47,10 @@ const CancelledReports = () => {
       data.forEach((curr) => {
         const date = new Date(curr.cancelDate);
         const year = date.getFullYear();
-        if (
-          (timeframe === "weekly" || timeframe === "monthly") &&
-          year !== selectedYear
-        )
-          return;
+
+        // Filter based on selectedYear if it is set
+        if (selectedYear && year !== selectedYear) return;
+
         let key;
         if (timeframe === "weekly") {
           const weekStart = new Date(
@@ -83,6 +83,14 @@ const CancelledReports = () => {
     };
     formatData();
   }, [data, timeframe, selectedYear]);
+
+  const handleSearchYear = () => {
+    setSelectedYear(inputYear);
+  };
+
+  const handleViewAllYears = () => {
+    setSelectedYear(null);
+  };
 
   // Find highest and lowest counts
   const highest = formattedData.reduce(
@@ -177,6 +185,8 @@ const CancelledReports = () => {
           </div>
         )}
       </div>
+
+      {/* Timeframe Selection */}
       <div className="mb-4 text-sm">
         <label>
           <input
@@ -205,24 +215,34 @@ const CancelledReports = () => {
           />{" "}
           Yearly
         </label>
-        {/* Year Selection */}
-        <div className="my-4">
-          {(timeframe === "monthly" ||
-            timeframe === "weekly" ||
-            timeframe === "yearly") && (
-            <div className="mb-4">
-              <label htmlFor="year-input">Enter Year:</label>
-              <input
-                type="number"
-                id="year-input"
-                value={selectedYear}
-                onChange={(e) => setSelectedYear(Number(e.target.value))}
-                min={2000}
-                max={currentYear}
-                className="ml-2 rounded border border-gray-300 p-2"
-              />
-            </div>
-          )}
+      </div>
+
+      <div className="my-4 flex flex-col gap-2 md:flex-row">
+        <label htmlFor="year-input" className="text-xs md:text-sm">
+          Enter Year:
+          <input
+            type="number"
+            id="year-input"
+            value={inputYear}
+            onChange={(e) => setInputYear(Number(e.target.value))}
+            min={2000}
+            max={new Date().getFullYear()}
+            className="ml-2 rounded border border-gray-300 p-2"
+          />
+        </label>
+        <div className="flex">
+          <button
+            onClick={handleSearchYear}
+            className="mr-2 rounded bg-blue-500 px-4 py-2 text-xs text-white hover:bg-blue-600 active:bg-blue-700 md:text-sm"
+          >
+            Search Year
+          </button>
+          <button
+            onClick={handleViewAllYears}
+            className="rounded bg-gray-500 px-4 py-2 text-xs text-white hover:bg-gray-600 active:bg-gray-700 md:text-sm"
+          >
+            View All Years
+          </button>
         </div>
       </div>
       {/* Highest and Lowest Counts */}
