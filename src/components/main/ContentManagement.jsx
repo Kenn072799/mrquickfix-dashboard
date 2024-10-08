@@ -40,7 +40,7 @@ const ContentManagement = () => {
       <div className="py-8">
         <Title>Content Management</Title>
         <div className="my-4 flex w-full flex-col items-center justify-center rounded-md bg-white px-4 py-8 shadow-md">
-          <div className="flex w-full flex-col items-center md:w-1/2">
+          <div className="flex w-full flex-col items-center md:w-[700px]">
             {/* Headline */}
             <input
               type="text"
