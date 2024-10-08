@@ -7,14 +7,16 @@ import ServicesTable from "../table/ServicesTable";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import UploadProjectForm from "../form/ContentManagementForms/UploadProjectForm";
+import AddServicesForm from "../form/ContentManagementForms/AddServicesForm";
 
 const ContentManagement = () => {
   const [headline, setHeadline] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [activeForm, setActiveForm] = useState(null);
 
   const handleSubmit = () => {
-    // Handle the form submission logic here
     if (headline && description) {
       console.log("Headline:", headline);
       console.log("Description:", description);
@@ -28,10 +30,9 @@ const ContentManagement = () => {
     }
   };
 
-  const handleOnWorking = () => {
-    toast.error(
-      "Sorry we are still working on this feature! This form will be available soon.",
-    );
+  const toggleFormVisibility = (formType) => {
+    setIsFormVisible(!isFormVisible);
+    setActiveForm(formType);
   };
 
   return (
@@ -70,7 +71,11 @@ const ContentManagement = () => {
 
           {/* Upload Button */}
           <div className="flex w-full justify-end">
-            <Button variant="primary" size="sm" onClick={handleOnWorking}>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => toggleFormVisibility("upload")}
+            >
               <MdFileUpload size={20} className="mr-2" /> Upload Projects
             </Button>
           </div>
@@ -82,7 +87,11 @@ const ContentManagement = () => {
 
           {/* Services Button */}
           <div className="mt-12 flex w-full justify-end">
-            <Button variant="primary" size="sm" onClick={handleOnWorking}>
+            <Button
+              variant="primary"
+              size="sm"
+              onClick={() => toggleFormVisibility("addService")}
+            >
               <MdFileUpload size={20} className="mr-2" /> Add Services
             </Button>
           </div>
@@ -92,9 +101,20 @@ const ContentManagement = () => {
             <ServicesTable />
           </div>
         </div>
-        <div className="hidden">
-          <UploadProjectForm />
-        </div>
+
+        {/* Popup Form for Upload Projects */}
+        {isFormVisible && activeForm === "upload" && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+            <UploadProjectForm closeForm={() => setIsFormVisible(false)} />
+          </div>
+        )}
+
+        {/* Popup Form for Add Services */}
+        {isFormVisible && activeForm === "addService" && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+            <AddServicesForm closeForm={() => setIsFormVisible(false)} />
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,11 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import FormTitle from "../../common/FormTitle";
 import { MdOutlineClose } from "react-icons/md";
 import Button from "../../common/Button";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const UploadProjectForm = ({ closeForm }) => {
+const EditProjectForm = ({ closeForm, project }) => {
   const [projectName, setProjectName] = useState("");
   const [categories, setCategories] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
@@ -14,6 +14,20 @@ const UploadProjectForm = ({ closeForm }) => {
 
   const thumbnailInputRef = useRef(null);
   const imagesInputRef = useRef(null);
+
+  useEffect(() => {
+    if (project) {
+      setProjectName(project.name || "");
+      setCategories(project.categories || "");
+      setThumbnail(project.thumbnail || null);
+      setImages(
+        project.images?.map((img) => ({
+          file: null,
+          preview: img,
+        })) || [],
+      );
+    }
+  }, [project]);
 
   const handleThumbnailChange = (e) => {
     const file = e.target.files[0];
@@ -72,17 +86,16 @@ const UploadProjectForm = ({ closeForm }) => {
     console.log("Thumbnail:", thumbnail);
     console.log(
       "Images:",
-      images.map((img) => img.file.name),
+      images.map((img) => img.file?.name || img.preview),
     );
 
     // Handle form submission logic here
-    toast.success("Submitted successfully");
+    toast.success("Saved successfully");
     closeForm();
   };
 
   return (
     <div className="relative mx-4 bg-white p-8 shadow-lg">
-      {/* Close Button */}
       <button
         type="button"
         className="absolute right-2 top-2 flex justify-end"
@@ -90,12 +103,10 @@ const UploadProjectForm = ({ closeForm }) => {
       >
         <MdOutlineClose className="h-8 w-8 rounded-full p-1 hover:bg-secondary-200 active:bg-secondary-200 active:text-secondary-500" />
       </button>
-      <FormTitle>Upload Projects</FormTitle>
+      <FormTitle>Edit Projects</FormTitle>
       <div className="my-4 h-[1px] w-full bg-secondary-500"></div>
-      {/* Form */}
       <div className="max-h-[500px] overflow-y-auto bg-white md:max-h-[600px] md:max-w-[500px]">
         <form>
-          {/* Error Message */}
           {error && (
             <div className="rounded-md border border-red-700 bg-red-100 p-2 text-center text-xs text-red-700">
               {error}
@@ -164,7 +175,6 @@ const UploadProjectForm = ({ closeForm }) => {
               accept="image/*"
               multiple
             />
-            {/* Preview Images */}
             <div className="mt-2 flex flex-wrap gap-2">
               {images.map((image, index) => (
                 <div key={index} className="relative h-24 w-24">
@@ -184,7 +194,7 @@ const UploadProjectForm = ({ closeForm }) => {
           {/* Submit Button */}
           <div className="mt-4">
             <Button variant="submit" size="sm" onClick={handleSubmit}>
-              Submit
+              Save Changes
             </Button>
           </div>
         </form>
@@ -193,4 +203,4 @@ const UploadProjectForm = ({ closeForm }) => {
   );
 };
 
-export default UploadProjectForm;
+export default EditProjectForm;
