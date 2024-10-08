@@ -5,6 +5,7 @@ import Title from "../../common/Title";
 import { useCompletedData } from "../../hooks/useCompleteDataChart";
 import { FaAngleDoubleDown, FaAngleDoubleUp } from "react-icons/fa";
 import html2canvas from "html2canvas";
+import SkeletonLoaderTable from "../../loader/SkeletonLoaderTable";
 
 const convertToCSV = (data) => {
   const header = "Date,Completed\n";
@@ -39,7 +40,12 @@ const LineCompletedCard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const chartRef = useRef();
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div>
+        <SkeletonLoaderTable />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
   if (!data || data.length === 0) return <div>No data available</div>;
 

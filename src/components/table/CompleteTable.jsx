@@ -3,6 +3,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { useCompletedData } from "../hooks/useDataHooks";
 import { LuEye } from "react-icons/lu";
 import CompletedDetails from "../form/CompletedDetails";
+import SkeletonLoaderTable from "../loader/SkeletonLoaderTable";
 
 const CompleteTable = () => {
   const { data, loading, error } = useCompletedData();
@@ -50,7 +51,7 @@ const CompleteTable = () => {
   );
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><SkeletonLoaderTable /></div>;
   }
 
   if (error) {

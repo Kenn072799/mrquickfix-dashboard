@@ -5,12 +5,17 @@ import { FaRegClock } from "react-icons/fa6";
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useOnProcessData } from "../../hooks/useDataHooks";
+import SkeletonLoader from "../../loader/SkeletonLoader";
 
 const OnProcessCardDB = () => {
   const { data, loading, error } = useOnProcessData();
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return (
+      <div className="text-center">
+        <SkeletonLoader />
+      </div>
+    );
   }
 
   if (error) {

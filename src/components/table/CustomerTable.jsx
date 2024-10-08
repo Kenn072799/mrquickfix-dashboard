@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useFetchCustomers } from "../hooks/useDataHooks";
 import { LuEye } from "react-icons/lu";
 import CustomerInquiryDetails from "../form/CustomerInquiryDetails";
+import SkeletonLoaderTable from "../loader/SkeletonLoaderTable";
 
 const CustomerTable = () => {
   const { data, loading, error } = useFetchCustomers();
@@ -22,7 +23,11 @@ const CustomerTable = () => {
   const rowsPerPage = 10;
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <SkeletonLoaderTable />
+      </div>
+    );
   }
 
   if (error) {

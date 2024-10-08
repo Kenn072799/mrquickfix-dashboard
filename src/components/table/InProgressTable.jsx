@@ -13,6 +13,7 @@ import CompletePopUp from "../common/popup/CompletePopUp";
 import { useInProgressData } from "../hooks/useDataHooks";
 import { LuEye } from "react-icons/lu";
 import InProgressInquiryDetails from "../form/InProgressInquiryDetails";
+import SkeletonLoaderTable from "../loader/SkeletonLoaderTable";
 
 const InProgressTable = () => {
   const { data, loading, error } = useInProgressData();
@@ -30,7 +31,7 @@ const InProgressTable = () => {
   const today = new Date();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div><SkeletonLoaderTable /></div>;
   }
 
   if (error) {

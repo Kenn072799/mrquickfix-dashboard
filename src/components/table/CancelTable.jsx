@@ -3,6 +3,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { useCancelData } from "../hooks/useDataHooks";
 import { LuEye } from "react-icons/lu";
 import CancelledDetails from "../form/CancelledDetails";
+import SkeletonLoaderTable from "../loader/SkeletonLoaderTable";
 
 const CancelTable = () => {
   const { data, loading, error } = useCancelData();
@@ -50,7 +51,12 @@ const CancelTable = () => {
     currentPage * rowsPerPage + rowsPerPage,
   );
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div>
+        <SkeletonLoaderTable />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (

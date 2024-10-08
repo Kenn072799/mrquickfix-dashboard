@@ -3,16 +3,21 @@ import TitleCard from "../../common/TitleCard";
 import CountUp from "react-countup";
 import { Link } from "react-router-dom";
 import { useCustomerData } from "../../hooks/useDataHooks";
+import SkeletonLoader from "../../loader/SkeletonLoader";
 
 const CustomerDB = () => {
   const { data, loading, error } = useCustomerData();
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return (
+      <div className="text-center">
+        <SkeletonLoader />
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
+    return <div>Error: {error}</div>;
   }
 
   const dataLength = data.length;

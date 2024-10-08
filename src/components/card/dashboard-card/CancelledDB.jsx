@@ -3,16 +3,21 @@ import TitleCard from "../../common/TitleCard";
 import CountUp from "react-countup";
 import { useCancelData } from "../../hooks/useDataHooks";
 import { Link } from "react-router-dom";
+import SkeletonLoader from "../../loader/SkeletonLoader";
 
 const CancelledDB = () => {
   const { data, loading, error } = useCancelData();
 
   if (loading) {
-    return <div className="text-center">Loading...</div>;
+    return (
+      <div className="text-center">
+        <SkeletonLoader />
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center text-red-500">Error: {error}</div>;
+    return <div>Error: {error}</div>;
   }
 
   const dataLength = data.length;

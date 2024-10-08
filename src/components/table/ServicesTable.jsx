@@ -69,6 +69,7 @@ const ServicesTable = () => {
   const closeForm = () => {
     setIsFormVisible(false);
   };
+  
 
   return (
     <div className="overflow-x-auto">

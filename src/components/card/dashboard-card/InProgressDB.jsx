@@ -5,12 +5,17 @@ import { GrStatusWarning } from "react-icons/gr";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useInProgressData } from "../../hooks/useDataHooks";
+import SkeletonLoader from "../../loader/SkeletonLoader";
 
 const InProgressDB = () => {
   const { data, loading, error } = useInProgressData();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <SkeletonLoader />
+      </div>
+    );
   }
 
   if (error) {

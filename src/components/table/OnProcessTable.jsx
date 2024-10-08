@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useOnProcessData } from "../hooks/useDataHooks";
 import OnProcessInquiryDetails from "../form/OnProcessInquiryDetails";
+import SkeletonLoaderTable from "../loader/SkeletonLoaderTable";
 
 const OnProcessTable = () => {
   const { data, loading, error } = useOnProcessData();
@@ -23,7 +24,7 @@ const OnProcessTable = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const rowsPerPage = 10;
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><SkeletonLoaderTable /></div>;
   if (error) return <div>Error: {error}</div>;
 
   const sortedData = [...data].sort((a, b) => {
