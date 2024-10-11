@@ -258,6 +258,7 @@ const OnProcessForm = ({ onClose }) => {
             name="inspectionDate"
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
+            disabled={quotationUploaded}
           />
           <div className="mt-2">
             <Button variant="save" size="sm" onClick={handleSaveChanges}>

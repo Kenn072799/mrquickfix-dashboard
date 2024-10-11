@@ -269,6 +269,7 @@ const CustomerInquiryForm = ({ onClose }) => {
             name="inspectionDate"
             onChange={handleInputChange}
             className="w-full border p-2 outline-none"
+            disabled={quotationUploaded}
           />
 
           {/* Buttons */}
