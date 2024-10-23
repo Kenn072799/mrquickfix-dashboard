@@ -1,11 +1,10 @@
 import React from "react";
 import TitleCard from "../../common/TitleCard";
 import CountUp from "react-countup";
-import { FaRegClock } from "react-icons/fa6";
-import { FaRegCalendarAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useOnProcessData } from "../../hooks/useDataHooks";
 import SkeletonLoader from "../../loader/SkeletonLoader";
+import { TbCalendarSearch, TbCalendarClock } from "react-icons/tb";
 
 const OnProcessCardDB = () => {
   const { data, loading, error } = useOnProcessData();
@@ -60,7 +59,7 @@ const OnProcessCardDB = () => {
             className="absolute right-14 top-4 flex items-center"
             title={`${waitingCount} quotation(s) waiting`}
           >
-            <FaRegClock className="text-2xl" />
+            <TbCalendarClock className="text-2xl" />
             <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs text-white">
               {waitingCount}
             </span>
@@ -73,7 +72,7 @@ const OnProcessCardDB = () => {
             className="absolute right-4 top-4 flex items-center"
             title={`${scheduledCount} inspection(s) scheduled for today`}
           >
-            <FaRegCalendarAlt className="relative text-2xl" />
+            <TbCalendarSearch className="relative text-2xl" />
             <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs text-white">
               {scheduledCount}
             </span>

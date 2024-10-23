@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import { FaRegCheckCircle, FaRegCalendarCheck } from "react-icons/fa";
+import { FaRegCheckCircle } from "react-icons/fa";
 import { LiaEdit } from "react-icons/lia";
 import { MdOutlineCancel } from "react-icons/md";
-import { IoWarningOutline } from "react-icons/io5";
-import { GrStatusWarning } from "react-icons/gr";
 import InProgressForm from "../form/InProgressForm";
 import CancelPopUp from "../common/popup/CancelPopUp";
 import { toast } from "react-toastify";
@@ -14,6 +12,15 @@ import { useInProgressData } from "../hooks/useDataHooks";
 import { LuEye } from "react-icons/lu";
 import InProgressInquiryDetails from "../form/InProgressInquiryDetails";
 import SkeletonLoaderTable from "../loader/SkeletonLoaderTable";
+import StartPopup from "../common/popup/StartPopup";
+import { VscDebugStart } from "react-icons/vsc";
+import {
+  TbCalendarEvent,
+  TbCalendarCheck,
+  TbCalendarExclamation,
+  TbCalendarClock,
+  TbCalendarShare,
+} from "react-icons/tb";
 
 const InProgressTable = () => {
   const { data, loading, error } = useInProgressData();
@@ -23,15 +30,21 @@ const InProgressTable = () => {
   const [isCancelPopUpVisible, setIsCancelPopUpVisible] = useState(false);
   const [customerToCancel, setCustomerToCancel] = useState(null);
   const [isCompletePopUpVisible, setIsCompletePopUpVisible] = useState(false);
+  const [isStartPopUpVisible, setIsStartPopUpVisible] = useState(false);
   const [customerToComplete, setCustomerToComplete] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isViewFormVisible, setIsViewFormVisible] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [startedProjects, setStartedProjects] = useState(new Set());
   const rowsPerPage = 10;
   const today = new Date();
 
   if (loading) {
-    return <div><SkeletonLoaderTable /></div>;
+    return (
+      <div>
+        <SkeletonLoaderTable />
+      </div>
+    );
   }
 
   if (error) {
@@ -89,6 +102,33 @@ const InProgressTable = () => {
     setCustomerToCancel(null);
   };
 
+  // Handle start click
+  const handleStartClick = (item) => {
+    console.log("Item to start:", item);
+    setCustomerToComplete(item);
+    setIsStartPopUpVisible(true);
+  };
+
+  // In the StartPopup confirmation handler
+  const handleStart = (item) => {
+    console.log("Starting item:", item);
+    toast.success("Project is now ongoing!");
+
+    setStartedProjects((prev) => {
+      const updatedProjects = new Set(prev);
+      updatedProjects.add(customerToComplete.id);
+      return updatedProjects;
+    });
+
+    setIsStartPopUpVisible(false);
+  };
+
+  const handleCancelStart = () => {
+    setIsStartPopUpVisible(false);
+    setCustomerToComplete(null);
+  };
+
+  // Handle complete click
   const handleCompleteClick = (item) => {
     // complete logic here
     console.log("Complete:", item);
@@ -139,6 +179,73 @@ const InProgressTable = () => {
         />
       </div>
 
+      {/* Scheduled Today alert section */}
+      {data.filter((item) => {
+        const startDate = new Date(item.startDate);
+        return (
+          startDate.toLocaleDateString() === today.toLocaleDateString() &&
+          !startedProjects.has(item.id)
+        );
+      }).length > 0 && (
+        <div className="mb-4 flex items-center rounded border border-blue-700 bg-blue-100 p-3 text-blue-700">
+          <TbCalendarEvent className="mr-2 text-2xl" />
+          <span className="text-xs md:text-base">
+            You have{" "}
+            {
+              data.filter((item) => {
+                const startDate = new Date(item.startDate);
+                return (
+                  startDate.toLocaleDateString() ===
+                    today.toLocaleDateString() && !startedProjects.has(item.id)
+                );
+              }).length
+            }{" "}
+            project(s) scheduled today.
+          </span>
+        </div>
+      )}
+
+      {/* Ongoing project alert section */}
+      {(() => {
+        const ongoingProjects = data.filter((item) => {
+          return startedProjects.has(item.id);
+        });
+
+        return (
+          ongoingProjects.length > 0 && (
+            <div className="mb-4 flex items-center rounded border border-yellow-700 bg-yellow-100 p-3 text-yellow-700">
+              <TbCalendarShare className="mr-2 text-2xl" />
+              <span className="text-xs md:text-base">
+                You have {ongoingProjects.length} project(s) ongoing.
+              </span>
+            </div>
+          )
+        );
+      })()}
+
+      {/* Waiting for an update alert section */}
+      {(() => {
+        const waitingForUpdateProjects = data.filter((item) => {
+          const startDate = new Date(item.startDate);
+          return (
+            startDate < today.setHours(0, 0, 0, 0) &&
+            !startedProjects.has(item.id)
+          );
+        });
+
+        return (
+          waitingForUpdateProjects.length > 0 && (
+            <div className="mb-4 flex items-center rounded border border-orange-700 bg-orange-100 p-3 text-orange-700">
+              <TbCalendarClock className="mr-2 text-2xl" />
+              <span className="text-xs md:text-base">
+                You have {waitingForUpdateProjects.length} project(s) that were
+                supposed to start but haven't been initiated yet.
+              </span>
+            </div>
+          )
+        );
+      })()}
+
       {/* Expected completion alert section */}
       {data.filter(
         (item) =>
@@ -146,7 +253,7 @@ const InProgressTable = () => {
           today.toLocaleDateString(),
       ).length > 0 && (
         <div className="mb-4 flex items-center rounded border border-green-700 bg-green-100 p-3 text-green-700">
-          <FaRegCalendarCheck className="mr-2 text-xl" />
+          <TbCalendarCheck className="mr-2 text-2xl" />
           <span className="text-xs md:text-base">
             You have{" "}
             {
@@ -163,14 +270,13 @@ const InProgressTable = () => {
       {/* Delayed alert section */}
       {data.filter((item) => isDatePast(item.endDate)).length > 0 && (
         <div className="mb-4 flex items-center rounded border border-red-700 bg-red-100 p-3 text-red-700">
-          <IoWarningOutline className="mr-2 text-2xl md:text-xl" />
+          <TbCalendarExclamation className="mr-2 text-2xl" />
           <span className="text-xs md:text-base">
             You have {data.filter((item) => isDatePast(item.endDate)).length}{" "}
             delayed project(s). Please check the table for warnings.
           </span>
         </div>
       )}
-
       <div className="overflow-x-auto">
         <table className="min-w-full border-collapse border border-gray-300">
           <thead>
@@ -232,20 +338,57 @@ const InProgressTable = () => {
                     </a>
                   </td>
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
-                    {item.startDate}
+                    <div className="flex items-center justify-between">
+                      {item.startDate}
+                      {/* Display icon based on the project's status */}
+                      {(() => {
+                        const startDate = new Date(item.startDate);
+                        const isStartedToday =
+                          startDate.toLocaleDateString() ===
+                          today.toLocaleDateString();
+                        const isOngoing = startedProjects.has(item.id);
+                        const isPastDue =
+                          startDate < today.setHours(0, 0, 0, 0);
+
+                        if (isOngoing) {
+                          return (
+                            <TbCalendarShare
+                              className="text-yellow-500 md:text-2xl"
+                              title="Ongoing project."
+                            />
+                          );
+                        } else if (isStartedToday) {
+                          return (
+                            <TbCalendarEvent
+                              className="text-blue-500 md:text-2xl"
+                              title="Started today."
+                            />
+                          );
+                        } else if (isPastDue && !isOngoing) {
+                          return (
+                            <TbCalendarClock
+                              className="text-orange-500 md:text-2xl"
+                              title="Waiting for update."
+                            />
+                          );
+                        }
+                        return null;
+                      })()}
+                    </div>
                   </td>
+
                   <td className="border border-gray-300 p-2 text-xs md:text-base">
                     <div className="flex items-center justify-between">
                       {item.endDate}
                       {/* Display icon if endDate is today or overdue */}
                       {new Date(item.endDate).toLocaleDateString() ===
                       today.toLocaleDateString() ? (
-                        <FaRegCalendarCheck
+                        <TbCalendarCheck
                           className="text-green-500 md:text-2xl"
                           title="Expected to complete today."
                         />
                       ) : new Date(item.endDate) < today ? (
-                        <GrStatusWarning
+                        <TbCalendarExclamation
                           className="text-red-500 md:text-2xl"
                           title="Project is delayed!"
                         />
@@ -264,6 +407,17 @@ const InProgressTable = () => {
                         </button>
                         <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
                           Complete
+                        </div>
+                      </div>
+                      <div className="group relative">
+                        <button
+                          onClick={() => handleStartClick(item)}
+                          className="rounded-md bg-yellow-500 px-2 py-1 text-white hover:bg-yellow-600"
+                        >
+                          <VscDebugStart className="text-lg" />
+                        </button>
+                        <div className="absolute bottom-9 left-1/2 z-10 hidden w-max -translate-x-1/2 translate-y-2 rounded-md bg-black/80 px-2 py-1 text-xs text-white opacity-0 group-hover:block group-hover:opacity-100">
+                          Start
                         </div>
                       </div>
                       <div className="group relative">
@@ -316,7 +470,6 @@ const InProgressTable = () => {
           </tbody>
         </table>
       </div>
-
       {/* Pagination */}
       <div className="mt-4 flex items-center justify-between">
         <button
@@ -341,14 +494,12 @@ const InProgressTable = () => {
           <FaAngleRight />
         </button>
       </div>
-
       {/* Popup Form */}
       {isFormVisible && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
           <InProgressForm item={selectedItem} onClose={closeForm} />
         </div>
       )}
-
       {/* View Pop-up */}
       {isViewFormVisible && (
         <>
@@ -361,7 +512,6 @@ const InProgressTable = () => {
           </div>
         </>
       )}
-
       {/* Cancel Pop-up */}
       {isCancelPopUpVisible && (
         <CancelPopUp
@@ -376,6 +526,14 @@ const InProgressTable = () => {
           message={`Are you sure you want to complete ${customerToComplete.firstName} ${customerToComplete.lastName}'s project?`}
           onConfirm={handleCompletion}
           onCancel={handleCancelComplete}
+        />
+      )}
+      {/* Start Pop-up */}
+      {isStartPopUpVisible && (
+        <StartPopup
+          message={`Are you sure you want to start ${customerToComplete.firstName} ${customerToComplete.lastName}'s project?`}
+          onConfirm={handleStart}
+          onCancel={handleCancelStart}
         />
       )}
     </div>

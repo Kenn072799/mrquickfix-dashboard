@@ -1,12 +1,10 @@
 import React from "react";
 import TitleCard from "../../common/TitleCard";
 import CountUp from "react-countup";
-import { GrStatusWarning } from "react-icons/gr";
-import { FaRegCalendarCheck } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useInProgressData } from "../../hooks/useDataHooks";
 import SkeletonLoader from "../../loader/SkeletonLoader";
-
+import { TbCalendarEvent , TbCalendarCheck, TbCalendarExclamation  } from "react-icons/tb";
 const InProgressDB = () => {
   const { data, loading, error } = useInProgressData();
 
@@ -48,6 +46,12 @@ const InProgressDB = () => {
   });
   const expectedCount = expectedCompletionToday.length;
 
+  // Projects scheduled to start today
+  const scheduledTodayCount = data.filter((item) => {
+    const startDate = new Date(item.startDate);
+    return startDate.toLocaleDateString() === today.toLocaleDateString();
+  }).length;
+
   return (
     <Link to="/projects">
       <div className="relative h-[150px] min-w-[300px] rounded-md border-t-8 border-yellow-500 bg-white shadow-md md:w-[300px]">
@@ -57,7 +61,7 @@ const InProgressDB = () => {
             className="absolute right-14 top-4 flex items-center"
             title={`${delayedCount} delayed project(s)`}
           >
-            <GrStatusWarning className="text-2xl" />
+            <TbCalendarExclamation className="text-2xl" />
             <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs text-white">
               {delayedCount}
             </span>
@@ -70,12 +74,29 @@ const InProgressDB = () => {
             className="absolute right-4 top-4 flex items-center"
             title={`${expectedCount} project(s) expected to complete today`}
           >
-            <FaRegCalendarCheck className="text-2xl" />
+            <TbCalendarCheck className="text-2xl" />
             <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs text-white">
               {expectedCount}
             </span>
           </div>
         )}
+
+        {/* Scheduled Today Notification  */}
+        {scheduledTodayCount > 0 && (
+          <div
+            className="absolute right-24 top-4 flex items-center"
+            title={`${scheduledTodayCount} project(s) scheduled to start today`}
+          >
+            <TbCalendarEvent  className="text-2xl" />
+            <span className="absolute -right-2 -top-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-red-500 text-xs text-white">
+              {scheduledTodayCount}
+            </span>
+          </div>
+        )}
+
+        {/* Ongoing project Notification  */}
+
+        {/* Waiting for an update alert section */}
 
         <header className="flex items-center border-b py-4 pl-4">
           <TitleCard>In Progress</TitleCard>

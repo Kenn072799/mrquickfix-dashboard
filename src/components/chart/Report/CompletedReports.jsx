@@ -49,10 +49,13 @@ const CompletedReports = () => {
 
         let key;
         if (timeframe === "weekly") {
-          const weekStart = new Date(
-            date.setDate(date.getDate() - date.getDay()),
-          ).toLocaleDateString();
-          key = weekStart;
+          const weekStart = new Date(date);
+          const dayOfWeek = weekStart.getDay();
+
+          const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+          weekStart.setDate(weekStart.getDate() + diffToMonday);
+
+          key = weekStart.toLocaleDateString();
         } else if (timeframe === "monthly") {
           key = date.toLocaleString("default", {
             month: "long",
@@ -61,6 +64,7 @@ const CompletedReports = () => {
         } else if (timeframe === "yearly") {
           key = date.getFullYear();
         }
+
         const existingEntry = acc.find((entry) => entry.date === key);
         if (existingEntry) {
           existingEntry.count += 1;

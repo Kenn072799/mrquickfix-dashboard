@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { FaAngleLeft, FaAngleRight, FaRegClock } from "react-icons/fa6";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
 import { LiaEdit } from "react-icons/lia";
 import { MdOutlineCancel } from "react-icons/md";
 import { LuEye } from "react-icons/lu";
-import { FaRegCalendarAlt } from "react-icons/fa";
 import OnProcessForm from "../form/OnProcessForm";
 import CancelPopUp from "../common/popup/CancelPopUp";
 import { toast } from "react-toastify";
@@ -11,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useOnProcessData } from "../hooks/useDataHooks";
 import OnProcessInquiryDetails from "../form/OnProcessInquiryDetails";
 import SkeletonLoaderTable from "../loader/SkeletonLoaderTable";
+import { TbCalendarSearch, TbCalendarClock } from "react-icons/tb";
 
 const OnProcessTable = () => {
   const { data, loading, error } = useOnProcessData();
@@ -24,7 +24,12 @@ const OnProcessTable = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const rowsPerPage = 10;
 
-  if (loading) return <div><SkeletonLoaderTable /></div>;
+  if (loading)
+    return (
+      <div>
+        <SkeletonLoaderTable />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   const sortedData = [...data].sort((a, b) => {
@@ -122,7 +127,7 @@ const OnProcessTable = () => {
       {/* Scheduled today alert */}
       {scheduledToday.length > 0 && (
         <div className="mb-4 rounded border border-green-700 bg-green-100 p-3 text-green-700">
-          <FaRegCalendarAlt className="mr-2 inline text-xl" />
+          <TbCalendarSearch className="mr-2 inline text-2xl" />
           <span className="text-xs md:text-base">
             You have {scheduledToday.length} inspection(s) scheduled for today.
           </span>
@@ -132,7 +137,7 @@ const OnProcessTable = () => {
       {/* Waiting for quotation alert */}
       {waitingForQuotation.length > 0 && (
         <div className="mb-4 rounded border border-yellow-700 bg-yellow-100 p-3 text-yellow-700">
-          <FaRegClock className="mr-2 inline text-xl" />
+          <TbCalendarClock className="mr-2 inline text-2xl" />
           <span className="text-xs md:text-base">
             You have {waitingForQuotation.length} project(s) waiting for
             quotation.
@@ -188,13 +193,13 @@ const OnProcessTable = () => {
                       {item.inspectionDate}
                       {new Date(item.inspectionDate).toLocaleDateString() ===
                       today ? (
-                        <FaRegCalendarAlt
+                        <TbCalendarSearch
                           className="text-green-500 md:text-2xl"
                           title="Inspection scheduled for today!"
                         />
                       ) : (
                         new Date(item.inspectionDate) < new Date() && (
-                          <FaRegClock
+                          <TbCalendarClock
                             className="text-yellow-500 md:text-2xl"
                             title="Waiting for quotation!"
                           />
